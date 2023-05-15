@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   util.h                                             :+:      :+:    :+:   */
+/*   slice.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:15:52 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/15 18:17:44 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/15 18:22:16 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UTIL_H
-# define UTIL_H
+#ifndef SLICE_H
+# define SLICE_H
 
 # include <stddef.h>
 
@@ -30,4 +30,4 @@ void	split_once(t_slice slice, int (*predicate)(char),
 			t_slice *p_part0, t_slice *p_part1);
 t_slice	trim_left(t_slice slice, int (*predicate)(char));
 
-#endif // !UTIL_H
+#endif // !SLICE_H
