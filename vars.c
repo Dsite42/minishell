@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:18:55 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/15 16:20:18 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/15 18:03:18 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static t_var	*var_new(t_slice name, t_slice value)
 	new_var = malloc(sizeof(t_var) + name.size);
 	if (new_var == NULL)
 		return (NULL);
+	new_var->flags = 0;
 	new_var->value = slice_to_str(value);
 	if (new_var->value == NULL)
 	{
