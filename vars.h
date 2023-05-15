@@ -6,21 +6,20 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:17:03 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/15 18:01:19 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/15 18:22:27 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VARS_H
 # define VARS_H
 
-# include "util.h"
+# include "slice.h"
 
 typedef struct s_var
 {
 	struct s_var	*next;
 	unsigned int	flags;
 	char			*value;
-	size_t			name_len;
 	char			name[];
 }	t_var;
 

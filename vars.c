@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:18:55 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/15 18:03:18 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/15 18:19:38 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static t_var	*var_new(t_slice name, t_slice value)
 {
 	t_var	*new_var;
 
-	new_var = malloc(sizeof(t_var) + name.size);
+	new_var = malloc(sizeof(t_var) + name.size + 1);
 	if (new_var == NULL)
 		return (NULL);
 	new_var->flags = 0;
@@ -29,8 +29,8 @@ static t_var	*var_new(t_slice name, t_slice value)
 		free(new_var);
 		return (NULL);
 	}
-	new_var->name_len = name.size;
 	memcpy(new_var->name, name.data, name.size);
+	new_var->name[name.size] = '\0';
 	return (new_var);
 }
 
@@ -41,11 +41,8 @@ t_var	*vars_get(t_var **p_root_var, t_slice name)
 	head_var = *p_root_var;
 	while (head_var != NULL)
 	{
-		if (head_var->name_len == name.size)
-		{
-			if (memcmp(head_var->name, name.data, name.size) == 0)
-				return (head_var);
-		}
+		if (slice_str_equal(name, head_var->name))
+			return (head_var);
 		head_var = head_var->next;
 	}
 	return (NULL);
@@ -79,11 +76,8 @@ void	vars_del(t_var **p_root_var, t_slice name)
 	last_var = NULL;
 	while (head_var != NULL)
 	{
-		if (head_var->name_len == name.size)
-		{
-			if (memcmp(head_var->name, name.data, name.size) == 0)
-				break ;
-		}
+		if (slice_str_equal(name, head_var->name))
+			break ;
 		last_var = head_var;
 		head_var = head_var->next;
 	}
