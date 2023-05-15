@@ -4,7 +4,7 @@ HDRS=util.h vars.h
 .PHONY: clean
 
 mk_shell: $(SRCS) $(HDRS)
-	$(CC) -o $@ $(SRCS)
+	$(CC) -Wall -Wextra -Werror -Ofast -o $@ $(SRCS)
 
 clean:
 	rm mk_shell
