@@ -13,5 +13,6 @@ typedef struct s_var {
 t_var *vars_get(t_var **p_root_var, t_slice name);
 t_var *vars_set(t_var **p_root_var, t_slice name, t_slice value);
 void   vars_del(t_var **p_root_var, t_slice name);
+void   vars_clr(t_var **p_root_var);
 
 #endif // !VAR_H

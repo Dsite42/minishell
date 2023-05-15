@@ -8,6 +8,7 @@ typedef struct s_slice {
     size_t      size;
 } t_slice;
 
-t_slice slice0(const char *string);
+t_slice  slice0(const char *string);
+char    *slice_to_str(t_slice slice);
 
 #endif // !UTIL_H
