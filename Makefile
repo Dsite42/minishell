@@ -1,4 +1,4 @@
-SRCS=main.c slice_io.c slice_core.c vars.c
+SRCS=main.c slice_str.c slice_core.c vars.c
 HDRS=slice.h vars.h
 
 .PHONY: clean
