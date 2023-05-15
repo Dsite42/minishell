@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 18:30:36 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/15 19:24:59 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/15 21:18:15 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ t_var	*vars_from_envp(char *envp[])
 	t_var	*root_var;
 	t_var	*var;
 
+	root_var = NULL;
 	while (*envp)
 	{
 		split_once(slice0(*envp), is_delimiter, &name, &value);
