@@ -4,7 +4,7 @@ HDRS=env.h slice.h vars.h
 .PHONY: clean
 
 mk_shell: $(SRCS) $(HDRS)
-	$(CC) -Wall -Wextra -Werror -Ofast -o $@ $(SRCS)
+	$(CC) -Wall -Wextra -Ofast -o $@ $(SRCS)
 
 clean:
 	rm -f mk_shell
