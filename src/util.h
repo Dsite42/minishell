@@ -6,13 +6,13 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:59:24 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/16 16:01:05 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/16 18:33:36 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef UTIL_H
 # define UTIL_H
 
-void	print_fd(int fd, const char *string);
+int	print_fd(int fd, const char *format, ...);
 
 #endif // !UTIL_H

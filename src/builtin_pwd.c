@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 16:17:41 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/16 16:17:42 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/16 18:43:40 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,8 @@ int	builtin_pwd(int argc, char *argv[], int out_fd, void *context)
 	{
 		if (argv[index][0] == '-')
 		{
-			print_fd(STDERR_FILENO, "minishell: pwd: ");
-			print_fd(STDERR_FILENO, argv[index]);
-			print_fd(STDERR_FILENO, ": invalid option\n");
+			print_fd(STDERR_FILENO, "minishell: pwd: %s: invalid option\n",
+				argv[index]);
 			return (1);
 		}
 		index++;
@@ -40,7 +39,6 @@ int	builtin_pwd(int argc, char *argv[], int out_fd, void *context)
 		perror("pwd: getcwd() failed");
 		return (1);
 	}
-	print_fd(out_fd, buffer);
-	print_fd(out_fd, "\n");
+	print_fd(out_fd, "%s\n", buffer);
 	return (0);
 }
