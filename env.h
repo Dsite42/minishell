@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 18:28:51 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/15 18:32:41 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/16 12:28:10 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "vars.h"
 
-t_var	*vars_from_envp(char *envp[]);
+int		vars_from_envp(char *envp[], t_var **p_root_var);
 char	**envp_from_vars(t_var **p_root_var);
 
 #endif
