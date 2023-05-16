@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 18:30:36 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/16 12:28:25 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/16 13:22:50 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ int	vars_from_envp(char *envp[], t_var **p_root_var)
 {
 	t_slice	name;
 	t_slice	value;
-	t_var	*root_var;
 	t_var	*var;
 
 	*p_root_var = NULL;
