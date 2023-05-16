@@ -1,10 +1,26 @@
-SRCS=env.c main.c slice_core.c slice_str.c vars.c
-HDRS=builtin.h env.h slice.h vars.h
+NAME=minishell
+OBJS=
+HDRS=
 
-.PHONY: clean
+CFLAGS=-Wall -Wextra -Werror
+LIBS=-l readline
 
-minishell: $(SRCS) $(HDRS)
-	$(CC) -Wall -Wextra -Ofast -o $@ $(SRCS)
+include src/Makefile
+
+.PHONY: all clean fclean re
+
+all: $(NAME)
+re: fclean all
+
+$(NAME): $(OBJS)
+	$(CC) $(OBJS) -o $(NAME) $(LIBS)
+
+obj/%.o: src/%.c $(HDRS)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f minishell
+	find obj -type f -name '*.o' -delete
+
+fclean:
+	find obj -type f -name '*.o' -delete
+	rm -f $(NAME)
