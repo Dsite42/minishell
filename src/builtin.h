@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 12:58:30 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/16 13:02:38 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/16 15:30:59 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,7 @@ typedef struct s_builtin
 	const char		*name;
 	t_builtin_fn	main_fn;
 }	t_builtin;
+
+int	builtin_pwd(int argc, char *argv[], int out_fd, void *context);
 
 #endif // !BUILTIN_H
