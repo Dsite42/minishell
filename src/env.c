@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 18:30:36 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/16 13:22:50 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/16 16:02:56 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ int	vars_from_envp(char *envp[], t_var **p_root_var)
 	return (1);
 }
 
+// TODO: Implement this
 char	**envp_from_vars(t_var **p_root_var)
 {
 	(void) p_root_var;
-	// TODO: Implement this
 	return (NULL);
 }

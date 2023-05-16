@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:17:03 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/15 19:18:23 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/16 16:03:07 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 # include "slice.h"
 
-#define VAR_EXPORT 1
-#define VAR_EXPLICIT_EMPTY 2
+# define VAR_EXPORT 1
+# define VAR_EXPLICIT_EMPTY 2
 
 typedef struct s_var
 {
