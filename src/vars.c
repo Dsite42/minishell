@@ -6,11 +6,12 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:18:55 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/15 18:19:38 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/16 20:02:37 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vars.h"
+#include "util.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -29,7 +30,7 @@ static t_var	*var_new(t_slice name, t_slice value)
 		free(new_var);
 		return (NULL);
 	}
-	memcpy(new_var->name, name.data, name.size);
+	ms_memcpy(new_var->name, name.data, name.size);
 	new_var->name[name.size] = '\0';
 	return (new_var);
 }
