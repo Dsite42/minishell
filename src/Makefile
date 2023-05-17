@@ -1,4 +1,5 @@
 OBJS +=	obj/builtin_pwd.o \
+		obj/builtin_cd.o \
 		obj/env.o \
 		obj/main.o \
 		obj/slice_core.o \
