@@ -1,5 +1,6 @@
 OBJS +=	obj/builtin_pwd.o \
 		obj/builtin_cd.o \
+		obj/builtin_env.o \
 		obj/env.o \
 		obj/libms.o \
 		obj/main.o \
