@@ -1,19 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_cd.c                                       :+:      :+:    :+:   */
+/*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgodecke <cgodecke@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 16:47:53 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/05/18 15:51:10 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/05/18 16:47:45 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "builtin.h"
-#include "vars.h"
-#include "util.h"
 
 #include <unistd.h>
 #include <stdio.h>
@@ -22,7 +19,7 @@
 #include <sys/param.h>
 #include <stdlib.h>
 
-int	builtin_cd(int argc, char *argv[], int out_fd, void *context)
+int	builtin_cd(int argc, char *argv[], int out_fd, t_state *state)
 {
 	char	*errormessage;
 	char	buffer[MAXPATHLEN + 1];
@@ -41,8 +38,7 @@ int	builtin_cd(int argc, char *argv[], int out_fd, void *context)
 		perror("getcwd() error");
 		return (1);
 	}
-	var = vars_set(&((t_storage *)context)->root_var,
-			slice0("PWD"), slice0(buffer));
+	var = vars_set(&state->root_var, slice0("PWD"), slice0(buffer));
 	if (var == NULL)
 		return (1);
 	return (0);
