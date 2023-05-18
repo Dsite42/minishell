@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vars.h                                             :+:      :+:    :+:   */
+/*   state.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:17:03 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/18 16:13:49 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/18 16:16:55 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef VARS_H
-# define VARS_H
+#ifndef STATE_H
+# define STATE_H
 
 # include "../util/util.h"
 
@@ -36,4 +36,4 @@ void	vars_clr(t_var **p_root_var);
 int		vars_from_envp(char *envp[], t_var **p_root_var);
 char	**envp_from_vars(t_var **p_root_var);
 
-#endif // !VARS_H
+#endif // !STATE_H

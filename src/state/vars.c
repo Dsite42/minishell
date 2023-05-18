@@ -6,11 +6,11 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:18:55 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/18 16:11:07 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/18 16:17:30 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vars.h"
+#include "state.h"
 
 #include <stdlib.h>
 
