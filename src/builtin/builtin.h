@@ -3,18 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgodecke <cgodecke@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 12:58:30 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/18 14:36:04 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/05/18 16:35:57 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BUILTIN_H
 # define BUILTIN_H
 
-// TODO: Type for context pointer
-typedef int	(*t_builtin_fn)(int argc, char *argv[], int out_fd, void *context);
+# include "../state/state.h"
+
+typedef int	(*t_builtin_fn)(int argc, char *argv[], int out_fd, t_state *state);
 
 typedef struct s_builtin
 {
@@ -22,7 +23,7 @@ typedef struct s_builtin
 	t_builtin_fn	main_fn;
 }	t_builtin;
 
-int	builtin_pwd(int argc, char *argv[], int out_fd, void *context);
-int	builtin_env(int argc, char *argv[], int out_fd, void *context);
+int	builtin_pwd(int argc, char *argv[], int out_fd, t_state *state);
+int	builtin_env(int argc, char *argv[], int out_fd, t_state *state);
 
 #endif // !BUILTIN_H

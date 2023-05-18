@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:17:03 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/18 16:16:55 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/18 16:37:17 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,11 @@ typedef struct s_var
 	char			*value;
 	char			name[];
 }	t_var;
+
+typedef struct s_state
+{
+	t_var	*root_var;
+}	t_state;
 
 // vars.c
 t_var	*vars_get(t_var **p_root_var, t_slice name);

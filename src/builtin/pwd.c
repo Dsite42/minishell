@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 16:17:41 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/18 16:03:08 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/18 16:37:46 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@
 #include <unistd.h>
 #include <sys/param.h>
 
-int	builtin_pwd(int argc, char *argv[], int out_fd, void *context)
+int	builtin_pwd(int argc, char *argv[], int out_fd, t_state *state)
 {
 	int		index;
 	char	buffer[MAXPATHLEN + 1];
 
-	(void) context;
+	(void) state;
 	index = 1;
 	while (index < argc)
 	{
