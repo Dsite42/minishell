@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   util_print.h                                       :+:      :+:    :+:   */
+/*   private.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 18:09:11 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/16 18:12:06 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/18 16:05:34 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UTIL_PRINT_H
-# define UTIL_PRINT_H
+#ifndef PRIVATE_H
+# define PRIVATE_H
 
 # include "slice.h"
 
@@ -25,4 +25,4 @@ int	print_uint(int fd, int *p_total_length, unsigned int number);
 int	print_hex(int fd, int *p_total_length, unsigned int number, int uppercase);
 int	print_slice(int fd, int *p_total_length, t_slice slice);
 
-#endif // !UTIL_PRINT_H
+#endif // !PRIVATE_H

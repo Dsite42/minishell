@@ -6,12 +6,12 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:18:55 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/16 20:02:37 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/18 16:03:02 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vars.h"
-#include "util.h"
+#include "../util/util.h"
 
 #include <string.h>
 #include <stdlib.h>

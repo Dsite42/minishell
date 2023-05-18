@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_pwd.c                                      :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 16:17:41 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/16 18:43:40 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/18 16:03:08 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
-#include "util.h"
+#include "../util/util.h"
 
 #include <stdio.h>
 #include <unistd.h>
