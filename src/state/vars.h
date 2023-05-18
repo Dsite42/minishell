@@ -6,14 +6,14 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:17:03 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/18 16:03:03 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/18 16:10:54 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VARS_H
 # define VARS_H
 
-# include "../util/slice.h"
+# include "../util/util.h"
 
 # define VAR_EXPORT 1
 # define VAR_EXPLICIT_EMPTY 2

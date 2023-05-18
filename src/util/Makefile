@@ -5,5 +5,4 @@ OBJS += obj/util/libms.o \
 		obj/util/slice_str.o
 
 HDRS += src/util/private.h \
-		src/util/slice.h \
 		src/util/util.h
