@@ -6,10 +6,11 @@
 /*   By: cgodecke <cgodecke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 16:47:53 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/05/16 20:05:00 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/05/18 15:51:10 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "minishell.h"
 #include "builtin.h"
 #include "vars.h"
 #include "util.h"
@@ -29,29 +30,20 @@ int	builtin_cd(int argc, char *argv[], int out_fd, void *context)
 
 	(void) buffer;
 	(void) argc;
-	(void) out_fd;
-	(void) context;
-		
 	if (chdir(argv[2]) != 0)
 	{
 		errormessage = strerror(errno);
-		print_fd(STDERR_FILENO, "minishell: cd: %s: %s\n", argv[2], errormessage);
+		print_fd(out_fd, "minishell: cd: %s: %s\n", argv[2], errormessage);
 		return (1);
 	}
-	if (getcwd(buffer, sizeof(buffer)) == NULL) // TODO: Error check
+	if (getcwd(buffer, sizeof(buffer)) == NULL)
 	{
 		perror("getcwd() error");
 		return (1);
 	}
-	/* TODO: Implement when context is implemented
-	var = vars_set(&context->root_var, slice0("PWD"), slice0(buffer));
+	var = vars_set(&((t_storage *)context)->root_var,
+			slice0("PWD"), slice0(buffer));
 	if (var == NULL)
 		return (1);
-	if (var->flags & VAR_EXPORT)
-	{
-		builtin_export(argc, argv, out_fd, context); // uncomment when builtin_export is implemented
-	}
-	*/
 	return (0);
 }
-
