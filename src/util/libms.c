@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 20:00:26 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/19 21:39:50 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/20 00:39:40 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	*ms_calloc(size_t size, size_t count)
 	if (new_memory == NULL)
 		return (NULL);
 	index = 0;
-	while (index < count)
+	while (index < length)
 		new_memory[index++] = 0;
 	return (new_memory);
 }
