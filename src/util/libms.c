@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 20:00:26 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/19 21:37:01 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/19 21:39:50 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,18 @@ void	*ms_calloc(size_t size, size_t count)
 	while (index < count)
 		new_memory[index++] = 0;
 	return (new_memory);
+}
+
+void	*free_pointers(void *pointers)
+{
+	void	**iter;
+
+	iter = pointers;
+	while (*iter != NULL)
+	{
+		free(*iter);
+		iter++;
+	}
+	free(pointers);
+	return (NULL);
 }
