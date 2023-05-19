@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 21:28:41 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/19 23:54:41 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/20 00:47:24 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,4 +97,26 @@ char	**word_group_to_argv(t_word *root_word, t_var **p_root_var)
 		head_word = head_word->next_group;
 	}
 	return (new_argv);
+}
+
+void	words_clr(t_word **p_root_word)
+{
+	t_word	*group_head_word;
+	t_word	*group_next_word;
+	t_word	*chain_head_word;
+	t_word	*chain_next_word;
+
+	group_head_word = *p_root_word;
+	while (group_head_word != NULL)
+	{
+		chain_head_word = group_head_word;
+		group_next_word = group_head_word->next_group;
+		while (chain_head_word != NULL)
+		{
+			chain_next_word = chain_head_word->next_chain;
+			free(chain_head_word);
+			chain_head_word = chain_next_word;
+		}
+		group_head_word = group_next_word;
+	}
 }
