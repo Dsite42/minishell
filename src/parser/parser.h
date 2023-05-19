@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 18:55:33 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/20 00:52:06 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/20 01:18:17 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,11 @@ typedef struct s_word
 // NOTE: t_word.next_group is only valid for the first node of a chain
 // NOTE: The validity of t_word.cache is up to functions writing to it
 
+// words.c
 char	**argv_from_word_group(t_word *root_word, t_var **p_root_var);
 void	words_clr(t_word **p_root_word);
+
+// parser.c
+int		word_chain_from_string(t_word **p_root_word, t_slice slice);
 
 #endif // !PARSER_H
