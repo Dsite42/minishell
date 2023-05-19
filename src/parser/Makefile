@@ -1,3 +1,4 @@
-OBJS += obj/parser/words.o
+OBJS += obj/parser/parser.o \
+		obj/parser/words.o
 
 HDRS += src/parser/parser.h
