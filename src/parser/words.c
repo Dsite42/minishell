@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 21:28:41 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/20 00:47:24 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/20 00:52:15 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static int	word_chain_to_arg(
 	return (1);
 }
 
-char	**word_group_to_argv(t_word *root_word, t_var **p_root_var)
+char	**argv_from_word_group(t_word *root_word, t_var **p_root_var)
 {
 	size_t	index;
 	size_t	count;
