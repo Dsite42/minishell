@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 12:58:30 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/16 19:58:52 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/05/18 16:24:29 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,6 @@ typedef struct s_builtin
 
 int	builtin_pwd(int argc, char *argv[], int out_fd, void *context);
 int	builtin_cd(int argc, char *argv[], int out_fd, void *context);
-
+int	builtin_export(int argc, char *argv[], int out_fd, void *context);
 
 #endif // !BUILTIN_H
