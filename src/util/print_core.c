@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   util_print_core.c                                  :+:      :+:    :+:   */
+/*   print_core.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 09:59:11 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/16 18:32:40 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/18 16:02:56 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "util_print.h"
+#include "private.h"
 
 int	print_write(int fd, int *p_total_length, const char *buffer, size_t length)
 {

@@ -1,19 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   slice.h                                            :+:      :+:    :+:   */
+/*   util.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/15 16:15:52 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/15 18:22:16 by jsprenge         ###   ########.fr       */
+/*   Created: 2023/05/16 15:59:24 by jsprenge          #+#    #+#             */
+/*   Updated: 2023/05/18 16:08:04 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SLICE_H
-# define SLICE_H
+#ifndef UTIL_H
+# define UTIL_H
 
 # include <stddef.h>
+
+// libms.c
+size_t	ms_strlen(const char *string);
+void	*ms_memcpy(void *destination, const void *source, size_t size);
+
+// print_core.c
+int		print_fd(int fd, const char *format, ...);
 
 typedef struct s_slice
 {
@@ -21,13 +28,15 @@ typedef struct s_slice
 	size_t		size;
 }	t_slice;
 
-t_slice	slice0(const char *string);
-char	*slice_to_str(t_slice slice);
-int		slice_str_equal(t_slice slice, const char *string);
-
+// slice_core.c
 t_slice	advance(t_slice slice);
 void	split_once(t_slice slice, int (*predicate)(char),
 			t_slice *p_part0, t_slice *p_part1);
 t_slice	trim_left(t_slice slice, int (*predicate)(char));
 
-#endif // !SLICE_H
+// slice_str.c
+t_slice	slice0(const char *string);
+char	*slice_to_str(t_slice slice);
+int		slice_str_equal(t_slice slice, const char *string);
+
+#endif // !UTIL_H

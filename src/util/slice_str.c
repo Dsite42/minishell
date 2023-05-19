@@ -6,14 +6,11 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:20:44 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/16 20:10:30 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/18 16:09:51 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "slice.h"
-#include "util.h"
-
-#include <stdlib.h>
+#include "private.h"
 
 t_slice	slice0(const char *string)
 {
