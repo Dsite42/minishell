@@ -6,11 +6,11 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 18:26:53 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/16 18:30:09 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/18 16:09:56 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "slice.h"
+#include "private.h"
 
 t_slice	advance(t_slice slice)
 {

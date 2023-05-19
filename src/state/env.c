@@ -6,12 +6,11 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 18:30:36 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/16 16:02:56 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/18 16:17:27 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "env.h"
-#include "slice.h"
+#include "state.h"
 
 static int	is_delimiter(char input)
 {

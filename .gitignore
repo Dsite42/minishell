@@ -1,3 +1,2 @@
 /minishell
-/obj/*
-!/obj/.gitkeep
+*.o
