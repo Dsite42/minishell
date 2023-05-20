@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 16:14:52 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/05/20 12:33:51 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/05/20 15:32:20 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ int	builtin_export(int argc, char *argv[], int out_fd, t_state *state)
 	}
 	while (argv[i] != NULL)
 	{
-		if (!((*(argv[i]) >= 'a' && *(argv[i]) <= 'z')
-				|| (*(argv[i]) >= 'A' && *(argv[i]) <= 'Z') || *(argv[i]) <= '_') || ft_strchr(argv[i], '=') == NULL)
+		if (!((ms_isalpha(*(argv[i]))) || *(argv[i]) == '_')
+			|| ms_strchr(argv[i], '=') == NULL)
 		{
 			print_fd(out_fd,
 				"minishell: export: `%s': not a valid identifier\n", argv[i]);
@@ -91,9 +91,9 @@ int	builtin_export(int argc, char *argv[], int out_fd, t_state *state)
 			if (var == NULL)
 				error_detected = 1;
 			var->flags |= VAR_EXPORT;
+			of_free_arr((void **)splitted, 1);
 		}
 		i++;
-		of_free_arr((void **)splitted, 1);
 	}
 	of_free_arr((void **)argv, 1);
 	return (error_detected);

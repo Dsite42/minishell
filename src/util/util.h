@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:59:24 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/20 11:58:16 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/05/20 15:26:32 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 size_t	ms_strlen(const char *string);
 void	*ms_memcpy(void *destination, const void *source, size_t size);
 int		ms_strncmp(const char *s1, const char *s2, size_t n);
+int		ms_isalpha(int c);
+char	*ms_strchr(const char *s, int c);
 
 // print_core.c
 int		print_fd(int fd, const char *format, ...);
