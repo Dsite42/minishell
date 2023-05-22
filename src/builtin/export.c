@@ -11,8 +11,8 @@
 /* ************************************************************************** */
 
 #include "builtin.h"
-#include "util.h"
-#include <limits.h>
+#include "../util/util.h"
+#include "../state/state.h"
 
 // the ft_splits are just used to imitate the behavior of already getting the correct parsed arguments
 // TEST=10 abc: abc should be ignored --> done
@@ -22,23 +22,7 @@
 // export: print all exported variables in alphabetical order --> done
 #include "../libft.h"
 
-void	of_free_arr(void **arr, int self_free)
-{
-	int	i;
-
-	if (arr == NULL)
-		return ;
-	i = 0;
-	while (arr[i] != NULL)
-	{
-		free(arr[i]);
-		i++;
-	}
-	if (self_free == 1 && arr != NULL)
-		free(arr);
-}
-
-void	print_exports(t_var *var)
+int	print_exports(t_var *var, int out_fd)
 {
 	t_var	*root_var;
 	t_var	*next_print_var;
@@ -50,51 +34,49 @@ void	print_exports(t_var *var)
 	while (var != NULL)
 	{
 		if (var->flags & VAR_EXPORT)
-			printf("declare -x %s=\"%s\"\n", var->name, var->value);
+			print_fd(out_fd, "declare -x %s=\"%s\"\n", var->name, var->value);
 		var = var->next;
 	}
+	return (0);
+}
+
+int	export_vars(char *argv[], t_state *state)
+{
+	t_slice	name;
+	t_slice	value;
+	t_var	*var;
+
+	split_once(slice0(*argv), is_delimiter, &name, &value);
+	value = advance(value);
+	var = vars_set(&state->root_var, name, value);
+	if (var == NULL)
+		return (1);
+	var->flags |= VAR_EXPORT;
+	return (0);
 }
 
 int	builtin_export(int argc, char *argv[], int out_fd, t_state *state)
 {
-	char	**splitted;
-	t_var	*var;
 	int		error_detected;
-	int		i;
 
 	(void) argc;
+	printf("argv[2]: %s\n", argv[2]);
 	argv = ft_split(argv[2], ' ');
-	i = 0;
 	error_detected = 0;
 	if (argv[0] == NULL)
+		return (print_exports(state->root_var, out_fd));
+	while (*argv != NULL)
 	{
-		print_exports(state->root_var);
-		return (error_detected);
-	}
-	while (argv[i] != NULL)
-	{
-		if (!((ms_isalpha(*(argv[i]))) || *(argv[i]) == '_')
-			|| ms_strchr(argv[i], '=') == NULL)
+		if (!((ms_isalpha(**argv)) || **argv == '_')
+			|| ms_strchr(*argv, '=') == NULL)
 		{
 			print_fd(out_fd,
-				"minishell: export: `%s': not a valid identifier\n", argv[i]);
+				"minishell: export: `%s': not a valid identifier\n", *argv);
 			error_detected = 1;
 		}
 		else
-		{
-			splitted = ft_split(argv[i], '=');
-			if (splitted == NULL)
-				error_detected = 1;
-			var = vars_set(&state->root_var,
-					slice0(splitted[0]),
-					slice0(ft_strchr(argv[i], '=') + 1));
-			if (var == NULL)
-				error_detected = 1;
-			var->flags |= VAR_EXPORT;
-			of_free_arr((void **)splitted, 1);
-		}
-		i++;
+			error_detected = export_vars(argv, state);
+		argv++;
 	}
-	of_free_arr((void **)argv, 1);
 	return (error_detected);
 }

@@ -12,7 +12,7 @@
 
 #include "state.h"
 
-static int	is_delimiter(char input)
+int	is_delimiter(char input)
 {
 	return (input == '=');
 }
