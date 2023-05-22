@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 21:28:41 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/22 03:12:14 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/22 03:13:26 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,21 @@ static int	word_chain_to_arg(
 	*p_arg = word_chain_copy(root_word, malloc(length + 1));
 	if (*p_arg == NULL)
 		return (0);
+	return (1);
+}
+
+int	word_new(t_word **p_new_word, unsigned int flags, t_slice slice)
+{
+	t_word	*new_word;
+
+	new_word = malloc(sizeof(t_word));
+	if (new_word == NULL)
+		return (0);
+	new_word->flags = flags;
+	new_word->slice = slice;
+	new_word->next_group = NULL;
+	new_word->next_chain = NULL;
+	*p_new_word = new_word;
 	return (1);
 }
 
