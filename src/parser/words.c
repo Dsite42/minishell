@@ -6,11 +6,11 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 21:28:41 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/20 00:52:15 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/22 03:12:14 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "private.h"
 
 #include <stdlib.h>
 
@@ -99,7 +99,7 @@ char	**argv_from_word_group(t_word *root_word, t_var **p_root_var)
 	return (new_argv);
 }
 
-void	words_clr(t_word **p_root_word)
+int	words_clr(t_word **p_root_word)
 {
 	t_word	*group_head_word;
 	t_word	*group_next_word;
@@ -119,4 +119,6 @@ void	words_clr(t_word **p_root_word)
 		}
 		group_head_word = group_next_word;
 	}
+	*p_root_word = NULL;
+	return (0);
 }

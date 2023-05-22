@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 18:55:33 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/20 01:18:17 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/22 03:11:14 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ typedef struct s_word
 
 // words.c
 char	**argv_from_word_group(t_word *root_word, t_var **p_root_var);
-void	words_clr(t_word **p_root_word);
+int		words_clr(t_word **p_root_word);
 
 // parser.c
 int		word_chain_from_string(t_word **p_root_word, t_slice slice);
