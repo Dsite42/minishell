@@ -6,13 +6,16 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 21:28:41 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/22 19:10:21 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/22 19:38:49 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "private.h"
 
 #include <stdlib.h>
+
+// TODO: Split variables by space into different items when not quoted,
+//       maybe add a flag for that?
 
 static char	*word_chain_copy(t_word *head_word, char *new_string)
 {
