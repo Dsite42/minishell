@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 02:43:48 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/22 15:53:39 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/22 18:30:19 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,6 @@ int	builder_append(t_builder *builder, unsigned int flags, t_slice slice)
 {
 	int	result;
 
-	if (slice.size == 0)
-		return (1);
 	if (builder->is_new_group)
 	{
 		result = builder_append_group(builder, flags, slice);
