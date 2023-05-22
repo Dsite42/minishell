@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:59:24 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/22 14:51:45 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/22 18:48:10 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,22 @@
 # define UTIL_H
 
 # include <stddef.h>
+
+// Every function returning an int as a return code is expected to be boolean,
+// zero for failure, one for success
+// If a function wants to use the codes below, it MUST return t_result instead
+
+# define S_OK 0
+# define E_BUG -1
+# define E_NOMEM -2
+
+typedef struct s_slice
+{
+	const char	*data;
+	size_t		size;
+}	t_slice;
+
+typedef int t_result;
 
 // libms.c
 size_t	ms_strlen(const char *string);
@@ -24,12 +40,6 @@ void	*free_pointers(void *pointers);
 
 // print_core.c
 int		print_fd(int fd, const char *format, ...);
-
-typedef struct s_slice
-{
-	const char	*data;
-	size_t		size;
-}	t_slice;
 
 // slice_core.c
 t_slice	advance(t_slice slice);
