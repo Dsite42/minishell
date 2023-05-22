@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 20:00:26 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/20 00:39:40 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/22 02:50:28 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,20 @@ void	*ms_memcpy(void *destination, const void *source, size_t size)
 		index++;
 	}
 	return (destination);
+}
+
+void	ms_bzero(void *destination, size_t size)
+{
+	size_t	index;
+	char	*destination_bytes;
+
+	index = 0;
+	destination_bytes = destination;
+	while (index < size)
+	{
+		destination_bytes[index] = 0;
+		index++;
+	}
 }
 
 void	*ms_calloc(size_t size, size_t count)

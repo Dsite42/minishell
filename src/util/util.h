@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:59:24 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/19 21:39:37 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/22 02:58:54 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 // libms.c
 size_t	ms_strlen(const char *string);
 void	*ms_memcpy(void *destination, const void *source, size_t size);
+void	ms_bzero(void *destination, size_t size);
 void	*ms_calloc(size_t size, size_t count);
 void	*free_pointers(void *pointers);
 
