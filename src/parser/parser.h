@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 18:55:33 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/22 03:13:09 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/22 18:49:58 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,11 @@ typedef struct s_word
 // NOTE: The validity of t_word.cache is up to functions writing to it
 
 // words.c
-int		word_new(t_word **p_new_word, unsigned int flags, t_slice slice);
-char	**argv_from_word_group(t_word *root_word, t_var **p_root_var);
-int		words_clr(t_word **p_root_word);
+int			word_new(t_word **p_new_word, unsigned int flags, t_slice slice);
+char		**argv_from_word_group(t_word *root_word, t_var **p_root_var);
+int			words_clr(t_word **p_root_word);
 
 // parser.c
-int		word_chain_from_string(t_word **p_root_word, t_slice slice);
+t_result	word_chain_from_string(t_word **p_root_word, t_slice remainder);
 
 #endif // !PARSER_H
