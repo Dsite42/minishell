@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:59:24 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/22 18:53:13 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/22 18:57:40 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 # define S_OK 0
 # define E_BUG -1
 # define E_NOMEM -2
+# define E_SQTERM -3
+# define E_DQTERM -4
 
 typedef struct s_slice
 {
