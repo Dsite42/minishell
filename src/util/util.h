@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:59:24 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/22 23:04:56 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/22 23:35:23 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ int		print_fd(int fd, const char *format, ...);
 // slice_core.c
 t_slice	advance(t_slice slice);
 size_t	split_once(t_slice slice, size_t (*predicate)(t_slice),
+			t_slice *p_part0, t_slice *p_part1);
+void	split_at(t_slice slice, size_t index,
 			t_slice *p_part0, t_slice *p_part1);
 t_slice	trim_left(t_slice slice, size_t (*predicate)(t_slice), size_t *p_count);
 int		consume(t_slice *p_slice, const char *predicate);
