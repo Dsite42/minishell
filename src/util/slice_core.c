@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 18:26:53 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/18 16:09:56 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/22 01:48:16 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,15 @@ t_slice	trim_left(t_slice slice, int (*predicate)(char))
 	slice.data += index;
 	slice.size -= index;
 	return (slice);
+}
+
+int	consume(t_slice *p_slice, char predicate)
+{
+	if (p_slice->size > 0 && p_slice->data[0] == predicate)
+	{
+		p_slice->data++;
+		p_slice->size--;
+		return (1);
+	}
+	return (0);
 }

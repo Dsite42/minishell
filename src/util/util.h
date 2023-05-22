@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:59:24 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/22 02:58:54 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/22 02:59:39 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ t_slice	advance(t_slice slice);
 void	split_once(t_slice slice, int (*predicate)(char),
 			t_slice *p_part0, t_slice *p_part1);
 t_slice	trim_left(t_slice slice, int (*predicate)(char));
+int		consume(t_slice *p_slice, char predicate);
 
 // slice_str.c
 t_slice	slice0(const char *string);
