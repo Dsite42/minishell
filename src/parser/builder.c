@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 02:43:48 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/22 18:54:37 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/22 23:29:08 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,10 @@ t_result	builder_append(
 		return (result);
 	}
 	return (builder_append_chain(builder, flags, slice));
+}
+
+t_result	builder_clean_return(t_builder *self, t_result result)
+{
+	words_clr(&self->root_word);
+	return (result);
 }
