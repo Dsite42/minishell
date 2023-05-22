@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:20:44 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/22 22:55:36 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/22 23:23:32 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,7 @@ size_t	slice_str_begin(t_slice slice, const char *string)
 			return (0);
 		index++;
 	}
+	if (string[index] == '\0')
+		return (index);
 	return (0);
 }
