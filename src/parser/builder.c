@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 02:43:48 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/22 18:30:19 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/22 18:54:37 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,52 +14,53 @@
 
 #include <stdlib.h>
 
-static int	builder_append_group(
-	t_builder *builder, unsigned int flags, t_slice slice)
+static t_result	builder_append_group(
+	t_builder *self, unsigned int flags, t_slice slice)
 {
 	t_word	*new_word;
 
 	if (!word_new(&new_word, flags, slice))
-		return (0);
-	if (builder->root_word == NULL)
-		builder->root_word = new_word;
-	if (builder->group_head_word != NULL)
-		builder->group_head_word->next_group = new_word;
-	builder->group_head_word = new_word;
-	builder->chain_head_word = new_word;
-	return (1);
+		return (E_NOMEM);
+	if (self->root_word == NULL)
+		self->root_word = new_word;
+	if (self->group_head_word != NULL)
+		self->group_head_word->next_group = new_word;
+	self->group_head_word = new_word;
+	self->chain_head_word = new_word;
+	return (S_OK);
 }
 
-static int	builder_append_chain(
-	t_builder *builder, unsigned int flags, t_slice slice)
+static t_result	builder_append_chain(
+	t_builder *self, unsigned int flags, t_slice slice)
 {
 	t_word	*new_word;
 
 	if (!word_new(&new_word, flags, slice))
-		return (0);
-	if (builder->root_word == NULL)
-		builder->root_word = new_word;
-	if (builder->group_head_word == NULL)
-		builder->group_head_word = new_word;
-	if (builder->chain_head_word != NULL)
-		builder->chain_head_word->next_chain = new_word;
-	builder->chain_head_word = new_word;
-	return (1);
+		return (E_NOMEM);
+	if (self->root_word == NULL)
+		self->root_word = new_word;
+	if (self->group_head_word == NULL)
+		self->group_head_word = new_word;
+	if (self->chain_head_word != NULL)
+		self->chain_head_word->next_chain = new_word;
+	self->chain_head_word = new_word;
+	return (S_OK);
 }
 
-void	builder_group(t_builder *builder)
+void	builder_group(t_builder *self)
 {
-	builder->is_new_group = 1;
+	self->is_new_group = 1;
 }
 
-int	builder_append(t_builder *builder, unsigned int flags, t_slice slice)
+t_result	builder_append(
+		t_builder *builder, unsigned int flags, t_slice slice)
 {
-	int	result;
+	t_result	result;
 
 	if (builder->is_new_group)
 	{
 		result = builder_append_group(builder, flags, slice);
-		if (result)
+		if (result == S_OK)
 			builder->is_new_group = 0;
 		return (result);
 	}
