@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 18:55:33 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/22 19:10:11 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/22 23:49:28 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,12 @@
 //                                                      [", nice to meet you."]
 
 # define WORD_VAR 1
+# define WORD_IS_OP 2
+# define WORD_OP_PIPE 2
+# define WORD_OP_READ 6
+# define WORD_OP_WRITE 10
+# define WORD_OP_APPEND 14
+# define WORD_OP_HEREDOC 18
 
 typedef struct s_word
 {
