@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:59:24 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/22 22:33:28 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/22 22:46:45 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,5 +54,6 @@ int		consume(t_slice *p_slice, char predicate);
 t_slice	slice0(const char *string);
 char	*slice_to_str(t_slice slice);
 int		slice_str_equal(t_slice slice, const char *string);
+size_t	slice_str_begin(t_slice slice, const char *string);
 
 #endif // !UTIL_H
