@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 02:11:15 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/22 18:51:46 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/22 22:27:40 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,10 @@ void		builder_group(t_builder *self);
 t_result	builder_append(t_builder *self, unsigned int flags, t_slice slice);
 
 // grammar.c
-int			is_space(char input);
-int			is_not_identifier(char input);
-int			is_word_split(char input);
-int			is_single_quote_split(char input);
-int			is_double_quote_split(char input);
+size_t		begin_space(t_slice slice);
+size_t		begin_not_identifier(t_slice slice);
+size_t		begin_word_split(t_slice slice);
+size_t		begin_single_quote_split(t_slice slice);
+size_t		begin_double_quote_split(t_slice slice);
 
 #endif // !PRIVATE_H

@@ -6,15 +6,15 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 18:30:36 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/18 16:17:27 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/22 22:28:33 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "state.h"
 
-static int	is_delimiter(char input)
+static size_t	begin_delimiter(t_slice slice)
 {
-	return (input == '=');
+	return (slice.size > 0 && *slice.data == '=');
 }
 
 int	vars_from_envp(char *envp[], t_var **p_root_var)
@@ -26,7 +26,7 @@ int	vars_from_envp(char *envp[], t_var **p_root_var)
 	*p_root_var = NULL;
 	while (*envp)
 	{
-		split_once(slice0(*envp), is_delimiter, &name, &value);
+		split_once(slice0(*envp), begin_delimiter, &name, &value);
 		value = advance(value);
 		var = vars_set(p_root_var, name, value);
 		if (var == NULL)

@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 01:18:23 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/22 19:42:10 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/22 22:26:05 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static t_result	parse_variable(t_slice *p_remainder, t_builder *builder)
 {
 	t_slice	first_part;
 
-	split_once(*p_remainder, is_not_identifier, &first_part, p_remainder);
+	split_once(*p_remainder, begin_not_identifier, &first_part, p_remainder);
 	if (first_part.size == 0)
 	{
 		consume(p_remainder, '$');
@@ -44,7 +44,7 @@ static t_result	parse_double_quote(t_slice *p_remainder, t_builder *builder)
 	while (p_remainder->size > 0)
 	{
 		split_once(*p_remainder,
-			is_double_quote_split, &first_part, p_remainder);
+			begin_double_quote_split, &first_part, p_remainder);
 		if (p_remainder->size == 0)
 			return (E_DQTERM);
 		result = builder_append(builder, 0, first_part);
@@ -72,7 +72,7 @@ static t_result	parse_word_split(t_slice *p_remainder, t_builder *builder)
 	if (consume(p_remainder, '\''))
 	{
 		split_once(*p_remainder,
-			is_single_quote_split, &first_part, p_remainder);
+			begin_single_quote_split, &first_part, p_remainder);
 		if (p_remainder->size == 0)
 			return (E_SQTERM);
 		*p_remainder = advance(*p_remainder);
@@ -82,7 +82,7 @@ static t_result	parse_word_split(t_slice *p_remainder, t_builder *builder)
 		return (parse_double_quote(p_remainder, builder));
 	else if (consume(p_remainder, '$'))
 		return (parse_variable(p_remainder, builder));
-	else if (p_remainder->size > 0 && !is_space(p_remainder->data[0]))
+	else if (p_remainder->size > 0 && !begin_space(*p_remainder))
 		return (E_BUG);
 	return (S_OK);
 }
@@ -98,7 +98,7 @@ t_result	word_chain_from_string(t_word **p_root_word, t_slice remainder)
 	ms_bzero(&builder, sizeof(builder));
 	while (remainder.size > 0)
 	{
-		split_once(remainder, is_word_split, &first_part, &remainder);
+		split_once(remainder, begin_word_split, &first_part, &remainder);
 		if (first_part.size > 0)
 		{
 			result = builder_append(&builder, 0, first_part);
@@ -108,7 +108,7 @@ t_result	word_chain_from_string(t_word **p_root_word, t_slice remainder)
 		result = parse_word_split(&remainder, &builder);
 		if (result != S_OK)
 			return (clean_and_return(&builder, result));
-		remainder = trim_left(remainder, is_space, &count);
+		remainder = trim_left(remainder, begin_space, &count);
 		if (count > 0)
 			builder_group(&builder);
 	}

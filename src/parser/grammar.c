@@ -6,35 +6,46 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 02:14:45 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/22 02:21:44 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/22 22:27:55 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "private.h"
 
-int	is_space(char input)
+size_t	begin_space(t_slice slice)
 {
-	return (input == ' ' || input == '\n' || input == '\r'
-		|| input == '\v' || input == '\t' || input == '\f');
+	if (slice.size == 0)
+		return (0);
+	return (*slice.data == ' ' || *slice.data == '\n' || *slice.data == '\r'
+		|| *slice.data == '\t' || *slice.data == '\v' || *slice.data == '\f');
 }
 
-int	is_not_identifier(char input)
+size_t	begin_not_identifier(t_slice slice)
 {
-	return ((input < 'a' || input > 'z') && (input < 'A' || input > 'Z')
-		&& input != '_');
+	if (slice.size == 0)
+		return (1);
+	return ((*slice.data < 'a' || *slice.data > 'z')
+		&& (*slice.data < 'A' || *slice.data > 'Z') && *slice.data != '_');
 }
 
-int	is_word_split(char input)
+size_t	begin_word_split(t_slice slice)
 {
-	return (is_space(input) || input == '\'' || input == '"' || input == '$');
+	if (slice.size == 0)
+		return (0);
+	return (begin_space(slice) || *slice.data == '\'' || *slice.data == '"'
+		|| *slice.data == '$');
 }
 
-int	is_single_quote_split(char input)
+size_t	begin_single_quote_split(t_slice slice)
 {
-	return (input == '\'');
+	if (slice.size == 0)
+		return (0);
+	return (*slice.data == '\'');
 }
 
-int	is_double_quote_split(char input)
+size_t	begin_double_quote_split(t_slice slice)
 {
-	return (input == '"' || input == '$');
+	if (slice.size == 0)
+		return (0);
+	return (*slice.data == '"' || *slice.data == '$');
 }
