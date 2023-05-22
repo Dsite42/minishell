@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 18:26:53 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/22 01:48:16 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/22 14:51:28 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	split_once(t_slice slice, int (*predicate)(char),
 		*p_part1 = part1;
 }
 
-t_slice	trim_left(t_slice slice, int (*predicate)(char))
+t_slice	trim_left(t_slice slice, int (*predicate)(char), size_t *p_count)
 {
 	size_t	index;
 
@@ -57,6 +57,8 @@ t_slice	trim_left(t_slice slice, int (*predicate)(char))
 	}
 	slice.data += index;
 	slice.size -= index;
+	if (p_count != NULL)
+		*p_count = index;
 	return (slice);
 }
 
