@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:59:24 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/22 18:48:10 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/22 18:53:13 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ typedef struct s_slice
 	size_t		size;
 }	t_slice;
 
-typedef int t_result;
+typedef int	t_result;
 
 // libms.c
 size_t	ms_strlen(const char *string);
