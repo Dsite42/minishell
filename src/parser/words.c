@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 21:28:41 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/22 19:38:49 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/24 17:06:06 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,9 @@ int	word_new(t_word **p_new_word, unsigned int flags, t_slice slice)
 	*p_new_word = new_word;
 	return (1);
 }
+
+// TODO: Rewrite with support for a t_command structure and variable splitting
+//       on insertion (outside of double-quotes)
 
 char	**argv_from_word_group(t_word *root_word, t_var **p_root_var)
 {

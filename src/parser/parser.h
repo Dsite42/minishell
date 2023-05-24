@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 18:55:33 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/22 23:49:28 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/24 17:06:51 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@
 # define WORD_OP_WRITE 10
 # define WORD_OP_APPEND 14
 # define WORD_OP_HEREDOC 18
+
+// TODO: (Maybe) Add third "next_command" link
 
 typedef struct s_word
 {
