@@ -6,21 +6,13 @@
 /*   By: cgodecke <cgodecke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 16:14:52 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/05/20 15:32:20 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/01 16:38:06 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 #include "../util/util.h"
 #include "../state/state.h"
-
-// the ft_splits are just used to imitate the behavior of already getting the correct parsed arguments
-// TEST=10 abc: abc should be ignored --> done
-// TEST==100: should export "TEST==100" --> done
-// =100: minishell: export: `=100': not a valid identifier --> done
-// TEST1==10 TEST2==100: should export both --> done
-// export: print all exported variables in alphabetical order --> done
-#include "../libft.h"
 
 int	print_exports(t_var *var, int out_fd)
 {
@@ -29,7 +21,7 @@ int	print_exports(t_var *var, int out_fd)
 
 	root_var = var;
 	if (var == NULL)
-		return ;
+		return (0);
 	next_print_var = var;
 	while (var != NULL)
 	{
@@ -46,7 +38,7 @@ int	export_vars(char *argv[], t_state *state)
 	t_slice	value;
 	t_var	*var;
 
-	split_once(slice0(*argv), is_delimiter, &name, &value);
+	split_once(slice0(*argv), begin_delimiter, &name, &value);
 	value = advance(value);
 	var = vars_set(&state->root_var, name, value);
 	if (var == NULL)
@@ -60,8 +52,7 @@ int	builtin_export(int argc, char *argv[], int out_fd, t_state *state)
 	int		error_detected;
 
 	(void) argc;
-	printf("argv[2]: %s\n", argv[2]);
-	argv = ft_split(argv[2], ' ');
+	argv++;
 	error_detected = 0;
 	if (argv[0] == NULL)
 		return (print_exports(state->root_var, out_fd));

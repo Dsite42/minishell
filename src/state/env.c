@@ -6,13 +6,13 @@
 /*   By: cgodecke <cgodecke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 18:30:36 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/01 15:30:34 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/01 15:43:41 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "state.h"
 
-static size_t	begin_delimiter(t_slice slice)
+size_t	begin_delimiter(t_slice slice)
 {
 	return (slice.size > 0 && *slice.data == '=');
 }
