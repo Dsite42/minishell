@@ -27,5 +27,6 @@ int	builtin_pwd(int argc, char *argv[], int out_fd, t_state *state);
 int	builtin_cd(int argc, char *argv[], int out_fd, t_state *state);
 int	builtin_env(int argc, char *argv[], int out_fd, t_state *state);
 int	builtin_exit(int argc, char *argv[], int out_fd, t_state *state);
+int	builtin_export(int argc, char *argv[], int out_fd, t_state *state);
 
 #endif // !BUILTIN_H
