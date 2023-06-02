@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:59:24 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/02 17:30:29 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/02 18:03:33 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,12 @@ typedef int	t_result;
 
 // libms.c
 int	ms_arr_len(char **arr);
+int		ms_isdigit(int c);
 size_t	ms_strlen(const char *string);
+int		ms_strncmp(const char *s1, const char *s2, size_t n);
 int		ms_isalpha(int c);
 char	*ms_strchr(const char *s, int c);
-int		ms_strncmp(const char *s1, const char *s2, size_t n);
+int	ms_strncmp(const char *s1, const char *s2, size_t n);
 void	*ms_memcpy(void *destination, const void *source, size_t size);
 void	ms_bzero(void *destination, size_t size);
 void	*ms_calloc(size_t size, size_t count);

@@ -34,12 +34,17 @@ typedef struct s_state
 
 // vars.c
 t_var	*vars_get(t_var **p_root_var, t_slice name);
-t_var	*vars_set(t_var **p_root_var, t_slice name, t_slice value);
 void	vars_del(t_var **p_root_var, t_slice name);
 void	vars_clr(t_var **p_root_var);
+t_var	*var_new(t_slice name, t_slice value);
+
+// vars_set.c
+t_var	*vars_set(t_var **p_root_var, t_slice name, t_slice value);
 
 // env.c
 int		vars_from_envp(char *envp[], t_var **p_root_var);
 char	**envp_from_vars(t_var **p_root_var);
+int		is_delimiter(char input);
+size_t	begin_delimiter(t_slice slice);
 
 #endif // !STATE_H

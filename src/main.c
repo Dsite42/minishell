@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:10:00 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/02 17:26:57 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/02 17:48:22 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,29 +25,13 @@
 
 static void	dump_argv(char **argv, t_state *state)
 {
-
-	if (ms_strncmp(*argv, "export", 6) == 0)
+  size_t	index;
+	index = 0;
+	while (argv[index] != NULL)
 	{
-		//builtin_export(0, argv, 0, state);
+		print_fd(STDOUT_FILENO, "%u: %s\n", index, argv[index]);
+		index++;
 	}
-
-	if (ms_strncmp(*argv, "env", 3) == 0)
-	{
-		builtin_env(0, argv, 0, state);
-	}
-	if (ms_strncmp(*argv, "echo", 4) == 0)
-	{
-		builtin_echo(0, argv, 0, state);
-	}
-	
-
-	//size_t	index;
-	//index = 0;
-	//while (argv[index] != NULL)
-	//{
-	//	print_fd(STDOUT_FILENO, "%u: %s\n", index, argv[index]);
-	//	index++;
-	//}
 }
 
 static t_result	handle_line(char *line, t_state *state)
