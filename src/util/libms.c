@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libms.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: cgodecke <cgodecke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 20:00:26 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/22 02:50:28 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/01 15:31:44 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,50 @@ size_t	ms_strlen(const char *string)
 	while (*iter != '\0')
 		iter++;
 	return (iter - string);
+}
+
+int	ms_isalpha(int c)
+{
+	if ((c >= 'A' && c <= 'Z')
+		|| (c >= 'a' && c <= 'z'))
+		return (1);
+	return (0);
+}
+
+char	*ms_strchr(const char *s, int c)
+{
+	char	*cs;
+
+	cs = (char *)s;
+	c = c % 256;
+	while (*cs != '\0')
+	{
+		if (*cs == c)
+			return (cs);
+		cs++;
+	}
+	if (*cs == '\0' && c == '\0')
+		return (cs);
+	return (0);
+}
+
+
+int	ms_strncmp(const char *s1, const char *s2, size_t n)
+{
+	size_t	i;
+	int		diff_val;
+
+	i = 0;
+	while (i < n && (s1[i] != '\0' || s2[i] != '\0'))
+	{
+		if (s1[i] != s2[i])
+		{
+			diff_val = (unsigned char)s1[i] - (unsigned char)s2[i];
+			return (diff_val);
+		}
+		i++;
+	}
+	return (0);
 }
 
 void	*ms_memcpy(void *destination, const void *source, size_t size)
