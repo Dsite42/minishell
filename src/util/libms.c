@@ -6,11 +6,13 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 20:00:26 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/16 20:01:21 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/22 02:50:28 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "util.h"
+
+#include <stdlib.h>
 
 size_t	ms_strlen(const char *string)
 {
@@ -37,4 +39,50 @@ void	*ms_memcpy(void *destination, const void *source, size_t size)
 		index++;
 	}
 	return (destination);
+}
+
+void	ms_bzero(void *destination, size_t size)
+{
+	size_t	index;
+	char	*destination_bytes;
+
+	index = 0;
+	destination_bytes = destination;
+	while (index < size)
+	{
+		destination_bytes[index] = 0;
+		index++;
+	}
+}
+
+void	*ms_calloc(size_t size, size_t count)
+{
+	size_t	index;
+	size_t	length;
+	char	*new_memory;
+
+	if (size > 0 && count > ((size_t) -1) / size)
+		return (NULL);
+	length = size * count;
+	new_memory = malloc(length);
+	if (new_memory == NULL)
+		return (NULL);
+	index = 0;
+	while (index < length)
+		new_memory[index++] = 0;
+	return (new_memory);
+}
+
+void	*free_pointers(void *pointers)
+{
+	void	**iter;
+
+	iter = pointers;
+	while (*iter != NULL)
+	{
+		free(*iter);
+		iter++;
+	}
+	free(pointers);
+	return (NULL);
 }
