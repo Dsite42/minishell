@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:17:03 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/01 15:43:52 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/05/20 17:05:34 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ typedef struct s_var
 typedef struct s_state
 {
 	t_var	*root_var;
-	int		exit_code;
+	int 	exit_code;
 }	t_state;
 
 // vars.c
