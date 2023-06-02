@@ -29,6 +29,7 @@ typedef struct s_var
 typedef struct s_state
 {
 	t_var	*root_var;
+	int		exit_code;
 }	t_state;
 
 // vars.c

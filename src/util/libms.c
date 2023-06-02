@@ -6,13 +6,32 @@
 /*   By: cgodecke <cgodecke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 20:00:26 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/01 15:31:44 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/02 18:03:09 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "util.h"
 
 #include <stdlib.h>
+
+int	ms_arr_len(char **arr)
+{
+	int	i;
+
+	if (arr == NULL)
+		return (0);
+	i = 0;
+	while (arr[i] != NULL)
+		i++;
+	return (i);
+}
+
+int	ms_isdigit(int c)
+{
+	if (c >= 48 && c <= 57)
+		return (1);
+	return (0);
+}
 
 size_t	ms_strlen(const char *string)
 {
@@ -48,7 +67,6 @@ char	*ms_strchr(const char *s, int c)
 		return (cs);
 	return (0);
 }
-
 
 int	ms_strncmp(const char *s1, const char *s2, size_t n)
 {
