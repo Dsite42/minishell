@@ -3,53 +3,81 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chris <chris@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/23 15:16:34 by chris             #+#    #+#             */
-/*   Updated: 2023/05/23 16:39:49 by chris            ###   ########.fr       */
+/*   Created: 2023/05/15 16:10:00 by jsprenge          #+#    #+#             */
+/*   Updated: 2023/06/03 20:12:51 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <signal.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <readline/history.h>
-#include "readline/readline.h"
+#include "util/util.h"
 #include "state/state.h"
+#include "parser/parser.h"
+#include "builtin/builtin.h"
 
-// ctrl-\ does anyway nothing.
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <readline/history.h>
+#include <readline/readline.h>
 
-void	handle_signals(int sig)
+#include <string.h>
+
+static void	dump_argv(char **argv, t_state *state)
 {
-	(void)sig;
-	if (sig == SIGINT)
-		write(0, "\nminishell> ", 12);
-	else if (sig == SIGTSTP)
+  size_t	index;
+	index = 0;
+	while (argv[index] != NULL)
 	{
-		//vars_clr(&state.root_var); should be state as global?
-		rl_clear_history();
-		exit(0);
+		print_fd(STDOUT_FILENO, "%u: %s\n", index, argv[index]);
+		index++;
 	}
+}
+
+static t_result	handle_line(char *line, t_state *state)
+{
+	t_word		*root_word;
+	char		**new_argv;
+	t_result	result;
+
+	result = word_chain_from_string(&root_word, slice0(line));
+	if (result != S_OK)
+	{
+		free(line);
+		return (result);
+	}
+	add_history(line);
+	new_argv = argv_from_word_group(root_word, &state->root_var);
+	words_clr(&root_word);
+	free(line);
+	if (new_argv == NULL)
+		return (E_NOMEM);
+	dump_argv(new_argv, state);
+	free_pointers(new_argv);
+	return (S_OK);
 }
 
 int	main(int argc, char *argv[], char *envp[])
 {
-	char				*input;
-	struct sigaction	sa;
+	t_state		state;
+	t_result	result;
+	char		*line;
 
 	(void) argc;
 	(void) argv;
-	(void) envp;
-	sa.sa_handler = &handle_signals;
-	sigaction(SIGINT, &sa, NULL);
-	sigaction(SIGTSTP, &sa, NULL);
+	
+if (!vars_from_envp(envp, &state.root_var))
+		return (1);
 	while (1)
 	{
-		input = readline("minishell> ");
-		if (input == NULL)
+		line = readline("minishell> ");
+		if (line == NULL)
 			break ;
-		add_history(input);
-		free(input);
+		add_history(line);
+		result = handle_line(line, &state);
+		if (result != S_OK)
+			print_fd(STDERR_FILENO, "Error code %i while parsing\n", result);
 	}
+	vars_clr(&state.root_var);
 	return (0);
 }

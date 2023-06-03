@@ -3,18 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   vars.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: cgodecke <cgodecke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:18:55 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/18 16:17:30 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/05/20 12:12:28 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "state.h"
-
 #include <stdlib.h>
 
-static t_var	*var_new(t_slice name, t_slice value)
+t_var	*var_new(t_slice name, t_slice value)
 {
 	t_var	*new_var;
 
@@ -45,25 +44,6 @@ t_var	*vars_get(t_var **p_root_var, t_slice name)
 		head_var = head_var->next;
 	}
 	return (NULL);
-}
-
-t_var	*vars_set(t_var **p_root_var, t_slice name, t_slice value)
-{
-	t_var	*var;
-
-	var = vars_get(p_root_var, name);
-	if (var != NULL)
-	{
-		free(var->value);
-		var->value = slice_to_str(value);
-		return (var);
-	}
-	var = var_new(name, value);
-	if (var == NULL)
-		return (NULL);
-	var->next = *p_root_var;
-	*p_root_var = var;
-	return (var);
 }
 
 void	vars_del(t_var **p_root_var, t_slice name)
