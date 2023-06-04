@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:59:24 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/04 15:53:47 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/04 16:36:56 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,6 @@
 
 # include <stddef.h>
 
-// libms.c
-size_t	ms_strlen(const char *string);
-void	*ms_memcpy(void *destination, const void *source, size_t size);
-int		ms_isalpha(int c);
-char	*ms_strchr(const char *s, int c);
 // Every function returning an int as a return code is expected to be boolean,
 // zero for failure, one for success
 // If a function wants to use the codes below, it MUST return t_result instead
