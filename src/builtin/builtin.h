@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 12:58:30 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/04 15:52:27 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/04 21:22:08 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,6 @@
 # include "../state/state.h"
 
 typedef int	(*t_builtin_fn)(int argc, char *argv[], int out_fd, t_state *state);
-
-typedef struct s_builtin
-{
-	const char		*name;
-	t_builtin_fn	main_fn;
-}	t_builtin;
 
 int	builtin_pwd(int argc, char *argv[], int out_fd, t_state *state);
 int	builtin_cd(int argc, char *argv[], int out_fd, t_state *state);
