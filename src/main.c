@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgodecke <cgodecke@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:10:00 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/02 17:48:22 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/04 15:52:12 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,9 @@
 
 static void	dump_argv(char **argv, t_state *state)
 {
-  size_t	index;
+	size_t	index;
+
+	(void) state;
 	index = 0;
 	while (argv[index] != NULL)
 	{

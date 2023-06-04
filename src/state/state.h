@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   state.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgodecke <cgodecke@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:17:03 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/20 17:05:34 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/04 15:53:04 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ typedef struct s_var
 typedef struct s_state
 {
 	t_var	*root_var;
-	int 	exit_code;
+	int		exit_code;
 }	t_state;
 
 // vars.c

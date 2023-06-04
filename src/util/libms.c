@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libms.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 20:00:26 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/03 10:28:03 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/04 15:53:31 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 12:58:30 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/03 10:29:19 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/04 15:52:27 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,5 @@ int	builtin_unset(int argc, char *argv[], int out_fd, t_state *state);
 int	builtin_echo(int argc, char *argv[], int out_fd, t_state *state);
 int	builtin_exit(int argc, char *argv[], int out_fd, t_state *state);
 int	builtin_export(int argc, char *argv[], int out_fd, t_state *state);
-
 
 #endif // !BUILTIN_H
