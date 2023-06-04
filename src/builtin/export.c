@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgodecke <cgodecke@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/18 16:14:52 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/06/01 16:38:06 by cgodecke         ###   ########.fr       */
+/*   Created: 2023/06/03 10:33:06 by cgodecke          #+#    #+#             */
+/*   Updated: 2023/06/03 10:34:39 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,8 @@
 
 int	print_exports(t_var *var, int out_fd)
 {
-	t_var	*root_var;
-	t_var	*next_print_var;
-
-	root_var = var;
 	if (var == NULL)
 		return (0);
-	next_print_var = var;
 	while (var != NULL)
 	{
 		if (var->flags & VAR_EXPORT)
