@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:59:24 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/04 16:36:56 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/04 22:18:12 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,18 +33,20 @@ typedef struct s_slice
 
 typedef int	t_result;
 
-// libms.c
-int		ms_arr_len(char **arr);
-int		ms_isdigit(int c);
-size_t	ms_strlen(const char *string);
-int		ms_strncmp(const char *s1, const char *s2, size_t n);
-int		ms_isalpha(int c);
-char	*ms_strchr(const char *s, int c);
-int		ms_strncmp(const char *s1, const char *s2, size_t n);
-void	*ms_memcpy(void *destination, const void *source, size_t size);
-void	ms_bzero(void *destination, size_t size);
-void	*ms_calloc(size_t size, size_t count);
-void	*free_pointers(void *pointers);
+// libms_part0.c
+size_t	ms_ptrs_count(void *ptrs);
+void	*ms_ptrs_free(void *ptrs);
+int		ms_is_digit(int input);
+int		ms_is_alpha(int input);
+size_t	ms_str_length(const char *string);
+
+// libms_part1.c
+char	*ms_str_find(const char *string, int predicate);
+int		ms_str_compare(
+			const char *string1, const char *string2, size_t limit);
+void	*ms_copy(void *destination, const void *source, size_t size);
+void	ms_zero(void *destination, size_t size);
+void	*ms_zero_alloc(size_t size, size_t count);
 
 // print_core.c
 int		print_fd(int fd, const char *format, ...);
