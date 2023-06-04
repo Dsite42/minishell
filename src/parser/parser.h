@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 18:55:33 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/24 17:06:51 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/04 21:10:06 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,13 @@ typedef struct s_word
 
 // NOTE: t_word.next_group is only valid for the first node of a chain
 // NOTE: The validity of t_word.cache is up to functions writing to it
+
+// grammar.c
+size_t		begin_space(t_slice slice);
+size_t		begin_not_identifier(t_slice slice);
+size_t		begin_word_split(t_slice slice);
+size_t		begin_single_quote_split(t_slice slice);
+size_t		begin_double_quote_split(t_slice slice);
 
 // words.c
 int			word_new(t_word **p_new_word, unsigned int flags, t_slice slice);
