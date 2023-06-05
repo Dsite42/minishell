@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vars.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgodecke <cgodecke@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:18:55 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/20 12:12:28 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/04 20:43:51 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_var	*var_new(t_slice name, t_slice value)
 		free(new_var);
 		return (NULL);
 	}
-	ms_memcpy(new_var->name, name.data, name.size);
+	ms_copy(new_var->name, name.data, name.size);
 	new_var->name[name.size] = '\0';
 	return (new_var);
 }

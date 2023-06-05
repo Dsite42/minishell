@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 01:18:23 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/23 00:13:21 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/04 20:38:58 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ t_result	word_chain_from_string(t_word **p_root_word, t_slice remainder)
 	t_result	result;
 	size_t		count;
 
-	ms_bzero(&builder, sizeof(builder));
+	ms_zero(&builder, sizeof(builder));
 	while (remainder.size > 0)
 	{
 		count = split_once(remainder,
