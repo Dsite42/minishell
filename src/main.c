@@ -3,18 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgodecke <cgodecke@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/15 16:10:00 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/05 19:37:37 by cgodecke         ###   ########.fr       */
+/*   Created: 2023/06/05 19:40:37 by cgodecke          #+#    #+#             */
+/*   Updated: 2023/06/05 20:38:45 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "util/util.h"
 #include "state/state.h"
 #include "parser/parser.h"
 #include "builtin/builtin.h"
 #include <signal.h>
+#include <termios.h>
+#include <sys/ioctl.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -77,28 +80,47 @@ void	handle_signals(int sig)
 	(void)sig;
 	if (sig == SIGINT)
 		write(0, "\nminishell> ", 12);
+	else if (sig == SIGQUIT)
+	{
+
+	}
 	else if (sig == SIGTSTP)
 	{
 		//vars_clr(&state.root_var); should be state as global?
-		rl_clear_history();
+		clear_history();
 		exit(0);
 	}
 }
 
+void	disable_echo(void)
+{
+	struct termios	term;
+
+	tcgetattr(STDIN_FILENO, &term);
+	term.c_cc[VINTR] = '\0';
+	term.c_cc[VQUIT] = '\0';
+	tcsetattr(STDIN_FILENO, TCSANOW, &term);
+}
+
 int	main(int argc, char *argv[], char *envp[])
 {
-	t_state		state;
-	t_result	result;
-	char		*line;
+	t_state				state;
+	t_result			result;
+	char				*line;
 	struct sigaction	sa;
+
 
 	(void) argc;
 	(void) argv;
 	if (!vars_from_envp(envp, &state.root_var))
 		return (1);
 	sa.sa_handler = &handle_signals;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_RESTART;
 	sigaction(SIGINT, &sa, NULL);
 	sigaction(SIGTSTP, &sa, NULL);
+	sigaction(SIGQUIT, &sa, NULL);
+	disable_echo();
 	while (1)
 	{
 		line = readline("minishell> ");
