@@ -3,34 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 14:10:59 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/06/03 10:38:43 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/04 21:54:31 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 #include "../state/state.h"
+#include "../parser/parser.h"
+
+#include <unistd.h>
 
 int	builtin_unset(int argc, char *argv[], int out_fd, t_state *state)
 {
-	int		error_detected;
+	t_slice	name;
+	int		index;
+	t_slice	argument;
+	int		return_code;
 
-	(void)argc;
-	argv++;
-	while (*argv != NULL)
+	(void) out_fd;
+	index = 1;
+	return_code = 0;
+	while (index < argc)
 	{
-		if (!((ms_isalpha(**argv)) || **argv == '_')
-			|| ms_strchr(*argv, '=') != NULL)
+		split_once(slice0(argv[index]), begin_not_identifier, &name, &argument);
+		if (name.size == 0 || argument.size > 0)
 		{
-			print_fd(out_fd,
+			print_fd(STDERR_FILENO,
 				"minishell: unset: `%s': not a valid identifier\n",
-				*argv);
-			error_detected = 1;
+				argv[index]);
+			return_code = 1;
 		}
-		vars_del(&state->root_var, slice0(*argv));
-		argv++;
+		else
+		{
+			vars_del(&state->root_var, name);
+		}
+		index++;
 	}
-	return (error_detected);
+	return (return_code);
 }

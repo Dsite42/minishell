@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 21:28:41 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/24 17:06:06 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/04 21:50:08 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static char	*word_chain_copy(t_word *head_word, char *new_string)
 		}
 		else
 			slice = head_word->slice;
-		ms_memcpy(iter, slice.data, slice.size);
+		ms_copy(iter, slice.data, slice.size);
 		iter += slice.size;
 		head_word = head_word->next_chain;
 	}
@@ -61,7 +61,7 @@ static int	word_chain_to_arg(
 		{
 			var = vars_get(p_root_var, head_word->slice);
 			if (var != NULL)
-				length += ms_strlen(var->value);
+				length += ms_str_length(var->value);
 			head_word->cache = var;
 		}
 		else
@@ -106,7 +106,7 @@ char	**argv_from_word_group(t_word *root_word, t_var **p_root_var)
 		count++;
 		head_word = head_word->next_group;
 	}
-	new_argv = ms_calloc(sizeof(char *), count + 1);
+	new_argv = ms_zero_alloc(sizeof(char *), count + 1);
 	if (new_argv == NULL)
 		return (NULL);
 	index = 0;
@@ -114,7 +114,7 @@ char	**argv_from_word_group(t_word *root_word, t_var **p_root_var)
 	while (index < count)
 	{
 		if (!word_chain_to_arg(head_word, &new_argv[index++], p_root_var))
-			return (free_pointers(new_argv));
+			return (ms_ptrs_free(new_argv));
 		head_word = head_word->next_group;
 	}
 	return (new_argv);

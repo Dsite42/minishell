@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/04 16:00:48 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/04 16:01:18 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/04 21:27:13 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,46 @@
 
 #include <stdlib.h>
 
-int	ms_strncmp(const char *s1, const char *s2, size_t n)
+char	*ms_str_find(const char *string, int predicate)
 {
-	size_t	i;
-	int		diff_val;
-
-	i = 0;
-	while (i < n && (s1[i] != '\0' || s2[i] != '\0'))
+	while (*string)
 	{
-		if (s1[i] != s2[i])
+		if (*string == (char) predicate)
 		{
-			diff_val = (unsigned char)s1[i] - (unsigned char)s2[i];
-			return (diff_val);
+			return ((char *) string);
 		}
-		i++;
+		string++;
+	}
+	if ((char) predicate == '\0')
+		return ((char *) string);
+	return (NULL);
+}
+
+int	ms_str_compare(const char *string1, const char *string2, size_t limit)
+{
+	char	lhs;
+	char	rhs;
+	int		index;
+	int		difference;
+	size_t	original_limit;
+
+	index = 0;
+	original_limit = limit;
+	while (original_limit == 0 || limit--)
+	{
+		lhs = string1[index];
+		rhs = string2[index];
+		index++;
+		difference = ((unsigned char) lhs) - ((unsigned char) rhs);
+		if (difference != 0)
+			return (difference);
+		if (lhs == '\0')
+			return (0);
 	}
 	return (0);
 }
 
-void	*ms_memcpy(void *destination, const void *source, size_t size)
+void	*ms_copy(void *destination, const void *source, size_t size)
 {
 	size_t		index;
 	const char	*source_bytes;
@@ -49,7 +70,7 @@ void	*ms_memcpy(void *destination, const void *source, size_t size)
 	return (destination);
 }
 
-void	ms_bzero(void *destination, size_t size)
+void	ms_zero(void *destination, size_t size)
 {
 	size_t	index;
 	char	*destination_bytes;
@@ -63,7 +84,7 @@ void	ms_bzero(void *destination, size_t size)
 	}
 }
 
-void	*ms_calloc(size_t size, size_t count)
+void	*ms_zero_alloc(size_t size, size_t count)
 {
 	size_t	index;
 	size_t	length;
@@ -79,18 +100,4 @@ void	*ms_calloc(size_t size, size_t count)
 	while (index < length)
 		new_memory[index++] = 0;
 	return (new_memory);
-}
-
-void	*free_pointers(void *pointers)
-{
-	void	**iter;
-
-	iter = pointers;
-	while (*iter != NULL)
-	{
-		free(*iter);
-		iter++;
-	}
-	free(pointers);
-	return (NULL);
 }
