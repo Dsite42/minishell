@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 10:33:06 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/06/07 16:46:20 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/07 17:50:37 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,21 @@
 
 #include <unistd.h>
 
+static void	print_value_with_backslash(int out_fd, char *var_value)
+{
+	while (*var_value != '\0')
+	{
+		if (*var_value == '"' || *var_value == '$')
+		{
+			print_fd(out_fd, "\\%c", *var_value);
+		}
+		else
+			print_fd(out_fd, "%c", *var_value);
+		var_value++;
+	}
+	print_fd(out_fd, "\"\n");
+}
+
 static int	print_exports(t_var *var, int out_fd)
 {
 	if (var == NULL)
@@ -26,7 +41,10 @@ static int	print_exports(t_var *var, int out_fd)
 		if (var->flags & VAR_EXPORT)
 		{
 			if (*(var->value) != '\0' || *(var->value) != '=')
-				print_fd(out_fd, "declare -x %s=\"%s\"\n", var->name, var->value);
+			{
+				print_fd(out_fd, "declare -x %s=\"", var->name);
+				print_value_with_backslash(out_fd, var->value);
+			}
 			else
 				print_fd(out_fd, "declare -x %s\n", var->name);
 		}
