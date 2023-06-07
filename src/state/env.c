@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgodecke <cgodecke@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 18:30:36 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/01 15:43:41 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/07 16:14:07 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	vars_from_envp(char *envp[], t_var **p_root_var)
 			vars_clr(p_root_var);
 			return (0);
 		}
-		var->flags |= VAR_EXPORT;
+		var->flags |= VAR_EXPORT | VAR_EXPLICIT_EMPTY;
 		envp++;
 	}
 	return (1);

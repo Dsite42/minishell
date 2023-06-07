@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 10:33:06 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/06/07 15:40:26 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/07 16:46:20 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	print_exports(t_var *var, int out_fd)
 	{
 		if (var->flags & VAR_EXPORT)
 		{
-			if (*(var->value) != '\0')
+			if (*(var->value) != '\0' || *(var->value) != '=')
 				print_fd(out_fd, "declare -x %s=\"%s\"\n", var->name, var->value);
 			else
 				print_fd(out_fd, "declare -x %s\n", var->name);
@@ -42,8 +42,12 @@ static int	set_export(t_state *state, const char *argument)
 	t_slice	name;
 	t_slice	value;
 	t_slice	remainder;
+	int		varwitheuqalbutwovalue;
 
+	varwitheuqalbutwovalue = 0;
 	split_once(slice0(argument), begin_delimiter, &name, &value);
+	if (*(value.data) == '=' && *(value.data + 1) == '\0')
+		varwitheuqalbutwovalue = 1;
 	value = advance(value);
 	split_once(name, begin_not_identifier, &name, &remainder);
 	if (name.size == 0 || remainder.size > 0)
@@ -56,6 +60,8 @@ static int	set_export(t_state *state, const char *argument)
 	if (var == NULL)
 		return (0);
 	var->flags |= VAR_EXPORT;
+	if (*(var->value) != '\0' || varwitheuqalbutwovalue == 1)
+		var->flags |= VAR_EXPLICIT_EMPTY;
 	return (1);
 }
 
