@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 20:00:26 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/02 17:30:12 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/02 18:03:09 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,13 @@ int	ms_arr_len(char **arr)
 	while (arr[i] != NULL)
 		i++;
 	return (i);
+}
+
+int	ms_isdigit(int c)
+{
+	if (c >= 48 && c <= 57)
+		return (1);
+	return (0);
 }
 
 size_t	ms_strlen(const char *string)
