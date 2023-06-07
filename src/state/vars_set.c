@@ -3,22 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   vars_set.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgodecke <cgodecke@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 12:09:56 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/05/20 12:17:35 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/04 20:51:43 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "state.h"
+
 #include <stdlib.h>
 
 static void	insert_var_alphabetically(t_var **p_root_var, t_var *var)
 {
 	t_var	*current;
 
-	if (*p_root_var == NULL || ms_strncmp(var->name, (*p_root_var)->name,
-			ms_strlen(var->name) + 1) < 0)
+	if (*p_root_var == NULL || ms_str_compare(
+			var->name, (*p_root_var)->name, 0) < 0)
 	{
 		var->next = *p_root_var;
 		*p_root_var = var;
@@ -26,8 +27,8 @@ static void	insert_var_alphabetically(t_var **p_root_var, t_var *var)
 	else
 	{
 		current = *p_root_var;
-		while (current->next != NULL && ms_strncmp(var->name,
-				current->next->name, ms_strlen(var->name) + 1) > 0)
+		while (current->next != NULL && ms_str_compare(
+				var->name, current->next->name, 0) > 0)
 		{
 			current = current->next;
 		}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgodecke <cgodecke@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:10:00 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/02 17:48:22 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/04 21:46:54 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,27 @@
 
 #include <string.h>
 
-static void	dump_argv(char **argv, t_state *state)
+static int	run_builtin(char **argv, t_state *state)
 {
-  size_t	index;
-	index = 0;
-	while (argv[index] != NULL)
-	{
-		print_fd(STDOUT_FILENO, "%u: %s\n", index, argv[index]);
-		index++;
-	}
+	int	count;
+
+	count = (int) ms_ptrs_count(argv);
+	if (ms_str_compare(argv[0], "cd", 0) == 0)
+		return (builtin_cd(count, argv, STDOUT_FILENO, state));
+	if (ms_str_compare(argv[0], "echo", 0) == 0)
+		return (builtin_echo(count, argv, STDOUT_FILENO, state));
+	if (ms_str_compare(argv[0], "env", 0) == 0)
+		return (builtin_env(count, argv, STDOUT_FILENO, state));
+	if (ms_str_compare(argv[0], "exit", 0) == 0)
+		return (builtin_exit(count, argv, STDOUT_FILENO, state));
+	if (ms_str_compare(argv[0], "export", 0) == 0)
+		return (builtin_export(count, argv, STDOUT_FILENO, state));
+	if (ms_str_compare(argv[0], "pwd", 0) == 0)
+		return (builtin_pwd(count, argv, STDOUT_FILENO, state));
+	if (ms_str_compare(argv[0], "unset", 0) == 0)
+		return (builtin_unset(count, argv, STDOUT_FILENO, state));
+	print_fd(STDERR_FILENO, "minishell: %s: command not found\n", argv[0]);
+	return (127);
 }
 
 static t_result	handle_line(char *line, t_state *state)
@@ -52,8 +64,8 @@ static t_result	handle_line(char *line, t_state *state)
 	free(line);
 	if (new_argv == NULL)
 		return (E_NOMEM);
-	dump_argv(new_argv, state);
-	free_pointers(new_argv);
+	run_builtin(new_argv, state);
+	ms_ptrs_free(new_argv);
 	return (S_OK);
 }
 
@@ -77,6 +89,6 @@ int	main(int argc, char *argv[], char *envp[])
 		if (result != S_OK)
 			print_fd(STDERR_FILENO, "Error code %i while parsing\n", result);
 	}
-	vars_clr(&state.root_var);
+	state_drop(&state);
 	return (0);
 }
