@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 10:33:06 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/06/04 22:05:00 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/07 15:40:26 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,12 @@ static int	print_exports(t_var *var, int out_fd)
 	while (var != NULL)
 	{
 		if (var->flags & VAR_EXPORT)
-			print_fd(out_fd, "declare -x %s=\"%s\"\n", var->name, var->value);
+		{
+			if (*(var->value) != '\0')
+				print_fd(out_fd, "declare -x %s=\"%s\"\n", var->name, var->value);
+			else
+				print_fd(out_fd, "declare -x %s\n", var->name);
+		}
 		var = var->next;
 	}
 	return (0);
