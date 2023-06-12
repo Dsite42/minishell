@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 18:55:33 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/04 21:10:06 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/12 17:41:20 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@
 # define WORD_OP_WRITE 10
 # define WORD_OP_APPEND 14
 # define WORD_OP_HEREDOC 18
+# define WORD_OP_MASK 30
 
 // TODO: (Maybe) Add third "next_command" link
 
@@ -58,6 +59,10 @@ size_t		begin_not_identifier(t_slice slice);
 size_t		begin_word_split(t_slice slice);
 size_t		begin_single_quote_split(t_slice slice);
 size_t		begin_double_quote_split(t_slice slice);
+
+// iter_cmd_args.c
+t_result	words_iter_cmd_args(void *context_ptr, t_word **p_head_group,
+	t_result (*callback)(void *context_ptr, int is_group, t_word *word));
 
 // words.c
 int			word_new(t_word **p_new_word, unsigned int flags, t_slice slice);
