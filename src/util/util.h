@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:59:24 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/04 22:18:45 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/12 16:40:49 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,10 @@ int		ms_str_compare(
 void	*ms_copy(void *destination, const void *source, size_t size);
 void	ms_zero(void *destination, size_t size);
 void	*ms_zero_alloc(size_t size, size_t count);
+
+// libms_part2.c
+size_t	ms_iter_words(void *context_ptr, t_slice slice,
+			void (*callback)(void *context_ptr, t_slice word));
 
 // print_core.c
 int		print_fd(int fd, const char *format, ...);
