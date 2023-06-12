@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 18:55:33 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/12 17:50:59 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/12 17:56:34 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,8 @@ size_t		begin_double_quote_split(t_slice slice);
 
 // iter_cmd_args.c
 t_result	words_iter_cmd_args(void *context_ptr, t_word **p_head_group,
-	t_result (*callback)(void *context_ptr, int is_group, t_word *word));
+				t_result (*callback)(void *context_ptr,
+					int is_group, t_word *word));
 
 // words.c
 int			word_new(t_word **p_new_word, unsigned int flags, t_slice slice);
