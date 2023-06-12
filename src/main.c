@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:10:00 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/12 17:55:19 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/12 18:39:27 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,190 @@ static int	run_builtin(char **argv, t_state *state)
 	return (127);
 }
 
+
+///// ft_split starts
+size_t	ft_strlen(const char *s)
+{
+	size_t	i;
+
+	i = 0;
+	while (*(s + i) != '\0')
+	{
+		i++;
+	}
+	return (i);
+}
+
+size_t	ft_strlcpy(char *dst, const char *src, size_t size)
+{
+	unsigned int	i;
+	unsigned int	length;
+
+	i = 0;
+	length = ft_strlen(src);
+	while (size > 0 && i < size - 1 && i < length)
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	if (size > 0)
+	{
+		dst[i] = '\0';
+	}
+	return (length);
+}
+
+
+char	*ft_strdup(const char *s)
+{
+	char	*dup;
+	char	*dup_start;
+
+	dup = malloc((ft_strlen((char *)s) * sizeof(char)) + 1);
+	if (dup == NULL)
+		return (NULL);
+	dup_start = dup;
+	while (*s)
+	{
+		*dup = *s;
+		s++;
+		dup++;
+	}
+	*(dup) = '\0';
+	return (dup_start);
+}
+
+char	*ft_substr(const char *s, unsigned int start, size_t len)
+{
+	char	*ret;
+
+	if (!s)
+		return (0);
+	if (ft_strlen(s) < start)
+		return (ft_strdup(""));
+	if (ft_strlen(s + start) < len)
+		len = ft_strlen(s + start);
+	ret = malloc(sizeof(char) * (len + 1));
+	if (!ret)
+		return (NULL);
+	ft_strlcpy(ret, s + start, len + 1);
+	return (ret);
+}
+
+static unsigned int	str_count(char const *str, char c)
+{
+	unsigned int	i;
+	unsigned int	cnt;
+
+	i = 0;
+	cnt = 0;
+	if (str[0] == '\0')
+		return (cnt);
+	while (str[i] == c)
+		i++;
+	if (str[i] == '\0')
+		return (cnt);
+	while (str[i] != '\0')
+	{
+		if ((str[i] == c) && (str[i + 1] != c && str[i + 1] != '\0'))
+			cnt++;
+		i++;
+	}
+	return (cnt + 1);
+}
+
+static unsigned int	betweenlen(char const *str, char sep)
+{
+	unsigned int	i;
+
+	i = 0;
+	while (str[i] != '\0' && str[i] != sep)
+		i++;
+	return (i);
+}
+
+static unsigned int	sea_start(char const *s, char c)
+{
+	unsigned int	i;
+
+	i = 0;
+	if (c == '\0')
+		return (i);
+	while (s[i] == c)
+		i++;
+	return (i);
+}
+
+char	**ft_split(char const *s, char c)
+{
+	char			*cs;
+	char			**arr_split;
+	unsigned int	arr_size;
+	unsigned int	i;
+
+	i = 0;
+	cs = (char *)s;
+	arr_size = str_count(cs, c) + 1;
+	arr_split = (char **) malloc(arr_size * sizeof(char *));
+	if (arr_split == NULL)
+		return (NULL);
+	cs = cs + sea_start(s, c);
+	while (i < arr_size - 1)
+	{
+		arr_split[i] = ft_substr((char const *) cs, 0, betweenlen(cs, c));
+		if (i < arr_size - 2)
+			cs = cs + betweenlen(cs, c) + 1
+				+ sea_start(cs + betweenlen(cs, c) + 1, c);
+		i++;
+	}
+	arr_split[i] = NULL;
+	return (arr_split);
+}
+
+
+///// ft_split ends
+
+
+
+char *get_path_cmd(char **envp)
+{
+	char	**splitted_path;
+	while (*envp != NULL)
+	{
+		//if (ms_str_find(*envp, (int)':') == NULL)
+		//{
+		//	if (access(*envp, F_OK) == 0)
+		//	{
+		//			print_fd(0, "ohne doppelpunkt\n");
+		//		return (*envp);
+		//	}
+		//}
+		//else
+		
+		if (ms_str_compare(*envp, "PATH=", 5) == 0)
+		{
+			print_fd(0, "FFFFFFFFFFFFFFF\n");
+			splitted_path = ft_split(*envp, ':');
+			while (*splitted_path != NULL)
+			{
+				if (access(*splitted_path, F_OK) == 0)
+				{
+					print_fd(0, "access\n");
+					return (*splitted_path);
+				}
+				splitted_path++;
+			}
+		}
+		envp++;
+	}
+	return (NULL);
+}
+
 void	child(char **argv, char **envp, int *pipefd)
 {
 	int	fd_dup[2];
 	int	fd_in;
-
+	print_fd(0, "path:%s\n", get_path_cmd(envp));
 	//fd_dup[0] = dup2 (pipefd[1], STDOUT_FILENO);
 	//if (fd_dup[0] == -1)
 	//	pipex_error(1, "dup2 error", 1, errno);
@@ -73,7 +252,7 @@ void	child(char **argv, char **envp, int *pipefd)
 }
 
 
-void	run_cmds(char **argv, t_state *state)
+void	run_cmds(char **argv, char **envp, t_state *state)
 {
 	int		pipefd[2];
 	pid_t	pid;
@@ -95,7 +274,7 @@ void	run_cmds(char **argv, t_state *state)
 		if (pid == 0)
 		{
 			//print_fd(0, "CHILD\n");
-			child(argv, 0, pipefd);
+			child(argv, envp, pipefd);
 		}
 		else
 		{
@@ -175,13 +354,14 @@ static t_result	handle_line(char *line, t_state *state)
 
 	envp = crate_envp(state);
 	//print_fd(0, "TEST:%s", *(envp+1));
-	while (*envp != NULL)
-	{
-		print_fd(0, "env:%s\n", *envp);
-		envp++;
-	}
-	exit (0);
-	//run_cmds(new_argv, state);
+	//while (*envp != NULL)
+	//{
+	//	print_fd(0, "env:%s\n", *envp);
+	//	envp++;
+	//}
+		print_fd(0, "path:%s\n", get_path_cmd(envp));
+	exit(0);
+	run_cmds(new_argv, envp, state);
 	run_builtin(new_argv, state);
 	ms_ptrs_free(new_argv);
 	return (S_OK);
