@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:10:00 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/13 18:24:46 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/13 18:33:38 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ void	child(char **argv, char **envp, int *pipefd, t_state *state)
 	//if (cmd_list->cmd_path != NULL)
 	//{
 		if (execve((const char *) path_cmd, 
-				argv, envp) == -1)
+				argv+1, envp) == -1)
 				{
 					//pipex_error(0, "execve child error.", 1, errno);
 				}
@@ -157,10 +157,9 @@ void	run_cmds(char **argv, char **envp, t_state *state)
 				exit(WEXITSTATUS(stat_loc));
 			if (pid > 0)
 			{
-				exit(0);
 				print_fd(0, "PARENT argv:%s\n", *argv);
 				//parent(cmd_list, argv, envp, pipefd);
-				argv = argv + 2;
+				argv = argv + 1;
 				print_fd(0, "PARENT2 argv:%s\n", *argv);
 			}
 		}
