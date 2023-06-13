@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:10:00 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/12 18:39:27 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/13 17:58:34 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,40 +190,146 @@ char	**ft_split(char const *s, char c)
 
 
 ///// ft_split ends
-
-
-
-char *get_path_cmd(char **envp)
+size_t	ft_strlcat(char *dst, const char *src, size_t size)
 {
-	char	**splitted_path;
-	while (*envp != NULL)
+	size_t	i;
+	size_t	dst_len;
+	size_t	src_len;
+
+	i = 0;
+	dst_len = ft_strlen(dst);
+	src_len = ft_strlen(src);
+	if (!size)
+		return (src_len);
+	while (src[i] != '\0' && dst_len + i < size - 1)
 	{
-		//if (ms_str_find(*envp, (int)':') == NULL)
-		//{
-		//	if (access(*envp, F_OK) == 0)
-		//	{
-		//			print_fd(0, "ohne doppelpunkt\n");
-		//		return (*envp);
-		//	}
-		//}
-		//else
-		
-		if (ms_str_compare(*envp, "PATH=", 5) == 0)
-		{
-			print_fd(0, "FFFFFFFFFFFFFFF\n");
-			splitted_path = ft_split(*envp, ':');
-			while (*splitted_path != NULL)
-			{
-				if (access(*splitted_path, F_OK) == 0)
-				{
-					print_fd(0, "access\n");
-					return (*splitted_path);
-				}
-				splitted_path++;
-			}
-		}
-		envp++;
+		dst[dst_len + i] = src[i];
+		i++;
 	}
+	dst[dst_len + i] = '\0';
+	if (dst_len > size)
+		return (src_len + size);
+	return (src_len + dst_len);
+}
+
+char	*of_nstrjoin(int n, char **strs, char *sep)
+{
+	char	*joined;
+	int		len_join;
+	int		i;
+
+	i = 0;
+	len_join = 0;
+	while (i < n && strs[i] != NULL)
+	{
+		len_join = len_join + ft_strlen(strs[i]);
+		i++;
+	}
+	len_join = len_join + ((n -1) * ft_strlen(sep) + 1);
+	joined = (char *) malloc(len_join * sizeof(char));
+	if (joined == NULL)
+		return (NULL);
+	joined[0] = '\0';
+	i = 0;
+	while (i < n && strs[i] != NULL)
+	{
+		ft_strlcat(joined, strs[i], len_join * sizeof(char));
+		if (i != n - 1)
+			ft_strlcat(joined, sep, len_join * sizeof(char));
+		i++;
+	}
+	return (joined);
+}
+
+
+size_t	begin_delimiter2(t_slice slice)
+{
+	return (slice.size > 0 && *slice.data == ':');
+}
+
+char *join_path_cmd(t_slice splitted_path, char *argv)
+{
+	char	*path_cmd;
+	char	*path_cmd_start;
+
+	path_cmd = (char *)malloc((splitted_path.size + 1 + ms_str_length(argv) + 1) * sizeof(char));
+	path_cmd_start = path_cmd;
+	ms_copy(path_cmd, splitted_path.data, splitted_path.size);
+	path_cmd = path_cmd + splitted_path.size;
+	*path_cmd = '/';
+	path_cmd++;
+	ms_copy(path_cmd, argv, ms_str_length(argv));
+	path_cmd = path_cmd + ms_str_length(argv);
+	*path_cmd = '\0';
+	return (path_cmd_start);
+}
+
+char *get_path_cmd(char **argv, t_state *state)
+{
+	//char	**splitted_path;
+	//char	*to_join[3];
+	//char	*path_cmd;
+	//t_var	*head_var;
+
+	t_var	*path_var;
+	t_slice	splitted_path;
+	t_slice	rest_path;
+	char	*to_join[3];
+	char	*path_cmd;
+
+	path_var = vars_get(&(state->root_var), slice0("PATH"));
+
+	//split_once(slice0(path_var->value), begin_delimiter2, &splitted_path, &rest_path);
+	//rest_path = advance(rest_path);
+	rest_path.data = slice0(path_var->value).data;
+	rest_path.size = slice0(path_var->value).size;
+	//print_fd(1, "splitted_path:%a\n", splitted_path);
+	//print_fd(1, "rest_path:%a\n", rest_path);
+	while (rest_path.size != 0)
+	{
+		//print_fd(1, "path_var:%s\n", path_var->value);
+		//print_fd(1, "test:%i\n", begin_delimiter2(slice0(path_var->value)));
+		split_once(slice0(rest_path.data), begin_delimiter2, &splitted_path, &rest_path);
+		rest_path = advance(rest_path);
+		//print_fd(1, "splitted_path:%a\n", splitted_path);
+		//split_once(slice0(rest_path.data), begin_delimiter2, &splitted_path, &rest_path);
+		//print_fd(1, "splitted_path:%a\n", splitted_path);
+		//print_fd(1, "rest_path:%a\n", rest_path);
+		//break;
+		path_cmd = join_path_cmd(splitted_path, *argv);
+		//exit(0);
+		//to_join[0] = splitted_path.data;
+		//to_join[1] = *argv;
+		//to_join[2] = NULL;
+		//path_cmd = of_nstrjoin(2, to_join, "/");
+		//print_fd(1, "path_cmdget:%a\n", path_cmd);
+		if (access(path_cmd, F_OK) == 0)
+			return (path_cmd);
+	}
+
+
+
+
+
+	//head_var = state->root_var;
+	//while (head_var != NULL)
+	//{
+	//	if (ms_str_compare(head_var->name, "PATH", 4) == 0)
+	//	{
+	//		splitted_path = ft_split(head_var->value, ':');
+	//		while (*splitted_path != NULL)
+	//		{
+	//			to_join[0] = *splitted_path;
+	//			to_join[1] = *argv;
+	//			to_join[2] = NULL;
+	//			path_cmd = of_nstrjoin(2, to_join, "/");
+	//			if (access(path_cmd, F_OK) == 0)
+	//				return (path_cmd);
+	//			splitted_path++;
+	//		}
+	//	}
+	//	head_var = head_var->next;
+	//}
 	return (NULL);
 }
 
@@ -231,7 +337,7 @@ void	child(char **argv, char **envp, int *pipefd)
 {
 	int	fd_dup[2];
 	int	fd_in;
-	print_fd(0, "path:%s\n", get_path_cmd(envp));
+	print_fd(0, "path:%s\n", get_path_cmd(argv, 0));
 	//fd_dup[0] = dup2 (pipefd[1], STDOUT_FILENO);
 	//if (fd_dup[0] == -1)
 	//	pipex_error(1, "dup2 error", 1, errno);
@@ -307,7 +413,7 @@ char	**crate_envp(t_state *state)
 			envs_counter++;
 		head_var = head_var->next;
 	}
-	envp = (char **)malloc(envs_counter + 1 * sizeof (char *));
+	envp = (char **)malloc((envs_counter + 1) * sizeof (char *));
 	if (envp == NULL)
 		return (NULL);
 	envp_start = envp;
@@ -348,7 +454,7 @@ static t_result	handle_line(char *line, t_state *state)
 		return (E_NOMEM);
 
 
-	//print_fd(0, "handle argv:%s\n", new_argv[0]);
+	//print_fd(1, "handle argv:%s\n", new_argv[0]);
 	//print_fd(0, "handle argv:%s\n", new_argv[1]);
 	//print_fd(0, "handle argv:%s\n", new_argv[2]);
 
@@ -359,7 +465,7 @@ static t_result	handle_line(char *line, t_state *state)
 	//	print_fd(0, "env:%s\n", *envp);
 	//	envp++;
 	//}
-		print_fd(0, "path:%s\n", get_path_cmd(envp));
+		print_fd(0, "path:%s\n", get_path_cmd(new_argv, state));
 	exit(0);
 	run_cmds(new_argv, envp, state);
 	run_builtin(new_argv, state);
