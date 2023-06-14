@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:10:00 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/13 18:33:38 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/14 15:09:05 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,72 +98,178 @@ char	*get_path_cmd(char **argv, t_state *state)
 	return (NULL);
 }
 
-void	child(char **argv, char **envp, int *pipefd, t_state *state)
+void	pipex_error(int shall_exit, char *message,
+			int isstrerror, int exit_code)
+{
+	if (isstrerror == 1)
+		print_fd(2, "pipex: %s %s\n", message, strerror(exit_code));
+	else
+		print_fd(2, "pipex: %s\n", message);
+	if (shall_exit == 1)
+		exit(exit_code);
+}
+
+
+void	child(char **argv, char **envp, int *pipefd, t_state *state, int nbr)
 {
 	int		fd_dup[2];
 	int		fd_in;
 	char	*path_cmd;
 
 	path_cmd = get_path_cmd(argv, state);
-	//print_fd(0, "path:%s\n", path_cmd);
-	//fd_dup[0] = dup2 (pipefd[1], STDOUT_FILENO);
-	//if (fd_dup[0] == -1)
-	//	pipex_error(1, "dup2 error", 1, errno);
-	//close(pipefd[0]);
-	//close(pipefd[1]);
-	//fd_dup[1] = dup2 (fd_in, STDIN_FILENO);
-	//if (fd_dup[1] == -1)
-	//	pipex_error(1, "dup2 error", 1, errno);
-	//close(fd_in);
+	if (nbr == 1)
+	{
+		print_fd(0, "path:%s\n", path_cmd);
+		fd_dup[0] = dup2 (pipefd[1], STDOUT_FILENO);
+		if (fd_dup[0] == -1)
+			pipex_error(1, "dup21 error", 1, errno);
+		close(pipefd[0]);
+		close(pipefd[1]);
+		//fd_dup[1] = dup2 (fd_in, STDIN_FILENO);
+		//if (fd_dup[1] == -1)
+		//	pipex_error(1, "dup21 error", 1, errno);
+		//close(fd_in);
+	}
+	else if (nbr == 2)
+	{
+		print_fd(0, "path2:%s\n", path_cmd);
+		fd_dup[0] = dup2 (pipefd[0], STDIN_FILENO);
+		if (fd_dup[0] == -1)
+			pipex_error(1, "dup22 error", 1, errno);
+		//close(pipefd[0]);
+		close(pipefd[1]);
+
+
+//char buffer[4096]; // Buffer for reading from the pipe
+//        ssize_t num_read; // Number of bytes read from the pipe
+//
+//        while ((num_read = read(fd_dup[0], buffer, sizeof(buffer))) > 0)
+//        {
+//            if (write(STDOUT_FILENO, buffer, num_read) == -1)
+//            {
+//                pipex_error(1, "write error", 1, errno);
+//            }
+//        }	
+
+		//int stdout_fd = dup(STDOUT_FILENO);
+
+		//fd_dup[1] = dup2 (STDOUT_FILENO, STDOUT_FILENO);
+		//fd_dup[1] = dup2(stdout_fd, STDOUT_FILENO);
+		//if (fd_dup[1] == -1)
+		//	pipex_error(1, "dup2 error", 1, errno);
+		//close(fd_in);
+		// close(stdout_fd);
+	}
 	//if (cmd_list->cmd_path != NULL)
 	//{
 		if (execve((const char *) path_cmd, 
-				argv+1, envp) == -1)
+				argv, envp) == -1)
 				{
-					//pipex_error(0, "execve child error.", 1, errno);
+					pipex_error(0, "execve child error.", 1, errno);
 				}
 	//}
 }
 
 
+
 void	run_cmds(char **argv, char **envp, t_state *state)
 {
-	int		pipefd[2];
-	pid_t	pid;
-	int		stat_loc;
+    int num_cmds = ms_ptrs_count((void *)argv);  // Number of commands specified in argv
 
-	while (*argv != NULL)
+    int prev_read = STDIN_FILENO;  // Input source for the first command
+    int pipefd[2];  // Pipe file descriptors
+	char	*path_cmd;
+
+
+
+    int i = 1;
+    while (i <= num_cmds)
 	{
-		if (pipe(pipefd) == -1)
+        if (i < num_cmds)
 		{
-			print_fd(0, "error while creating pipe\n");
-			exit(0);
-		}
-		pid = fork();
-		if (pid == -1)
-		{
-			print_fd(0, "error while forking\n");
-			exit(0);
-		}
-		if (pid == 0)
-		{
-			//print_fd(0, "CHILD\n");
-			child(argv, envp, pipefd, state);
-		}
-		else
-		{
-			waitpid(pid, &stat_loc, 0);
-			if (WIFEXITED(stat_loc) && WEXITSTATUS(stat_loc) != 0)
-				exit(WEXITSTATUS(stat_loc));
-			if (pid > 0)
+            // Create a pipe for commands except the last one
+            if (pipe(pipefd) == -1)
 			{
-				print_fd(0, "PARENT argv:%s\n", *argv);
-				//parent(cmd_list, argv, envp, pipefd);
-				argv = argv + 1;
-				print_fd(0, "PARENT2 argv:%s\n", *argv);
+                perror("pipe");
+                exit(EXIT_FAILURE);
+            }
+        }
+
+        // Fork a child process
+        pid_t pid = fork();
+        if (pid == -1) 
+		{
+            perror("fork");
+            exit(EXIT_FAILURE);
+        } 
+		else if (pid == 0)
+		{
+            // Child process
+			int		fd_dup[2];
+
+            // Set up input redirection
+            if (i > 1)
+			{
+                // Redirect stdin to the read end of the previous pipe
+                fd_dup[0] = dup2(prev_read, STDIN_FILENO);
+				if (fd_dup[0] == -1)
+					pipex_error(1, "dup21 error", 1, errno);
+                close(prev_read);
+            }
+
+            // Set up output redirection
+            if (i < num_cmds)
+			{
+                // Redirect stdout to the write end of the current pipe
+                fd_dup[1] = dup2(pipefd[1], STDOUT_FILENO);
+				if (fd_dup[1] == -1)
+					pipex_error(1, "dup21 error", 1, errno);
+                close(pipefd[0]);
+                close(pipefd[1]);
+            }
+
+            // Execute the command
+			char *argv_child[2];
+			argv_child[0] = argv[i-1];
+			argv_child[1] = NULL;
+			//exit(0);
+			path_cmd = get_path_cmd(argv_child, state);
+			print_fd(1, "path_cmd:%s", path_cmd);
+			if (execve((const char *) path_cmd, 
+					argv_child, envp) == -1)
+			{
+				pipex_error(0, "execve child error.", 1, errno);
 			}
-		}
-	}
+
+			// execvp(*argv_child, argv_child);
+            // If execvp returns, an error occurred
+            perror("execvp");
+            exit(EXIT_FAILURE);
+        } else
+		{
+            // Parent process
+
+            // Close unnecessary pipe ends
+            if (i > 1)
+			{
+                close(prev_read);
+            }
+            if (i < num_cmds)
+			{
+                close(pipefd[1]);
+                prev_read = pipefd[0];
+            }
+        }
+
+        i++;
+    }
+
+    // Wait for all child processes to finish
+    while (num_cmds > 0) {
+        int status;
+        wait(&status);
+        num_cmds--;
+    }
 }
 
 char	**crate_envp(t_state *state)
