@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 18:55:33 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/15 14:27:46 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/15 14:32:10 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ typedef struct s_redir
 typedef struct s_cmd
 {
 	struct s_cmd	*next;
-	char			*argv[];
 	t_redir			*root_redir;
+	char			*argv[];
 }	t_cmd;
 
 // grammar.c
