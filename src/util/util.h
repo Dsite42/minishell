@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:59:24 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/04 22:18:45 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/15 13:05:07 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,9 @@ int		ms_str_compare(
 void	*ms_copy(void *destination, const void *source, size_t size);
 void	ms_zero(void *destination, size_t size);
 void	*ms_zero_alloc(size_t size, size_t count);
+
+// libms_part2.c
+char	*ms_two_strjoin(char *str1, char *str2, char *sep);
 
 // print_core.c
 int		print_fd(int fd, const char *format, ...);
