@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 18:55:33 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/13 18:50:03 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/15 14:27:46 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,13 @@ typedef struct s_redir
 {
 	struct s_redir	*next;
 	int				type;
-	char			name;
+	char			name[];
 }	t_redir;
 
 typedef struct s_cmd
 {
 	struct s_cmd	*next;
-	char			**argv;
+	char			*argv[];
 	t_redir			*root_redir;
 }	t_cmd;
 
