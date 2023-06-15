@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:10:00 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/15 11:26:10 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/15 12:45:10 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,41 +174,37 @@ void	child(char **argv, char **envp, int *pipefd, t_state *state, int nbr)
 
 void	run_cmds(char **argv, char **envp, t_state *state)
 {
-    int num_cmds = ms_ptrs_count((void *)argv);  // Number of commands specified in argv
-
-    int prev_read = STDIN_FILENO;  // Input source for the first command
-    int pipefd[2];  // Pipe file descriptors
+	int		num_cmds = ms_ptrs_count((void *)argv);  // Number of commands specified in argv	
+	int		prev_read = STDIN_FILENO;  // Input source for the first command
+	int		pipefd[2];  // Pipe file descriptors
 	char	*path_cmd;
-
-
-
-    int i = 1;
-    while (i <= num_cmds)
+    int		i = 0;
+    while (i < num_cmds)
 	{
-        if (i < num_cmds)
+		if (i < num_cmds - 1)
 		{
-            // Create a pipe for commands except the last one
-            if (pipe(pipefd) == -1)
+		    // Create a pipe for commands except the last one
+		    if (pipe(pipefd) == -1)
 			{
-                perror("pipe");
-                exit(EXIT_FAILURE);
-            }
-        }
+		        perror("pipe");
+		        exit(EXIT_FAILURE);
+		    }
+		}
 
-        // Fork a child process
-        pid_t pid = fork();
-        if (pid == -1) 
-		{
-            perror("fork");
-            exit(EXIT_FAILURE);
-        } 
+			// Fork a child process
+			pid_t pid = fork();
+			if (pid == -1) 
+			{
+				perror("fork");
+				exit(EXIT_FAILURE);
+			}
 		else if (pid == 0)
 		{
-            // Child process
+    		    // Child process
 			int		fd_dup[2];
 
             // Set up input redirection
-            if (i > 1)
+            if (i > 0)
 			{
                 // Redirect stdin to the read end of the previous pipe
                 fd_dup[0] = dup2(prev_read, STDIN_FILENO);
@@ -218,7 +214,7 @@ void	run_cmds(char **argv, char **envp, t_state *state)
             }
 
             // Set up output redirection
-            if (i < num_cmds)
+            if (i < num_cmds - 1)
 			{
                 // Redirect stdout to the write end of the current pipe
                 fd_dup[1] = dup2(pipefd[1], STDOUT_FILENO);
@@ -230,11 +226,11 @@ void	run_cmds(char **argv, char **envp, t_state *state)
 
             // Execute the command
 			char *argv_child[2];
-			argv_child[0] = argv[i-1];
+			argv_child[0] = argv[i];
 			argv_child[1] = NULL;
 			//exit(0);
 			path_cmd = get_path_cmd(argv_child, state);
-			print_fd(1, "path_cmd:%s", path_cmd);
+			print_fd(1, "path_cmd:%s\n", path_cmd);
 			if (execve((const char *) path_cmd, 
 					argv_child, envp) == -1)
 			{
@@ -245,27 +241,28 @@ void	run_cmds(char **argv, char **envp, t_state *state)
             // If execvp returns, an error occurred
             perror("execvp");
             exit(EXIT_FAILURE);
-        } else
+        }
+		else
 		{
             // Parent process
 
             // Close unnecessary pipe ends
-            if (i > 1)
+            if (i > 0)
 			{
                 close(prev_read);
             }
-            if (i < num_cmds)
+            if (i < num_cmds - 1)
 			{
                 close(pipefd[1]);
                 prev_read = pipefd[0];
             }
         }
-
         i++;
     }
 
     // Wait for all child processes to finish
-    while (num_cmds > 0) {
+    while (num_cmds > 0)
+	{
         int status;
         wait(&status);
         num_cmds--;
