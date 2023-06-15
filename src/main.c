@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 14:36:07 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/06/15 16:17:02 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/15 16:27:55 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,114 +52,10 @@ static int	run_builtin(char **argv, t_state *state)
 
 
 
-size_t	begin_delimiter2(t_slice slice)
-{
-	return (slice.size > 0 && *slice.data == ':');
-}
-
-char	*join_path_cmd(t_slice splitted_path, char *argv)
-{
-	char	*path_cmd;
-	char	*path_cmd_start;
-
-	path_cmd = (char *)malloc((splitted_path.size
-				+ 1 + ms_str_length(argv) + 1) * sizeof(char));
-	path_cmd_start = path_cmd;
-	ms_copy(path_cmd, splitted_path.data, splitted_path.size);
-	path_cmd = path_cmd + splitted_path.size;
-	*path_cmd = '/';
-	path_cmd++;
-	ms_copy(path_cmd, argv, ms_str_length(argv));
-	path_cmd = path_cmd + ms_str_length(argv);
-	*path_cmd = '\0';
-	return (path_cmd_start);
-}
-
-char	*get_path_cmd(char **argv, t_state *state)
-{
-	t_var	*path_var;
-	t_slice	splitted_path;
-	t_slice	rest_path;
-	char	*to_join[3];
-	char	*path_cmd;
-
-	path_var = vars_get(&(state->root_var), slice0("PATH"));
-
-	rest_path.data = slice0(path_var->value).data;
-	rest_path.size = slice0(path_var->value).size;
-	while (rest_path.size != 0)
-	{
-		split_once(slice0(rest_path.data), begin_delimiter2,
-			&splitted_path, &rest_path);
-		rest_path = advance(rest_path);
-		path_cmd = join_path_cmd(splitted_path, *argv);
-		if (access(path_cmd, F_OK) == 0)
-			return (path_cmd);
-	}
-	return (NULL);
-}
 
 
 
-void	child(char **argv, char **envp, int *pipefd, t_state *state, int nbr)
-{
-	int		fd_dup[2];
-	int		fd_in;
-	char	*path_cmd;
 
-	path_cmd = get_path_cmd(argv, state);
-	if (nbr == 1)
-	{
-		print_fd(0, "path:%s\n", path_cmd);
-		fd_dup[0] = dup2 (pipefd[1], STDOUT_FILENO);
-		if (fd_dup[0] == -1)
-			pipex_error(1, "dup21 error", 1, errno);
-		close(pipefd[0]);
-		close(pipefd[1]);
-		//fd_dup[1] = dup2 (fd_in, STDIN_FILENO);
-		//if (fd_dup[1] == -1)
-		//	pipex_error(1, "dup21 error", 1, errno);
-		//close(fd_in);
-	}
-	else if (nbr == 2)
-	{
-		print_fd(0, "path2:%s\n", path_cmd);
-		fd_dup[0] = dup2 (pipefd[0], STDIN_FILENO);
-		if (fd_dup[0] == -1)
-			pipex_error(1, "dup22 error", 1, errno);
-		//close(pipefd[0]);
-		close(pipefd[1]);
-
-
-//char buffer[4096]; // Buffer for reading from the pipe
-//        ssize_t num_read; // Number of bytes read from the pipe
-//
-//        while ((num_read = read(fd_dup[0], buffer, sizeof(buffer))) > 0)
-//        {
-//            if (write(STDOUT_FILENO, buffer, num_read) == -1)
-//            {
-//                pipex_error(1, "write error", 1, errno);
-//            }
-//        }	
-
-		//int stdout_fd = dup(STDOUT_FILENO);
-
-		//fd_dup[1] = dup2 (STDOUT_FILENO, STDOUT_FILENO);
-		//fd_dup[1] = dup2(stdout_fd, STDOUT_FILENO);
-		//if (fd_dup[1] == -1)
-		//	pipex_error(1, "dup2 error", 1, errno);
-		//close(fd_in);
-		// close(stdout_fd);
-	}
-	//if (cmd_list->cmd_path != NULL)
-	//{
-		if (execve((const char *) path_cmd, 
-				argv, envp) == -1)
-				{
-					pipex_error(0, "execve child error.", 1, errno);
-				}
-	//}
-}
 
 char	*of_two_strjoin(char *str1, char *str2, char *sep)
 {
