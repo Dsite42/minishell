@@ -5,12 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/15 16:10:00 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/15 12:45:10 by cgodecke         ###   ########.fr       */
+/*   Created: 2023/06/15 14:36:07 by cgodecke          #+#    #+#             */
+/*   Updated: 2023/06/15 14:36:45 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "util/util.h"
 #include "state/state.h"
 #include "parser/parser.h"
 #include "builtin/builtin.h"

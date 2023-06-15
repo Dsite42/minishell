@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builder.c                                          :+:      :+:    :+:   */
+/*   word_builder.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 02:43:48 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/05/22 23:29:08 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/12 17:59:50 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 #include <stdlib.h>
 
-static t_result	builder_append_group(
-	t_builder *self, unsigned int flags, t_slice slice)
+static t_result	word_builder_append_group(
+	t_word_builder *self, unsigned int flags, t_slice slice)
 {
 	t_word	*new_word;
 
@@ -30,8 +30,8 @@ static t_result	builder_append_group(
 	return (S_OK);
 }
 
-static t_result	builder_append_chain(
-	t_builder *self, unsigned int flags, t_slice slice)
+static t_result	word_builder_append_chain(
+	t_word_builder *self, unsigned int flags, t_slice slice)
 {
 	t_word	*new_word;
 
@@ -47,27 +47,27 @@ static t_result	builder_append_chain(
 	return (S_OK);
 }
 
-void	builder_group(t_builder *self)
+void	word_builder_group(t_word_builder *self)
 {
 	self->is_new_group = 1;
 }
 
-t_result	builder_append(
-		t_builder *builder, unsigned int flags, t_slice slice)
+t_result	word_builder_append(
+		t_word_builder *builder, unsigned int flags, t_slice slice)
 {
 	t_result	result;
 
 	if (builder->is_new_group)
 	{
-		result = builder_append_group(builder, flags, slice);
+		result = word_builder_append_group(builder, flags, slice);
 		if (result == S_OK)
 			builder->is_new_group = 0;
 		return (result);
 	}
-	return (builder_append_chain(builder, flags, slice));
+	return (word_builder_append_chain(builder, flags, slice));
 }
 
-t_result	builder_clean_return(t_builder *self, t_result result)
+t_result	word_builder_clean_return(t_word_builder *self, t_result result)
 {
 	words_clr(&self->root_word);
 	return (result);
