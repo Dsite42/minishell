@@ -29,7 +29,6 @@ char	*get_path_cmd(char **argv, t_state *state)
 	t_var	*path_var;
 	t_slice	splitted_path;
 	t_slice	rest_path;
-	char	*to_join[3];
 	char	*path_cmd;
 
 	path_var = vars_get(&(state->root_var), slice0("PATH"));

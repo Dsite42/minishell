@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 14:36:07 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/06/15 16:27:55 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/15 16:37:04 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,70 +49,6 @@ static int	run_builtin(char **argv, t_state *state)
 	return (127);
 }
 
-
-
-
-
-
-
-
-
-char	*of_two_strjoin(char *str1, char *str2, char *sep)
-{
-	char	*joined;
-	char	*joined_start;
-	int		len_join;
-
-	len_join = ms_str_length(str1) + ms_str_length(str2)
-		+ ms_str_length(sep) + 1;
-	joined = (char *) malloc(len_join * sizeof(char));
-	joined_start = joined;
-	if (joined == NULL)
-		return (NULL);
-	ms_copy((void *)joined, (void *)str1, ms_str_length(str1));
-	joined = joined + ms_str_length(str1);
-	ms_copy(joined, sep, ms_str_length(sep));
-	joined = joined + ms_str_length(sep);
-	ms_copy(joined, str2, ms_str_length(str2));
-	joined = joined + ms_str_length(str2);
-	*(joined) = '\0';
-	return (joined_start);
-}
-
-char	**crate_envp(t_state *state)
-{
-	t_var	*head_var;
-	char	**envp;
-	char	**envp_start;
-	int		envs_counter;
-
-	envs_counter = 0;
-	head_var = state->root_var;
-	while (head_var != NULL)
-	{
-		if (head_var->flags & VAR_EXPORT) // should be VAR_EXPLICITEMPTY but forgot to merge the new master I guess
-			envs_counter++;
-		head_var = head_var->next;
-	}
-	envp = (char **)malloc((envs_counter + 1) * sizeof (char *));
-	if (envp == NULL)
-		return (NULL);
-	envp_start = envp;
-	head_var = state->root_var;
-	while (head_var != NULL)
-	{
-		if (head_var->flags & VAR_EXPORT)
-		{
-			*envp = of_two_strjoin(head_var->name, head_var->value, "="); //
-			envp++;
-		}
-		head_var = head_var->next;
-	}
-	*envp = NULL;
-	return (envp_start);
-}
-
-
 static t_result	handle_line(char *line, t_state *state)
 {
 	t_word		*root_word;
@@ -138,7 +74,7 @@ static t_result	handle_line(char *line, t_state *state)
 	//print_fd(0, "handle argv:%s\n", new_argv[1]);
 	//print_fd(0, "handle argv:%s\n", new_argv[2]);
 
-	envp = crate_envp(state);
+	envp = envp_from_vars(&state->root_var);
 	//print_fd(0, "TEST:%s", *(envp+1));
 	//while (*envp != NULL)
 	//{

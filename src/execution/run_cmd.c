@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 15:56:09 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/06/15 16:24:02 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/15 16:35:08 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	run_cmds(char **argv, char **envp, t_state *state)
 	t_cmd second = {
 			.next = NULL,
 			.root_redir = NULL,
-			.argv = {"grep", "M", NULL}
+			.argv = {"env", NULL}
 		};
 	t_cmd	first = {
 		.next = &second,
