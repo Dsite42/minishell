@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:10:00 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/14 15:09:05 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/15 11:26:10 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -272,6 +272,28 @@ void	run_cmds(char **argv, char **envp, t_state *state)
     }
 }
 
+char	*of_two_strjoin(char *str1, char *str2, char *sep)
+{
+	char	*joined;
+	char	*joined_start;
+	int		len_join;
+
+	len_join = ms_str_length(str1) + ms_str_length(str2)
+		+ ms_str_length(sep) + 1;
+	joined = (char *) malloc(len_join * sizeof(char));
+	joined_start = joined;
+	if (joined == NULL)
+		return (NULL);
+	ms_copy((void *)joined, (void *)str1, ms_str_length(str1));
+	joined = joined + ms_str_length(str1);
+	ms_copy(joined, sep, ms_str_length(sep));
+	joined = joined + ms_str_length(sep);
+	ms_copy(joined, str2, ms_str_length(str2));
+	joined = joined + ms_str_length(str2);
+	*(joined) = '\0';
+	return (joined_start);
+}
+
 char	**crate_envp(t_state *state)
 {
 	t_var	*head_var;
@@ -296,8 +318,7 @@ char	**crate_envp(t_state *state)
 	{
 		if (head_var->flags & VAR_EXPORT)
 		{
-			*envp = head_var->value;
-			//print_fd(0, "TESTinside:%s", *(envp));
+			*envp = of_two_strjoin(head_var->name, head_var->value, "="); //
 			envp++;
 		}
 		head_var = head_var->next;
