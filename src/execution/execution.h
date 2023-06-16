@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 12:58:30 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/16 10:39:29 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/16 11:55:46 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define EXECUTION_H
 
 # include "../state/state.h"
-
+# include "../parser/parser.h"
 
 typedef struct s_piping
 {
@@ -22,6 +22,7 @@ typedef struct s_piping
 	int	i;
 	int	prev_read;
 	int	num_cmds;
+	t_redir	redir;
 } t_piping;
 
 void	run_cmds(char **argv, char **envp, t_state *state);

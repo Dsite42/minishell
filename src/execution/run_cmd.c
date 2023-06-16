@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 15:56:09 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/06/16 11:03:35 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/16 15:33:34 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include <errno.h>
 #include <string.h>
 #include <stdio.h>
+#include <fcntl.h>
 
 void	pipex_error(int shall_exit, char *message,
 			int isstrerror, int exit_code)
@@ -44,7 +45,6 @@ int	count_cmds(t_cmd *cmd_root)
 	return (counter);
 }
 
-
 void	create_pipe(int i, int num_cmds, int (*pipefd)[2])
 {
 	if (i < num_cmds - 1) // Create a pipe for commands except the last one
@@ -57,18 +57,40 @@ void	create_pipe(int i, int num_cmds, int (*pipefd)[2])
 void	child(char **envp, t_cmd cmd, t_piping piping_data, t_state *state)
 {
 	int		fd_dup[2];
+	int		fd_infile;
+	int		fd_outfile;
 	char	*path_cmd;
 
     // Set up input redirection
-	if (piping_data.i > 0)
-	{
-		fd_dup[0] = dup2(piping_data.prev_read, STDIN_FILENO);
+		if (cmd.root_redir != NULL && piping_data.redir.type == WORD_OP_READ)
+		{
+			fd_infile = open(piping_data.redir.name, O_RDONLY);
+			if (fd_infile == -1)
+				pipex_error(1, "input:", 1, errno);
+			fd_dup[0] = dup2(fd_infile, STDIN_FILENO);
+			close(fd_infile);
+			cmd.root_redir = cmd.root_redir->next;
+		}
+		else
+		{
+			fd_dup[0] = dup2(piping_data.prev_read, STDIN_FILENO);
+			close(piping_data.prev_read);
+		}
 		if (fd_dup[0] == -1)
 			pipex_error(1, "dup21 error", 1, errno);
-		close(piping_data.prev_read);
-	}
+
 	// Set up output redirection
-	if (piping_data.i < piping_data.num_cmds - 1)
+	
+	if (cmd.root_redir != NULL && piping_data.redir.type == WORD_OP_WRITE)
+	{
+		fd_outfile = open(piping_data.redir.name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		fd_dup[1] = dup2(fd_outfile, STDOUT_FILENO);
+		if (fd_dup[1] == -1)
+			pipex_error(1, "dup21 error", 1, errno);
+		close(piping_data.pipefd[0]);
+		close(fd_outfile);
+	}
+	else if (piping_data.i < piping_data.num_cmds - 1)
 	{
 		fd_dup[1] = dup2(piping_data.pipefd[1], STDOUT_FILENO);
 		if (fd_dup[1] == -1)
@@ -76,8 +98,9 @@ void	child(char **envp, t_cmd cmd, t_piping piping_data, t_state *state)
 		close(piping_data.pipefd[0]);
 		close(piping_data.pipefd[1]);
 	}
+
 	path_cmd = get_path_cmd(cmd.argv, state);
-	print_fd(1, "path_cmd:%s\n", path_cmd);
+	//print_fd(1, "path_cmd:%s\n", path_cmd);
 	if (execve((const char *) path_cmd, 
 			cmd.argv, envp) == -1)
 		pipex_error(0, "execve child error.", 1, errno);
@@ -96,26 +119,37 @@ void	parent(t_piping *piping_data)
 
 void	run_cmds(char **argv, char **envp, t_state *state)
 {
+	t_redir	first_output = {
+		.next = NULL,
+		.type = WORD_OP_WRITE,
+		.name = "output.txt"
+	};
+	t_redir	first_input = {
+		.next = &first_output,
+		.type = 0,
+		.name = "input.txt"
+	};
 	t_cmd second = {
 			.next = NULL,
 			.root_redir = NULL,
-			.argv = {"wc", "-c", NULL}
+			.argv = {"cat", NULL}
 		};
 	t_cmd	first = {
 		.next = &second,
-		.root_redir = NULL,
-		.argv = {"ls", NULL}
+		.root_redir = &first_input,
+		.argv = {"cat", "input.txt", NULL}
 	};
 
 
 	print_fd(1, "t_cmd:%i\n", count_cmds(&first));
 
 	t_piping	piping_data;
-	pid_t	pid;
+	pid_t		pid;
 
 	piping_data.num_cmds = count_cmds(&first);  // Number of commands specified in argv	
 	piping_data.prev_read = STDIN_FILENO;
 	piping_data.i = 0;
+	piping_data.redir = first_input;
 
     while (piping_data.i < piping_data.num_cmds)
 	{
@@ -124,9 +158,7 @@ void	run_cmds(char **argv, char **envp, t_state *state)
 		if (pid == -1) 
 			pipex_error(1, "fork error", 1, errno);
 		else if (pid == 0)
-		{
 			child(envp, first, piping_data, state);
-        }
 		else
 			parent(&piping_data);
         piping_data.i++;
