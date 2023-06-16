@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 15:56:09 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/06/15 16:35:08 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/16 11:03:35 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,62 @@ int	count_cmds(t_cmd *cmd_root)
 	return (counter);
 }
 
+
+void	create_pipe(int i, int num_cmds, int (*pipefd)[2])
+{
+	if (i < num_cmds - 1) // Create a pipe for commands except the last one
+	{
+		if (pipe(*pipefd) == -1)
+			pipex_error(1, "create pipe error", 1, errno);
+	}
+}
+
+void	child(char **envp, t_cmd cmd, t_piping piping_data, t_state *state)
+{
+	int		fd_dup[2];
+	char	*path_cmd;
+
+    // Set up input redirection
+	if (piping_data.i > 0)
+	{
+		fd_dup[0] = dup2(piping_data.prev_read, STDIN_FILENO);
+		if (fd_dup[0] == -1)
+			pipex_error(1, "dup21 error", 1, errno);
+		close(piping_data.prev_read);
+	}
+	// Set up output redirection
+	if (piping_data.i < piping_data.num_cmds - 1)
+	{
+		fd_dup[1] = dup2(piping_data.pipefd[1], STDOUT_FILENO);
+		if (fd_dup[1] == -1)
+			pipex_error(1, "dup21 error", 1, errno);
+		close(piping_data.pipefd[0]);
+		close(piping_data.pipefd[1]);
+	}
+	path_cmd = get_path_cmd(cmd.argv, state);
+	print_fd(1, "path_cmd:%s\n", path_cmd);
+	if (execve((const char *) path_cmd, 
+			cmd.argv, envp) == -1)
+		pipex_error(0, "execve child error.", 1, errno);
+}
+
+void	parent(t_piping *piping_data)
+{
+    if (piping_data->i > 0)
+        close(piping_data->prev_read);
+    if (piping_data->i < piping_data->num_cmds - 1)
+	{
+        close(piping_data->pipefd[1]);
+        piping_data->prev_read = piping_data->pipefd[0];
+    }
+}
+
 void	run_cmds(char **argv, char **envp, t_state *state)
 {
 	t_cmd second = {
 			.next = NULL,
 			.root_redir = NULL,
-			.argv = {"env", NULL}
+			.argv = {"wc", "-c", NULL}
 		};
 	t_cmd	first = {
 		.next = &second,
@@ -60,98 +110,35 @@ void	run_cmds(char **argv, char **envp, t_state *state)
 
 	print_fd(1, "t_cmd:%i\n", count_cmds(&first));
 
+	t_piping	piping_data;
+	pid_t	pid;
 
+	piping_data.num_cmds = count_cmds(&first);  // Number of commands specified in argv	
+	piping_data.prev_read = STDIN_FILENO;
+	piping_data.i = 0;
 
-	int		num_cmds = count_cmds(&first);  // Number of commands specified in argv	
-	int		prev_read = STDIN_FILENO;  // Input source for the first command
-	int		pipefd[2];  // Pipe file descriptors
-	char	*path_cmd;
-    int		i = 0;
-    while (i < num_cmds)
+    while (piping_data.i < piping_data.num_cmds)
 	{
-		if (i < num_cmds - 1)
-		{
-		    // Create a pipe for commands except the last one
-		    if (pipe(pipefd) == -1)
-			{
-		        perror("pipe");
-		        exit(EXIT_FAILURE);
-		    }
-		}
-
-			// Fork a child process
-			pid_t pid = fork();
-			if (pid == -1) 
-			{
-				perror("fork");
-				exit(EXIT_FAILURE);
-			}
+		create_pipe(piping_data.i, piping_data.num_cmds, &piping_data.pipefd);
+		pid = fork();
+		if (pid == -1) 
+			pipex_error(1, "fork error", 1, errno);
 		else if (pid == 0)
 		{
-    		    // Child process
-			int		fd_dup[2];
-
-            // Set up input redirection
-            if (i > 0)
-			{
-                // Redirect stdin to the read end of the previous pipe
-                fd_dup[0] = dup2(prev_read, STDIN_FILENO);
-				if (fd_dup[0] == -1)
-					pipex_error(1, "dup21 error", 1, errno);
-                close(prev_read);
-            }
-
-            // Set up output redirection
-            if (i < num_cmds - 1)
-			{
-                // Redirect stdout to the write end of the current pipe
-                fd_dup[1] = dup2(pipefd[1], STDOUT_FILENO);
-				if (fd_dup[1] == -1)
-					pipex_error(1, "dup21 error", 1, errno);
-                close(pipefd[0]);
-                close(pipefd[1]);
-            }
-
-            // Execute the command
-			//exit(0);
-			path_cmd = get_path_cmd(first.argv, state);
-			print_fd(1, "path_cmd:%s\n", path_cmd);
-			if (execve((const char *) path_cmd, 
-					first.argv, envp) == -1)
-			{
-				pipex_error(0, "execve child error.", 1, errno);
-			}
-
-			// execvp(*argv_child, argv_child);
-            // If execvp returns, an error occurred
-            perror("execvp");
-            exit(EXIT_FAILURE);
+			child(envp, first, piping_data, state);
         }
 		else
-		{
-            // Parent process
-
-            // Close unnecessary pipe ends
-            if (i > 0)
-			{
-                close(prev_read);
-            }
-            if (i < num_cmds - 1)
-			{
-                close(pipefd[1]);
-                prev_read = pipefd[0];
-            }
-        }
-        i++;
+			parent(&piping_data);
+        piping_data.i++;
 		if (first.next != NULL)
 			first = *(first.next);
     }
 
     // Wait for all child processes to finish
-    while (num_cmds > 0)
+    while (piping_data.num_cmds > 0)
 	{
         int status;
         wait(&status);
-        num_cmds--;
+        piping_data.num_cmds--;
     }
 }
