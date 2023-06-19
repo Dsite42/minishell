@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 18:55:33 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/15 15:08:01 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/19 17:09:34 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ typedef struct s_redir
 {
 	struct s_redir	*next;
 	int				type;
-	char			name[];
+	int				pipefd_heredoc[2];
+	char			name[100];
 }	t_redir;
 
 typedef struct s_cmd
