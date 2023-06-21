@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 15:56:09 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/06/20 17:48:37 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/21 10:30:48 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,11 @@ void	create_pipe(int i, int num_cmds, int (*pipefd)[2])
 	{
 		if (pipe(*pipefd) == -1)
 			pipex_error(1, "create pipe error", 1, errno);
+	}
+	else
+	{
+		(*pipefd)[0] = -1;
+		(*pipefd)[1] = -1;
 	}
 }
 
@@ -145,12 +150,12 @@ void	child(char **envp, t_piping *piping_data, t_state *state)
 			if (piping_data->cmd->root_redir->type == WORD_OP_WRITE || piping_data->cmd->root_redir->type == WORD_OP_APPEND)
 			{
 				if (piping_data->cmd->root_redir->type == WORD_OP_WRITE)
-					fd_outfile = open(piping_data->cmd->root_redir->name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+					fd_outfile = open(piping_data->cmd->root_redir->name, O_CREAT | O_RDWR | O_TRUNC, 0644);
 				else if (piping_data->cmd->root_redir->type == WORD_OP_APPEND)
 					fd_outfile = open(piping_data->cmd->root_redir->name, O_CREAT | O_APPEND | O_WRONLY, 0644);
 				if (fd_outfile == -1)
 					pipex_error(1, "fd_outfile error:", 1, errno);
-				print_fd(1, "entered while:%s  fd_outfile:%i\n", piping_data->cmd->root_redir->name, fd_outfile);
+				//print_fd(1, "entered while:%s  fd_outfile:%i pipe_fd:%i\n", piping_data->cmd->root_redir->name, fd_outfile, piping_data->pipefd[0]);
 				fd_dup[1] = dup2(fd_outfile, STDOUT_FILENO);
 
 				if (fd_dup[1] == -1)
@@ -250,46 +255,52 @@ void	check_heredoc(t_piping piping_data)
 
 void	run_cmds(char **argv, char **envp, t_state *state)
 {
-	t_redir	first_output = {
+	t_redir	fivth_redir = {
 		.next = NULL,
 		.type = WORD_OP_WRITE,
 		.name = "output.txt"
 	};
-	t_redir	fourth_input = {
-		.next = NULL,
-		.type = WORD_OP_APPEND,
-		.name = "output.txt"
-	};
-	t_redir	third_input = {
-		.next = &fourth_input,
-		.type = WORD_OP_HEREDOC,
-		.name = "eof"
-	};
-	t_redir	second_input = {
-		.next = NULL,
-		.type = WORD_OP_APPEND,
-		.name = "output.txt"
-	};
-	t_redir	first_input = {
-		.next = &second_input,
+
+	t_redir	sixth_redir = {
+		.next = &fivth_redir,
 		.type = WORD_OP_READ,
 		.name = "input.txt"
+	};
+	t_redir	fourth_redir = {
+		.next = NULL,
+		.type = WORD_OP_APPEND,
+		.name = "output3.txt"
+	};
+	t_redir	third_redir = {
+		.next = NULL,
+		.type = WORD_OP_WRITE,
+		.name = "output3.txt"
+	};
+	t_redir	second_redir = {
+		.next = NULL,
+		.type = WORD_OP_WRITE,
+		.name = "output2.txt"
+	};
+	t_redir	first_redir = {
+		.next = NULL,
+		.type = WORD_OP_HEREDOC,
+		.name = "eof"
 	};
 
 	t_cmd third = {
 		.next = NULL,
-		.root_redir = &first_output,
+		.root_redir = &third_redir,
 		.argv = {"wc", "-w", NULL}
 	};
 
 	t_cmd second = {
-			.next = NULL,
-			.root_redir = &first_output,
+			.next = &third,
+			.root_redir = &first_redir,
 			.argv = {"grep", "d", NULL}
 		};
 	t_cmd	first = {
-		.next = NULL,
-		.root_redir = &first_input,
+		.next = &second,
+		.root_redir = &sixth_redir,
 		.argv = {"cat", NULL}
 	};
 
@@ -300,7 +311,7 @@ void	run_cmds(char **argv, char **envp, t_state *state)
 	pid_t		pid;
 
 	piping_data.cmd = &first;
-	piping_data.num_cmds = 1; //count_cmds(&first);  // Number of commands specified in argv
+	piping_data.num_cmds = count_cmds(&first);  // Number of commands specified in argv
 	piping_data.prev_read = STDIN_FILENO;
 	piping_data.i = 0;
 
