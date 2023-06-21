@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_path_cmd.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/21 12:23:59 by cgodecke          #+#    #+#             */
+/*   Updated: 2023/06/21 12:24:46 by cgodecke         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "execution.h"
 #include <unistd.h>
 #include <stdlib.h>
@@ -6,6 +18,7 @@ static size_t	begin_delimiter2(t_slice slice)
 {
 	return (slice.size > 0 && *slice.data == ':');
 }
+
 static char	*join_path_cmd(t_slice splitted_path, char *argv)
 {
 	char	*path_cmd;
@@ -32,7 +45,6 @@ char	*get_path_cmd(char **argv, t_state *state)
 	char	*path_cmd;
 
 	path_var = vars_get(&(state->root_var), slice0("PATH"));
-
 	rest_path.data = slice0(path_var->value).data;
 	rest_path.size = slice0(path_var->value).size;
 	while (rest_path.size != 0)
