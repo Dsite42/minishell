@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 15:56:09 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/06/21 11:26:01 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/21 16:55:07 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	run_cmds(char **argv, char **envp, t_state *state)
 	t_redir	fourth_redir = {
 		.next = NULL,
 		.type = WORD_OP_APPEND,
-		.name = "output3.txt"
+		.name = "output.txt"
 	};
 	t_redir	third_redir = {
 		.next = NULL,
@@ -101,19 +101,19 @@ void	run_cmds(char **argv, char **envp, t_state *state)
 
 	t_cmd third = {
 		.next = NULL,
-		.root_redir = &third_redir,
-		.argv = {"wc", "-w", NULL}
+		.root_redir = &fourth_redir,
+		.argv = {"pwd", NULL}
 	};
 
 	t_cmd second = {
-			.next = &third,
-			.root_redir = &first_redir,
-			.argv = {"grep", "d", NULL}
+			.next = NULL,
+			.root_redir = NULL,
+			.argv = {"env", NULL}
 		};
 	t_cmd	first = {
 		.next = &second,
-		.root_redir = &sixth_redir,
-		.argv = {"cat", NULL}
+		.root_redir = NULL,
+		.argv = {"cd", "src", NULL}
 	};
 
 
@@ -130,7 +130,7 @@ void	run_cmds(char **argv, char **envp, t_state *state)
 		if (pid == -1)
 			pipex_error(1, "fork error", 1, errno);
 		else if (pid == 0)
-			child(envp, &piping_data, state);
+			child(piping_data.cmd->argv, envp, &piping_data, state);
 		else
 			parent(&piping_data);
 		piping_data.i++;
