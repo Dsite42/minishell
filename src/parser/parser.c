@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 01:18:23 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/23 01:38:17 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/23 01:56:04 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ static t_result	parse_variable(t_slice *p_remainder, t_word_builder *builder,
 {
 	t_slice	first_part;
 
+	if (consume(p_remainder, "?"))
+		return (word_builder_append(builder, flags, slice0("?"), 0));
 	split_once(*p_remainder, begin_not_identifier, &first_part, p_remainder);
 	if (first_part.size == 0)
 	{
