@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 02:11:15 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/12 17:57:49 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/23 01:37:10 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ typedef struct s_word_builder
 // word_builder.c
 void		word_builder_group(t_word_builder *self);
 t_result	word_builder_append(t_word_builder *self,
-				unsigned int flags, t_slice slice);
+				unsigned int flags, t_slice slice, int ignore_empty);
 t_result	word_builder_clean_return(t_word_builder *self, t_result result);
 
 #endif // !PRIVATE_H
