@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 18:55:33 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/15 14:32:10 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/23 00:53:14 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@
 # define WORD_OP_APPEND 14
 # define WORD_OP_HEREDOC 18
 # define WORD_OP_MASK 30
+# define WORD_DQUOTE 32
 
 // TODO: (Maybe) Add third "next_command" link
 
