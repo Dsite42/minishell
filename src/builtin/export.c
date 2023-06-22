@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 10:33:06 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/06/22 23:46:56 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/23 00:17:30 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,9 @@ static int	set_export(t_state *state, const char *argument)
 			"minishell: export: `%s': not a valid identifier\n", argument);
 		return (0);
 	}
-	var = vars_set(&state->root_var, name, value);
+	var = vars_get(&state->root_var, name);
+	if (var == NULL || has_equal_sign)
+		var = vars_set(&state->root_var, name, value);
 	if (var == NULL)
 		return (1);
 	var->flags |= VAR_EXPORT;
