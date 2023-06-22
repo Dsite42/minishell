@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:10:00 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/12 17:54:25 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/23 01:22:14 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,51 @@
 #include <readline/readline.h>
 
 #include <string.h>
+
+#define FLAGS "VO---D"
+
+static void	dump_words(t_word *head_group)
+{
+	t_word		*head_chain;
+	const char	*join_prefix;
+	char		flag_prefix[sizeof(FLAGS)];
+
+	while (head_group != NULL)
+	{
+		head_chain = head_group;
+		while (head_chain != NULL)
+		{
+			ms_copy(flag_prefix, FLAGS, sizeof(FLAGS));
+			for (unsigned int bit = 0; bit < sizeof(FLAGS) - 1; bit++)
+				if ((head_chain->flags & (1 << bit)) == 0 && (bit < 2 || bit > 4))
+					flag_prefix[bit] = '-';
+			if ((head_chain->flags & WORD_OP_MASK) == WORD_OP_PIPE)
+				ms_copy(&flag_prefix[2], "(P)", 3);
+			if ((head_chain->flags & WORD_OP_MASK) == WORD_OP_READ)
+				ms_copy(&flag_prefix[2], "(R)", 3);
+			if ((head_chain->flags & WORD_OP_MASK) == WORD_OP_WRITE)
+				ms_copy(&flag_prefix[2], "(W)", 3);
+			if ((head_chain->flags & WORD_OP_MASK) == WORD_OP_APPEND)
+				ms_copy(&flag_prefix[2], "(A)", 3);
+			if ((head_chain->flags & WORD_OP_MASK) == WORD_OP_HEREDOC)
+				ms_copy(&flag_prefix[2], "(H)", 3);
+			if (head_chain == head_group && head_group->next_chain == NULL)
+			{
+				print_fd(STDOUT_FILENO, "  [%s] '%a'\n", flag_prefix, head_chain->slice);
+				break ;
+			}
+			if (head_chain == head_group)
+				join_prefix = "╭ ";
+			else if (head_chain->next_chain == NULL)
+				join_prefix = "╰ ";
+			else
+				join_prefix = "│ ";
+			print_fd(STDOUT_FILENO, "%s[%s] '%a'\n", join_prefix, flag_prefix, head_chain->slice);
+			head_chain = head_chain->next_chain;
+		}
+		head_group = head_group->next_group;
+	}
+}
 
 static int	run_builtin(char **argv, t_state *state)
 {
@@ -60,11 +105,12 @@ static t_result	handle_line(char *line, t_state *state)
 	}
 	add_history(line);
 	new_argv = argv_from_word_group(root_word, &state->root_var);
+	dump_words(root_word);
 	words_clr(&root_word);
 	free(line);
 	if (new_argv == NULL)
 		return (E_NOMEM);
-	run_builtin(new_argv, state);
+	//run_builtin(new_argv, state);
 	ms_ptrs_free(new_argv);
 	return (S_OK);
 }
