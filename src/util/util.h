@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:59:24 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/12 16:40:49 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/23 00:48:51 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	*ms_zero_alloc(size_t size, size_t count);
 // libms_part2.c
 size_t	ms_iter_words(void *context_ptr, t_slice slice,
 			void (*callback)(void *context_ptr, t_slice word));
+char	*ms_join_slices(size_t count, ...);
 
 // print_core.c
 int		print_fd(int fd, const char *format, ...);
