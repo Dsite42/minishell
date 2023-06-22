@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 10:33:06 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/06/23 00:17:30 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/23 00:35:05 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ static int	print_exports(t_var *var, int out_fd)
 	{
 		if (var->flags & VAR_EXPORT)
 		{
-			if (*(var->value) != '\0' || *(var->value) != '=')
+			if (*var->value != '\0'
+				|| var->flags & var->flags & VAR_EXPLICIT_EMPTY)
 			{
 				print_fd(out_fd, "declare -x %s=\"", var->name);
 				print_value_with_backslash(out_fd, var->value);
