@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 18:30:36 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/15 13:28:59 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/22 23:18:45 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ int	vars_from_envp(char *envp[], t_var **p_root_var)
 	return (1);
 }
 
-// TODO: Implement this
 static int	count_envps(t_var *p_root_var)
 {
 	int		envs_counter;
@@ -75,7 +74,9 @@ char	**envp_from_vars(t_var **p_root_var)
 	{
 		if (head_var->flags & VAR_EXPORT)
 		{
-			*envp = ms_two_strjoin(head_var->name, head_var->value, "=");
+			*envp = ms_join_slices(
+					3, slice0(head_var->name), slice0("="),
+					slice0(head_var->value));
 			envp++;
 		}
 		head_var = head_var->next;
