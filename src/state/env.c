@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 18:30:36 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/22 23:18:45 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/22 23:47:54 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,4 +83,25 @@ char	**envp_from_vars(t_var **p_root_var)
 	}
 	*envp = NULL;
 	return (envp_start);
+}
+
+int	iter_export_vars(void *context_ptr, t_var **p_root_var,
+			int (*callback)(void *context_ptr, t_var *var))
+{
+	int		result;
+	t_var	*head_var;
+
+	head_var = *p_root_var;
+	while (head_var != NULL)
+	{
+		if (head_var->flags & VAR_EXPORT && (*head_var->value != '\0'
+			|| head_var->flags & VAR_EXPLICIT_EMPTY))
+		{
+			result = callback(context_ptr, head_var);
+			if (result < 0)
+				return (result);
+		}
+		head_var = head_var->next;
+	}
+	return (0);
 }

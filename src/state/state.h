@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:17:03 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/04 19:59:55 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/22 23:47:30 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,7 @@ int		vars_from_envp(char *envp[], t_var **p_root_var);
 char	**envp_from_vars(t_var **p_root_var);
 int		is_delimiter(char input);
 size_t	begin_delimiter(t_slice slice);
+int		iter_export_vars(void *context_ptr, t_var **p_root_var,
+			int (*callback)(void *context_ptr, t_var *var));
 
 #endif // !STATE_H
