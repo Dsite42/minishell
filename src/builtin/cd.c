@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 16:47:53 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/06/22 23:25:10 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/22 23:26:49 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ static int	update_cwd_var(t_state *state)
 
 int	builtin_cd(int argc, char *argv[], int out_fd, t_state *state)
 {
+	(void) out_fd;
 	if (argc < 2)
 	{
 		print_fd(STDERR_FILENO, "minishell: cd: too few arguments\n");
@@ -49,7 +50,8 @@ int	builtin_cd(int argc, char *argv[], int out_fd, t_state *state)
 	}
 	if (chdir(argv[1]) != 0)
 	{
-		print_fd(out_fd, "minishell: cd: %s: %s\n", argv[1], strerror(errno));
+		print_fd(STDERR_FILENO,
+			"minishell: cd: %s: %s\n", argv[1], strerror(errno));
 		return (1);
 	}
 	return (update_cwd_var(state));
