@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 01:18:23 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/23 01:56:04 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/27 20:21:26 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ static t_result	parse_word_split(
 		if (p_remainder->size == 0)
 			return (E_SQTERM);
 		*p_remainder = advance(*p_remainder);
-		return (word_builder_append(builder, 0, first_part, 0));
+		return (word_builder_append(builder, WORD_DQUOTE, first_part, 0));
 	}
 	else if (consume(p_remainder, "\""))
 		return (parse_double_quote(p_remainder, builder));
