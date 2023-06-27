@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   iter_cmd_args.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 17:25:55 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/12 17:42:33 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/27 21:05:34 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ static t_result	iter_inner(void *context_ptr, t_word *head_group,
 	t_word		*head_chain;
 	int			ignore_count;
 
+	ignore_count = 0;
 	head_chain = head_group;
 	while (head_chain != NULL)
 	{
