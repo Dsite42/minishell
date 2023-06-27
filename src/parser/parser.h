@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 18:55:33 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/27 20:26:27 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/27 21:01:41 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@
 # define WORD_OP_HEREDOC 18
 # define WORD_OP_MASK 30
 # define WORD_QUOTE 32
+# define WORD_VAR_PID 65
 
 // TODO: (Maybe) Add third "next_command" link
 
