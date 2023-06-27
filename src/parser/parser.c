@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 01:18:23 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/27 20:21:26 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/27 20:27:03 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,14 +77,14 @@ static t_result	parse_double_quote(
 			begin_double_quote_split, &first_part, p_remainder);
 		if (p_remainder->size == 0)
 			return (E_DQTERM);
-		result = word_builder_append(builder, WORD_DQUOTE, first_part, 1);
+		result = word_builder_append(builder, WORD_QUOTE, first_part, 1);
 		if (result != S_OK)
 			return (result);
 		if (consume(p_remainder, "\""))
 			return (S_OK);
 		else if (consume(p_remainder, "$"))
 		{
-			result = parse_variable(p_remainder, builder, WORD_DQUOTE);
+			result = parse_variable(p_remainder, builder, WORD_QUOTE);
 			if (result != S_OK)
 				return (result);
 		}
@@ -109,7 +109,7 @@ static t_result	parse_word_split(
 		if (p_remainder->size == 0)
 			return (E_SQTERM);
 		*p_remainder = advance(*p_remainder);
-		return (word_builder_append(builder, WORD_DQUOTE, first_part, 0));
+		return (word_builder_append(builder, WORD_QUOTE, first_part, 0));
 	}
 	else if (consume(p_remainder, "\""))
 		return (parse_double_quote(p_remainder, builder));

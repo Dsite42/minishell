@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 18:55:33 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/23 00:53:14 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/27 20:26:27 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@
 # define WORD_OP_APPEND 14
 # define WORD_OP_HEREDOC 18
 # define WORD_OP_MASK 30
-# define WORD_DQUOTE 32
+# define WORD_QUOTE 32
 
 // TODO: (Maybe) Add third "next_command" link
 
