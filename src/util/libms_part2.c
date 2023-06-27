@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libms_part2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 16:39:25 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/23 00:48:25 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/27 21:21:20 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,23 @@
 #include <stdarg.h>
 
 size_t	ms_iter_words(void *context_ptr, t_slice slice,
-			void (*callback)(void *context_ptr, t_slice word))
+			void (*callback)(void *context_ptr, t_slice word),
+			int *p_trailing_space)
 {
 	t_slice	word;
 	size_t	count;
+	int		trailing_space;
 
 	count = 0;
+	trailing_space = 0;
 	while (slice.size > 0)
 	{
 		slice = trim_left(slice, begin_space, NULL);
+		if (slice.size == 0)
+		{
+			trailing_space = 1;
+			break ;
+		}
 		split_once(slice, begin_space, &word, &slice);
 		if (word.size > 0)
 		{
@@ -34,6 +42,8 @@ size_t	ms_iter_words(void *context_ptr, t_slice slice,
 			count++;
 		}
 	}
+	if (p_trailing_space != NULL)
+		*p_trailing_space = trailing_space;
 	return (count);
 }
 
