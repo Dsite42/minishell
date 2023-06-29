@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 17:54:20 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/29 19:27:06 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/29 19:46:05 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,12 @@ static void	start_new_group_trailing(t_word **p_head_group,
 	(*p_head_group)->next_group = next_chain;
 }
 
-static t_result	insert_var_noquote(t_word **p_head_group, t_word **p_prev_chain,
-		t_word **p_head_chain, t_slice slice)
+static t_result	insert_var_noquote(t_word **p_head_group, t_word **p_head_chain,
+		t_slice slice)
 {
 	t_slice	first;
 	size_t	count;
+	t_word	*new_word;
 
 	split_once(slice, begin_space, &first, &slice);
 	(*p_head_chain)->slice = first;
@@ -58,7 +59,12 @@ static t_result	insert_var_noquote(t_word **p_head_group, t_word **p_prev_chain,
 			return (S_OK);
 		}
 		split_once(slice, begin_space, &first, &slice);
-		// FIXME: Not implemented (insert another word)
+		if (!word_new(&new_word, 0, first))
+			return (E_NOMEM);
+		new_word->next_chain = (*p_head_chain)->next_chain;
+		new_word->next_group = (*p_head_group)->next_group;
+		(*p_head_chain)->next_chain = NULL;
+		(*p_head_group)->next_group = new_word;
 	}
 	return (S_OK);
 }
@@ -85,7 +91,7 @@ static t_result	insert_var(t_word **p_head_group, t_word **p_prev_chain,
 	if (count > 0)
 		start_new_group_leading(p_head_group, p_prev_chain, p_head_chain);
 	return (
-		insert_var_noquote(p_head_group, p_prev_chain, p_head_chain, slice));
+		insert_var_noquote(p_head_group, p_head_chain, slice));
 }
 
 t_result	insert_vars(t_word *head_group, t_state *state)
