@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:10:00 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/29 23:24:35 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/29 23:40:45 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ static void	dump_cmds(t_cmd *head_cmd)
 		while (head_cmd->argv[index] != NULL)
 		{
 			print_fd(STDOUT_FILENO, "'%s'", head_cmd->argv[index]);
-			if (head_cmd->argv[index] == NULL)
+			if (head_cmd->argv[index + 1] == NULL)
 				print_fd(STDOUT_FILENO, "]\n");
 			else
 				print_fd(STDOUT_FILENO, ", ");
@@ -125,6 +125,7 @@ static t_result	handle_line(char *line, t_state *state)
 			dump_cmds(root_cmd);
 		}
 		word_clear(&root_word);
+		cmd_clear(&root_cmd);
 	}
 	free(line);
 	return (result);
