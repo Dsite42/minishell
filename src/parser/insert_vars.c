@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 17:54:20 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/29 19:24:43 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/29 19:27:06 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,10 @@ static void	start_new_group_leading(t_word **p_head_group,
 
 // Starts a new group at the next chain
 static void	start_new_group_trailing(t_word **p_head_group,
-		t_word **p_prev_chain, t_word **p_head_chain)
+		t_word **p_head_chain)
 {
 	t_word	*next_chain;
 
-	(void) p_prev_chain;
 	next_chain = (*p_head_chain)->next_chain;
 	if (next_chain == NULL)
 		return ;
@@ -55,8 +54,7 @@ static t_result	insert_var_noquote(t_word **p_head_group, t_word **p_prev_chain,
 		if (slice.size == 0)
 		{
 			if (count > 0)
-				start_new_group_trailing(p_head_group, p_prev_chain,
-					p_head_chain);
+				start_new_group_trailing(p_head_group, p_head_chain);
 			return (S_OK);
 		}
 		split_once(slice, begin_space, &first, &slice);
