@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   insert_vars.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 17:54:20 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/29 18:37:04 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/29 19:24:43 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,15 @@ static void	start_new_group_leading(t_word **p_head_group,
 static void	start_new_group_trailing(t_word **p_head_group,
 		t_word **p_prev_chain, t_word **p_head_chain)
 {
-	(void) p_head_group;
+	t_word	*next_chain;
+
 	(void) p_prev_chain;
-	if ((*p_head_chain)->next_chain == NULL)
+	next_chain = (*p_head_chain)->next_chain;
+	if (next_chain == NULL)
 		return ;
-	// FIXME: Not implemented
+	(*p_head_chain)->next_chain = NULL;
+	next_chain->next_group = (*p_head_group)->next_group;
+	(*p_head_group)->next_group = next_chain;
 }
 
 static t_result	insert_var_noquote(t_word **p_head_group, t_word **p_prev_chain,
