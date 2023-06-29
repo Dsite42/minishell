@@ -1,6 +1,6 @@
-OBJS += obj/parser/grammar.o \
+OBJS += obj/parser/cmd_builder_argv.o \
+		obj/parser/grammar.o \
 		obj/parser/insert_vars.o \
-		obj/parser/iter_cmd_args.o \
 		obj/parser/parser.o \
 		obj/parser/word_builder.o \
 		obj/parser/words.o

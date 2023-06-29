@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 02:11:15 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/29 22:12:49 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/29 22:13:28 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,9 @@ typedef struct s_cmd_builder
 	char	*iter;
 	char	**argv;
 }	t_cmd_builder;
+
+// cmd_builder_argv.c
+t_result	cmd_builder_build_argv(t_cmd_builder *self, t_word *root_word);
 
 // word_builder.c
 void		word_builder_group(t_word_builder *self);
