@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 18:55:33 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/29 22:18:52 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/29 22:25:31 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,9 @@ typedef struct s_word
 	struct s_word	*next_chain;
 	unsigned int	flags;
 	t_slice			slice;
-	void			*cache;
 }	t_word;
 
 // NOTE: t_word.next_group is only valid for the first node of a chain
-// NOTE: The validity of t_word.cache is up to functions writing to it
 
 typedef struct s_redir
 {
