@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:10:00 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/29 18:37:41 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/29 22:32:00 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,10 @@
 #include <readline/history.h>
 #include <readline/readline.h>
 
-#include <string.h>
+// Temporary include
+#include "parser/private.h"
 
-#define FLAGS "VO---QP"
+#define FLAGS "VO---Q"
 
 static void	dump_flags(char flag_prefix[sizeof(FLAGS)], unsigned int flags)
 {
@@ -86,10 +87,23 @@ static void	dump_words(t_word *head_group)
 	}
 }
 
+static void	dump_argv(char **argv)
+{
+	size_t	index;
+
+	index = 0;
+	while (argv[index] != NULL)
+	{
+		print_fd(STDOUT_FILENO, "%u: %s\n", index, argv[index]);
+		index++;
+	}
+}
+
 static t_result	handle_line(char *line, t_state *state)
 {
-	t_word		*root_word;
-	t_result	result;
+	t_word			*root_word;
+	t_result		result;
+	t_cmd_builder	builder;
 
 	result = word_chain_from_string(&root_word, slice0(line));
 	if (result != S_OK)
@@ -100,8 +114,16 @@ static t_result	handle_line(char *line, t_state *state)
 	add_history(line);
 	result = insert_vars(root_word, state);
 	if (result == S_OK)
+	{
 		dump_words(root_word);
-	words_clr(&root_word);
+		result = cmd_builder_build_argv(&builder, root_word);
+		if (result == S_OK)
+		{
+			dump_argv(builder.argv);
+			ms_ptrs_free(builder.argv);
+		}
+		words_clr(&root_word);
+	}
 	free(line);
 	return (result);
 }
