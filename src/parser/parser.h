@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 18:55:33 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/29 22:18:08 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/29 22:18:52 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,6 @@ typedef struct s_cmd
 	t_redir			*root_redir;
 	char			*argv[];
 }	t_cmd;
-
-// insert_vars.c
-t_result	insert_vars(t_word *head_group, t_state *state);
 
 // grammar.c
 size_t		begin_space(t_slice slice);
