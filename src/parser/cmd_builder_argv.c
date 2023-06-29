@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 20:47:32 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/29 22:13:56 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/29 22:21:18 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,6 @@ t_result	cmd_builder_build_argv(t_cmd_builder *self, t_word *root_word)
 		return (result);
 	}
 	self->index = 0;
-	iter_only_args(self->argv, root_word, argv_copy);
+	iter_only_args(self, root_word, argv_copy);
 	return (S_OK);
 }
