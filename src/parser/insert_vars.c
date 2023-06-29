@@ -6,13 +6,15 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 17:54:20 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/29 19:46:05 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/29 19:59:30 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "private.h"
 
-// Starts a new group at the current chain
+// Breaks the current word (head_chain) out of its chain into a new group,
+// inheriting all following chained words
+// This also sets p_head_group to the new group to prevent a group mismatch
 static void	start_new_group_leading(t_word **p_head_group,
 		t_word **p_prev_chain, t_word **p_head_chain)
 {
@@ -26,7 +28,9 @@ static void	start_new_group_leading(t_word **p_head_group,
 	*p_head_group = *p_head_chain;
 }
 
-// Starts a new group at the next chain
+// Breaks the following word (head_chain->next) out of its chain into a new
+// group, inheriting all following chained words
+// This does not modify p_head_chain because it must still be iterated over
 static void	start_new_group_trailing(t_word **p_head_group,
 		t_word **p_head_chain)
 {
@@ -40,6 +44,9 @@ static void	start_new_group_trailing(t_word **p_head_group,
 	(*p_head_group)->next_group = next_chain;
 }
 
+// Splits the variable's content by whitespace and modifies the group and chain
+// links to split formerly joined words if required, if multiple splits occurr,
+// new words are added in-between
 static t_result	insert_var_noquote(t_word **p_head_group, t_word **p_head_chain,
 		t_slice slice)
 {
@@ -69,6 +76,11 @@ static t_result	insert_var_noquote(t_word **p_head_group, t_word **p_head_chain,
 	return (S_OK);
 }
 
+// Obtains the content of a to-be-expanded variable and transfers it directly
+// to the word's slice
+// The way of transfer is depending on whether the word is in a quote or not
+// - If it is, the whole variable can be used directly
+// - If not, it needs special handling to match bash (see insert_var_noquote)
 static t_result	insert_var(t_word **p_head_group, t_word **p_prev_chain,
 		t_word **p_head_chain, t_state *state)
 {
@@ -94,6 +106,7 @@ static t_result	insert_var(t_word **p_head_group, t_word **p_prev_chain,
 		insert_var_noquote(p_head_group, p_head_chain, slice));
 }
 
+// Transforms WORD_VAR tokens in the given word tree into their expanded value
 t_result	insert_vars(t_word *head_group, t_state *state)
 {
 	t_result	result;
