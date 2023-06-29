@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 02:11:15 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/29 22:19:31 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/29 23:38:33 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,9 @@ t_result	cmd_builder_build_argv(t_cmd_builder *self, t_word *root_word);
 
 // insert_vars.c
 t_result	insert_vars(t_word *head_group, t_state *state);
+
+// parser_core.c
+int			word_new(t_word **p_new_word, unsigned int flags, t_slice slice);
 
 // word_builder.c
 void		word_builder_group(t_word_builder *self);
