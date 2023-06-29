@@ -1,4 +1,5 @@
 OBJS += obj/parser/cmd_builder_argv.o \
+		obj/parser/cmds_from_words.o \
 		obj/parser/grammar.o \
 		obj/parser/insert_vars.o \
 		obj/parser/word_builder.o \

@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 18:55:33 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/29 23:06:14 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/29 23:08:15 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,10 @@ typedef struct s_cmd
 	t_redir			*root_redir;
 	char			*argv[];
 }	t_cmd;
+
+// cmds_from_words.c
+t_result	cmds_from_words(t_word *root_word, t_cmd **p_root_cmd,
+				t_state *state);
 
 // grammar.c
 size_t		begin_space(t_slice slice);

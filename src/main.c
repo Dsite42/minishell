@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:10:00 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/29 22:32:00 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/29 23:24:35 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,6 @@
 #include <unistd.h>
 #include <readline/history.h>
 #include <readline/readline.h>
-
-// Temporary include
-#include "parser/private.h"
 
 #define FLAGS "VO---Q"
 
@@ -87,42 +84,47 @@ static void	dump_words(t_word *head_group)
 	}
 }
 
-static void	dump_argv(char **argv)
+static void	dump_cmds(t_cmd *head_cmd)
 {
+	size_t	count;
 	size_t	index;
 
-	index = 0;
-	while (argv[index] != NULL)
+	count = 0;
+	while (head_cmd != NULL)
 	{
-		print_fd(STDOUT_FILENO, "%u: %s\n", index, argv[index]);
-		index++;
+		print_fd(STDOUT_FILENO, "Command #%u\n", count++);
+		print_fd(STDOUT_FILENO, "  argv: [");
+		index = 0;
+		while (head_cmd->argv[index] != NULL)
+		{
+			print_fd(STDOUT_FILENO, "'%s'", head_cmd->argv[index]);
+			if (head_cmd->argv[index] == NULL)
+				print_fd(STDOUT_FILENO, "]\n");
+			else
+				print_fd(STDOUT_FILENO, ", ");
+			index++;
+		}
+		head_cmd = head_cmd->next;
 	}
 }
 
 static t_result	handle_line(char *line, t_state *state)
 {
-	t_word			*root_word;
-	t_result		result;
-	t_cmd_builder	builder;
+	t_result	result;
+	t_cmd		*root_cmd;
+	t_word		*root_word;
 
-	result = word_chain_from_string(&root_word, slice0(line));
-	if (result != S_OK)
-	{
-		free(line);
-		return (result);
-	}
 	add_history(line);
-	result = insert_vars(root_word, state);
+	result = words_from_slice(&root_word, slice0(line));
 	if (result == S_OK)
 	{
 		dump_words(root_word);
-		result = cmd_builder_build_argv(&builder, root_word);
+		result = cmds_from_words(root_word, &root_cmd, state);
 		if (result == S_OK)
 		{
-			dump_argv(builder.argv);
-			ms_ptrs_free(builder.argv);
+			dump_cmds(root_cmd);
 		}
-		words_clr(&root_word);
+		word_clear(&root_word);
 	}
 	free(line);
 	return (result);
