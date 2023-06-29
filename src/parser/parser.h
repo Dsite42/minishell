@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 18:55:33 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/29 22:25:31 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/29 22:26:06 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,6 @@
 # define WORD_OP_MASK 30
 # define WORD_QUOTE 32
 # define WORD_VAR_PID 65
-
-// TODO: (Maybe) Add third "next_command" link
 
 typedef struct s_word
 {
