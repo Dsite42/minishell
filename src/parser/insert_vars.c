@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 17:54:20 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/29 20:16:25 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/29 20:19:07 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ static t_result	insert_var(t_word **p_head_group, t_word **p_prev_chain,
 		insert_var_noquote(p_head_group, p_prev_chain, p_head_chain, slice));
 }
 
-// Transforms WORD_VAR tokens in the given word tree into their expanded value
+// Transforms WORD_VAR words in the given word tree into their expanded value
 t_result	insert_vars(t_word *head_group, t_state *state)
 {
 	t_result	result;
