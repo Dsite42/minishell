@@ -6,53 +6,71 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 17:54:20 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/29 19:59:30 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/29 20:16:25 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "private.h"
 
-// Breaks the current word (head_chain) out of its chain into a new group,
-// inheriting all following chained words
-// This also sets p_head_group to the new group to prevent a group mismatch
-static void	start_new_group_leading(t_word **p_head_group,
+// Transforms either the current or next word in the chain to a group start,
+// effectively ending the current chain
+// The head pointers are not updated when transforming the next word because
+// it still has to be iterated over
+static void	start_new_group(int do_current, t_word **p_head_group,
 		t_word **p_prev_chain, t_word **p_head_chain)
-{
-	if (*p_head_chain == *p_head_group)
-		return ;
-	if (*p_prev_chain != NULL)
-		(*p_prev_chain)->next_chain = NULL;
-	*p_prev_chain = NULL;
-	(*p_head_chain)->next_group = (*p_head_group)->next_group;
-	(*p_head_group)->next_group = *p_head_chain;
-	*p_head_group = *p_head_chain;
-}
-
-// Breaks the following word (head_chain->next) out of its chain into a new
-// group, inheriting all following chained words
-// This does not modify p_head_chain because it must still be iterated over
-static void	start_new_group_trailing(t_word **p_head_group,
-		t_word **p_head_chain)
 {
 	t_word	*next_chain;
 
-	next_chain = (*p_head_chain)->next_chain;
-	if (next_chain == NULL)
-		return ;
+	if (do_current)
+	{
+		if (*p_head_chain == *p_head_group)
+			return ;
+		if (*p_prev_chain != NULL)
+			(*p_prev_chain)->next_chain = NULL;
+		*p_prev_chain = NULL;
+		(*p_head_chain)->next_group = (*p_head_group)->next_group;
+		(*p_head_group)->next_group = *p_head_chain;
+		*p_head_group = *p_head_chain;
+	}
+	else
+	{
+		next_chain = (*p_head_chain)->next_chain;
+		if (next_chain == NULL)
+			return ;
+		(*p_head_chain)->next_chain = NULL;
+		next_chain->next_group = (*p_head_group)->next_group;
+		(*p_head_group)->next_group = next_chain;
+	}
+}
+
+// Inserts a group word that inherits the chain of head_chain, effectively
+// ending the current chain
+static t_result	insert_word(t_word **p_head_group, t_word **p_prev_chain,
+		t_word **p_head_chain, t_slice slice)
+{
+	t_word	*new_word;
+
+	if (!word_new(&new_word, 0, slice))
+		return (E_NOMEM);
+	new_word->next_chain = (*p_head_chain)->next_chain;
+	new_word->next_group = (*p_head_group)->next_group;
 	(*p_head_chain)->next_chain = NULL;
-	next_chain->next_group = (*p_head_group)->next_group;
-	(*p_head_group)->next_group = next_chain;
+	(*p_head_group)->next_group = new_word;
+	*p_head_group = new_word;
+	*p_head_chain = new_word;
+	*p_prev_chain = NULL;
+	return (S_OK);
 }
 
 // Splits the variable's content by whitespace and modifies the group and chain
 // links to split formerly joined words if required, if multiple splits occurr,
 // new words are added in-between
-static t_result	insert_var_noquote(t_word **p_head_group, t_word **p_head_chain,
-		t_slice slice)
+static t_result	insert_var_noquote(t_word **p_head_group, t_word **p_prev_chain,
+		t_word **p_head_chain, t_slice slice)
 {
-	t_slice	first;
-	size_t	count;
-	t_word	*new_word;
+	t_slice		first;
+	size_t		count;
+	t_result	result;
 
 	split_once(slice, begin_space, &first, &slice);
 	(*p_head_chain)->slice = first;
@@ -62,16 +80,13 @@ static t_result	insert_var_noquote(t_word **p_head_group, t_word **p_head_chain,
 		if (slice.size == 0)
 		{
 			if (count > 0)
-				start_new_group_trailing(p_head_group, p_head_chain);
+				start_new_group(0, p_head_group, p_prev_chain, p_head_chain);
 			return (S_OK);
 		}
 		split_once(slice, begin_space, &first, &slice);
-		if (!word_new(&new_word, 0, first))
-			return (E_NOMEM);
-		new_word->next_chain = (*p_head_chain)->next_chain;
-		new_word->next_group = (*p_head_group)->next_group;
-		(*p_head_chain)->next_chain = NULL;
-		(*p_head_group)->next_group = new_word;
+		result = insert_word(p_head_group, p_prev_chain, p_head_chain, first);
+		if (result != S_OK)
+			return (result);
 	}
 	return (S_OK);
 }
@@ -101,9 +116,9 @@ static t_result	insert_var(t_word **p_head_group, t_word **p_prev_chain,
 	}
 	slice = trim_left(slice, begin_space, &count);
 	if (count > 0)
-		start_new_group_leading(p_head_group, p_prev_chain, p_head_chain);
+		start_new_group(1, p_head_group, p_prev_chain, p_head_chain);
 	return (
-		insert_var_noquote(p_head_group, p_head_chain, slice));
+		insert_var_noquote(p_head_group, p_prev_chain, p_head_chain, slice));
 }
 
 // Transforms WORD_VAR tokens in the given word tree into their expanded value
