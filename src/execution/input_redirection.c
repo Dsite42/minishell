@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 11:56:58 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/06/29 15:16:32 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/29 15:39:45 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,8 @@ void	input_redirection(t_piping *piping_data, int *fd_dup)
 	{	
 		fd_dup[0] = dup2(piping_data->prev_read, STDIN_FILENO);
 		close(piping_data->prev_read);
+		if (fd_dup[0] == -1)
+			pipex_error(1, "dup_input_1 error", 1, errno);
 	}
-	if (fd_dup[0] == -1)
-		pipex_error(1, "dup_input_1 error", 1, errno);
 	piping_data->cmd->root_redir = root_dir_start;
 }
