@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 11:56:58 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/06/21 12:01:48 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/29 15:16:32 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	input_redirection(t_piping *piping_data, int *fd_dup)
 	root_dir_start = piping_data->cmd->root_redir;
 	if (is_read_or_heredoc(piping_data->cmd->root_redir))
 		dup_read_heredoc(piping_data, fd_dup);
-	else
+	else if (piping_data->prev_read != STDIN_FILENO)
 	{	
 		fd_dup[0] = dup2(piping_data->prev_read, STDIN_FILENO);
 		close(piping_data->prev_read);
