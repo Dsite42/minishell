@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 02:11:15 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/23 01:37:10 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/29 22:12:49 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,14 @@ typedef struct s_word_builder
 	t_word	*chain_head_word;
 	int		is_new_group;
 }	t_word_builder;
+
+typedef struct s_cmd_builder
+{
+	size_t	size;
+	size_t	index;
+	char	*iter;
+	char	**argv;
+}	t_cmd_builder;
 
 // word_builder.c
 void		word_builder_group(t_word_builder *self);
