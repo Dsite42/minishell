@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:10:00 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/29 18:34:42 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/29 18:37:41 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ static t_result	handle_line(char *line, t_state *state)
 		return (result);
 	}
 	add_history(line);
-	result = expand_vars(root_word, state);
+	result = insert_vars(root_word, state);
 	if (result == S_OK)
 		dump_words(root_word);
 	words_clr(&root_word);

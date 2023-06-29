@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 17:54:20 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/29 18:25:55 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/29 18:37:04 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static void	start_new_group_trailing(t_word **p_head_group,
 	// FIXME: Not implemented
 }
 
-static t_result	expand_var_noquote(t_word **p_head_group, t_word **p_prev_chain,
+static t_result	insert_var_noquote(t_word **p_head_group, t_word **p_prev_chain,
 		t_word **p_head_chain, t_slice slice)
 {
 	t_slice	first;
@@ -61,7 +61,7 @@ static t_result	expand_var_noquote(t_word **p_head_group, t_word **p_prev_chain,
 	return (S_OK);
 }
 
-static t_result	expand_var(t_word **p_head_group, t_word **p_prev_chain,
+static t_result	insert_var(t_word **p_head_group, t_word **p_prev_chain,
 		t_word **p_head_chain, t_state *state)
 {
 	t_var	*var;
@@ -83,10 +83,10 @@ static t_result	expand_var(t_word **p_head_group, t_word **p_prev_chain,
 	if (count > 0)
 		start_new_group_leading(p_head_group, p_prev_chain, p_head_chain);
 	return (
-		expand_var_noquote(p_head_group, p_prev_chain, p_head_chain, slice));
+		insert_var_noquote(p_head_group, p_prev_chain, p_head_chain, slice));
 }
 
-t_result	expand_vars(t_word *head_group, t_state *state)
+t_result	insert_vars(t_word *head_group, t_state *state)
 {
 	t_result	result;
 	t_word		*prev_chain;
@@ -100,7 +100,7 @@ t_result	expand_vars(t_word *head_group, t_state *state)
 		{
 			if (head_chain->flags & WORD_VAR)
 			{
-				result = expand_var(
+				result = insert_var(
 						&head_group, &prev_chain, &head_chain, state);
 				if (result != S_OK)
 					return (result);
