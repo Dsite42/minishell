@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:10:00 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/29 23:40:45 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/29 23:47:00 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,8 @@ static void	dump_cmds(t_cmd *head_cmd)
 	count = 0;
 	while (head_cmd != NULL)
 	{
-		print_fd(STDOUT_FILENO, "Command #%u\n", count++);
-		print_fd(STDOUT_FILENO, "  argv: [");
+		print_fd(STDOUT_FILENO, "  Command #%u\n", count++);
+		print_fd(STDOUT_FILENO, "    argv: [");
 		index = 0;
 		while (head_cmd->argv[index] != NULL)
 		{
@@ -118,10 +118,14 @@ static t_result	handle_line(char *line, t_state *state)
 	result = words_from_slice(&root_word, slice0(line));
 	if (result == S_OK)
 	{
+		print_fd(STDOUT_FILENO, "Word tree before cmds_from_words():\n");
 		dump_words(root_word);
 		result = cmds_from_words(root_word, &root_cmd, state);
 		if (result == S_OK)
 		{
+			print_fd(STDOUT_FILENO, "Word tree after cmds_from_words():\n");
+			dump_words(root_word);
+			print_fd(STDOUT_FILENO, "Result of cmds_from_words():\n");
 			dump_cmds(root_cmd);
 		}
 		word_clear(&root_word);
