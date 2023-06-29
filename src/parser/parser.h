@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 18:55:33 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/29 18:36:44 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/29 22:15:57 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ t_result	words_iter_cmd_args(void *context_ptr, t_word **p_head_group,
 
 // words.c
 int			word_new(t_word **p_new_word, unsigned int flags, t_slice slice);
-char		**argv_from_word_group(t_word *root_word, t_var **p_root_var);
 void		words_clr(t_word **p_root_word);
 
 // parser.c
