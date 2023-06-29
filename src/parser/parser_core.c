@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 21:28:41 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/29 22:47:44 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/29 23:32:47 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,29 @@ void	word_clear(t_word **p_root_word)
 		group_head_word = group_next_word;
 	}
 	*p_root_word = NULL;
+}
+
+void	cmd_clear(t_cmd **p_root_cmd)
+{
+	t_cmd	*head_cmd;
+	t_cmd	*next_cmd;
+	t_redir	*head_redir;
+	t_redir	*next_redir;
+
+	head_cmd = *p_root_cmd;
+	while (head_cmd != NULL)
+	{
+		next_cmd = head_cmd->next;
+		ms_ptrs_free(head_cmd->argv);
+		head_redir = head_cmd->root_redir;
+		while (head_redir != NULL)
+		{
+			next_redir = head_redir->next;
+			free(head_redir);
+			head_redir = next_redir;
+		}
+		free(head_cmd);
+		head_cmd = next_cmd;
+	}
+	*p_root_cmd = NULL;
 }

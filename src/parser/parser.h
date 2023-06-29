@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 18:55:33 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/29 23:08:15 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/29 23:34:27 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,10 @@ size_t		begin_word_split(t_slice slice);
 size_t		begin_single_quote_split(t_slice slice);
 size_t		begin_double_quote_split(t_slice slice);
 
-// word_core.c
+// parser_core.c
 int			word_new(t_word **p_new_word, unsigned int flags, t_slice slice);
 void		word_clear(t_word **p_root_word);
+void		cmd_clear(t_cmd **p_root_cmd);
 
 // words_from_slice.c
 t_result	words_from_slice(t_word **p_root_word, t_slice slice);
