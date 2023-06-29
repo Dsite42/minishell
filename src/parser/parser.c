@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 01:18:23 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/27 21:03:25 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/29 22:29:05 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,7 @@ static t_result	parse_variable(t_slice *p_remainder, t_word_builder *builder,
 	t_slice	first_part;
 
 	if (consume(p_remainder, "?"))
-		return (word_builder_append(
-				builder, WORD_VAR_PID | flags, slice0("?"), 0));
+		return (word_builder_append(builder, WORD_VAR | flags, slice0("?"), 0));
 	split_once(*p_remainder, begin_not_identifier, &first_part, p_remainder);
 	if (first_part.size == 0)
 	{
