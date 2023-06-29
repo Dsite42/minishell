@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   words.c                                            :+:      :+:    :+:   */
+/*   word_core.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 21:28:41 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/29 22:16:11 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/29 22:47:44 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	word_new(t_word **p_new_word, unsigned int flags, t_slice slice)
 	return (1);
 }
 
-void	words_clr(t_word **p_root_word)
+void	word_clear(t_word **p_root_word)
 {
 	t_word	*group_head_word;
 	t_word	*group_next_word;

@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 02:43:48 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/23 01:38:44 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/29 22:48:24 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,6 @@ t_result	word_builder_append(t_word_builder *builder,
 
 t_result	word_builder_clean_return(t_word_builder *self, t_result result)
 {
-	words_clr(&self->root_word);
+	word_clear(&self->root_word);
 	return (result);
 }

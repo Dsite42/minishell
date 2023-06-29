@@ -3,7 +3,7 @@ OBJS += obj/parser/cmd_builder_argv.o \
 		obj/parser/insert_vars.o \
 		obj/parser/parser.o \
 		obj/parser/word_builder.o \
-		obj/parser/words.o
+		obj/parser/word_core.o
 
 HDRS += src/parser/parser.h \
 		src/parser/private.h
