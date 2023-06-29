@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 18:55:33 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/29 23:34:27 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/29 23:37:09 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ typedef struct s_cmd
 {
 	struct s_cmd	*next;
 	t_redir			*root_redir;
-	char			*argv[];
+	char			**argv;
 }	t_cmd;
 
 // cmds_from_words.c
