@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 15:56:09 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/06/21 16:55:07 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/29 16:03:53 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	run_cmds(char **argv, char **envp, t_state *state)
 	};
 
 	t_redir	sixth_redir = {
-		.next = &fivth_redir,
+		.next = NULL,
 		.type = WORD_OP_READ,
 		.name = "input.txt"
 	};
@@ -101,19 +101,19 @@ void	run_cmds(char **argv, char **envp, t_state *state)
 
 	t_cmd third = {
 		.next = NULL,
-		.root_redir = &fourth_redir,
+		.root_redir = NULL,
 		.argv = {"pwd", NULL}
 	};
 
 	t_cmd second = {
-			.next = NULL,
+			.next = &third,
 			.root_redir = NULL,
-			.argv = {"env", NULL}
+			.argv = {"cd", "src", NULL}
 		};
 	t_cmd	first = {
 		.next = &second,
 		.root_redir = NULL,
-		.argv = {"cd", "src", NULL}
+		.argv = {"pwd", NULL}
 	};
 
 
@@ -132,7 +132,7 @@ void	run_cmds(char **argv, char **envp, t_state *state)
 		else if (pid == 0)
 			child(piping_data.cmd->argv, envp, &piping_data, state);
 		else
-			parent(&piping_data);
+			parent(&piping_data, state);
 		piping_data.i++;
 		if (piping_data.cmd->next != NULL)
 			piping_data.cmd = piping_data.cmd->next;

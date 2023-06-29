@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 12:58:30 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/21 15:53:05 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/29 16:07:29 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ void	pipex_error(int shall_exit, char *message, int isstrerror,
 			int exit_code);
 void	check_heredoc(t_piping piping_data);
 void	create_pipe(int i, int num_cmds, int (*pipefd)[2]);
-void	parent(t_piping *piping_data);
+void	parent(t_piping *piping_data, t_state *state);
 void	input_redirection(t_piping *piping_data, int *fd_dup);
+void	output_redirection(t_piping *piping_data, int *fd_dup);
 
 #endif // !EXECUTION_H
