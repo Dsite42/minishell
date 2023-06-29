@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 01:18:23 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/29 22:29:05 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/29 23:04:04 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,8 +123,8 @@ static t_result	parse_word_split(
 	return (S_OK);
 }
 
-// This function implements the regular state
-t_result	word_chain_from_string(t_word **p_root_word, t_slice remainder)
+// Parses the given slice to a word tree
+t_result	words_from_slice(t_word **p_root_word, t_slice slice)
 {
 	t_slice			first_part;
 	t_word_builder	builder;
@@ -132,20 +132,20 @@ t_result	word_chain_from_string(t_word **p_root_word, t_slice remainder)
 	size_t			count;
 
 	ms_zero(&builder, sizeof(builder));
-	while (remainder.size > 0)
+	while (slice.size > 0)
 	{
-		count = split_once(remainder,
-				begin_word_split, &first_part, &remainder);
+		count = split_once(slice,
+				begin_word_split, &first_part, &slice);
 		if (first_part.size > 0)
 		{
 			result = word_builder_append(&builder, 0, first_part, 0);
 			if (result != S_OK)
 				return (word_builder_clean_return(&builder, result));
 		}
-		result = parse_word_split(&remainder, &builder, count);
+		result = parse_word_split(&slice, &builder, count);
 		if (result != S_OK)
 			return (word_builder_clean_return(&builder, result));
-		remainder = trim_left(remainder, begin_space, &count);
+		slice = trim_left(slice, begin_space, &count);
 		if (count > 0)
 			word_builder_group(&builder);
 	}
