@@ -3,16 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   check_heredoc.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 11:09:06 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/06/21 11:20:16 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/30 18:30:24 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
+
 #include <stdlib.h>
 #include <unistd.h>
+
+#include <stdio.h>
 #include <readline/history.h>
 #include <readline/readline.h>
 
