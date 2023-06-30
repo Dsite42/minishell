@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 14:05:51 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/30 15:17:33 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/30 15:20:38 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ t_result	cmd_builder_build_redirs(t_cmd_builder *self, t_word *root_word)
 
 	head_group = root_word;
 	while (head_group != NULL
-			&& (head_group->flags & WORD_OP_MASK) != WORD_OP_PIPE)
+		&& (head_group->flags & WORD_OP_MASK) != WORD_OP_PIPE)
 	{
 		if (head_group->flags & WORD_IS_OP)
 		{
