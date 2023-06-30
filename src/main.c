@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 19:40:37 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/06/05 20:38:45 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/30 18:11:03 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,7 @@ void	disable_echo(void)
 	struct termios	term;
 
 	tcgetattr(STDIN_FILENO, &term);
-	term.c_cc[VINTR] = '\0';
-	term.c_cc[VQUIT] = '\0';
+	term.c_lflag &= ~ECHOCTL;
 	tcsetattr(STDIN_FILENO, TCSANOW, &term);
 }
 
