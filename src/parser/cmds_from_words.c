@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmds_from_words.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 21:39:05 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/29 23:42:18 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/30 14:13:37 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,20 @@ static t_result	build_cmd(
 	result = cmd_builder_build_argv(&builder, root_word);
 	if (result != S_OK)
 		return (result);
+	result = cmd_builder_build_redirs(&builder, root_word);
+	if (result != S_OK)
+	{
+		// TODO: Free partial command in builder
+		return (result);
+	}
 	new_cmd = malloc(sizeof(t_cmd));
 	if (new_cmd == NULL)
 	{
-		// TODO: Free partial command in builder
+		// TODO: Free full command in builder
 		return (E_NOMEM);
 	}
 	new_cmd->argv = builder.argv;
-	new_cmd->root_redir = NULL;
+	new_cmd->root_redir = builder.root_redir;
 	new_cmd->next = NULL;
 	if (*p_root_cmd == NULL)
 	{
