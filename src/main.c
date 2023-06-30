@@ -6,10 +6,9 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 19:40:37 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/06/30 18:22:05 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/30 18:27:10 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "util/util.h"
 #include "state/state.h"
@@ -52,7 +51,6 @@ static int	run_builtin(char **argv, t_state *state)
 	return (127);
 }
 
-
 static t_result	handle_line(char *line, t_state *state)
 {
 	t_word		*root_word;
@@ -76,21 +74,32 @@ static t_result	handle_line(char *line, t_state *state)
 	return (S_OK);
 }
 
-void	handle_signals(int sig)
+static void	signal_handler(int sig)
 {
-	if (sig == SIGINT)
-		write(0, "\nminishell> ", 12);
-	else if (sig == SIGQUIT)
+	if (sig == SIGINT || sig == SIGQUIT)
+	{
+		if (sig == SIGINT)
+		{
+			write(STDOUT_FILENO, "\n", 1);
+			rl_on_new_line();
+		}
 		rl_redisplay();
+	}
 }
 
-void	disable_echo(void)
+static void	setup_signals(void)
 {
-	struct termios	term;
+	struct sigaction	sa;
+	struct termios		term;
 
 	tcgetattr(STDIN_FILENO, &term);
 	term.c_lflag &= ~ECHOCTL;
 	tcsetattr(STDIN_FILENO, TCSANOW, &term);
+	ms_zero(&sa, sizeof(sa));
+	sa.sa_handler = signal_handler;
+	sa.sa_flags = SA_RESTART;
+	sigaction(SIGINT, &sa, NULL);
+	sigaction(SIGQUIT, &sa, NULL);
 }
 
 int	main(int argc, char *argv[], char *envp[])
@@ -98,20 +107,12 @@ int	main(int argc, char *argv[], char *envp[])
 	t_state				state;
 	t_result			result;
 	char				*line;
-	struct sigaction	sa;
-
 
 	(void) argc;
 	(void) argv;
 	if (!vars_from_envp(envp, &state.root_var))
 		return (1);
-	sa.sa_handler = &handle_signals;
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = SA_RESTART;
-	sigaction(SIGINT, &sa, NULL);
-	sigaction(SIGTSTP, &sa, NULL);
-	sigaction(SIGQUIT, &sa, NULL);
-	disable_echo();
+	setup_signals();
 	while (1)
 	{
 		line = readline("minishell> ");
