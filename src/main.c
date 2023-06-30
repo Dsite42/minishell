@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:10:00 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/29 23:47:00 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/30 14:12:37 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ static void	dump_cmds(t_cmd *head_cmd)
 {
 	size_t	count;
 	size_t	index;
+	t_redir	*head_redir;
 
 	count = 0;
 	while (head_cmd != NULL)
@@ -98,12 +99,21 @@ static void	dump_cmds(t_cmd *head_cmd)
 		while (head_cmd->argv[index] != NULL)
 		{
 			print_fd(STDOUT_FILENO, "'%s'", head_cmd->argv[index]);
-			if (head_cmd->argv[index + 1] == NULL)
-				print_fd(STDOUT_FILENO, "]\n");
-			else
+			if (head_cmd->argv[index + 1] != NULL)
 				print_fd(STDOUT_FILENO, ", ");
 			index++;
 		}
+		print_fd(STDOUT_FILENO, "]\n");
+		print_fd(STDOUT_FILENO, "    redirs: [");
+		head_redir = head_cmd->root_redir;
+		while (head_redir != NULL)
+		{
+			print_fd(STDOUT_FILENO, "{ %i, '%s' }", head_redir->type, head_redir->name);
+			if (head_redir->next != NULL)
+				print_fd(STDOUT_FILENO, ", ");
+			head_redir = head_redir->next;
+		}
+		print_fd(STDOUT_FILENO, "]\n");
 		head_cmd = head_cmd->next;
 	}
 }
