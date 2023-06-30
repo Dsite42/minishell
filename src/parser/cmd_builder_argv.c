@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_builder_argv.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 20:47:32 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/29 22:21:18 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/30 15:10:52 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,22 +21,24 @@ static t_result	iter_only_args(t_cmd_builder *self, t_word *head_group,
 {
 	t_result	result;
 	t_word		*head_chain;
-	int			ignore_count;
 
 	result = S_OK;
-	ignore_count = 0;
 	while (head_group != NULL && result == S_OK
 		&& (head_group->flags & WORD_OP_MASK) != WORD_OP_PIPE)
 	{
+		if (head_group->flags & WORD_IS_OP)
+		{
+			head_group = head_group->next_group;
+			if (head_group == NULL)
+				break ;
+			head_group = head_group->next_group;
+			if (head_group == NULL)
+				break ;
+		}
 		head_chain = head_group;
 		while (head_chain != NULL && result == S_OK)
 		{
-			if (head_chain->flags & WORD_IS_OP)
-				ignore_count = 2;
-			if (ignore_count > 0)
-				ignore_count--;
-			else
-				result = callback(self, head_group == head_chain, head_chain);
+			result = callback(self, head_group == head_chain, head_chain);
 			head_chain = head_chain->next_chain;
 		}
 		head_group = head_group->next_group;
