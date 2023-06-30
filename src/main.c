@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 19:40:37 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/06/30 18:11:03 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/30 18:19:40 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,22 +74,12 @@ static t_result	handle_line(char *line, t_state *state)
 	return (S_OK);
 }
 
-// ctrl-\ does anyway nothing.
 void	handle_signals(int sig)
 {
-	(void)sig;
 	if (sig == SIGINT)
 		write(0, "\nminishell> ", 12);
 	else if (sig == SIGQUIT)
-	{
-
-	}
-	else if (sig == SIGTSTP)
-	{
-		//vars_clr(&state.root_var); should be state as global?
-		clear_history();
-		exit(0);
-	}
+		rl_redisplay();
 }
 
 void	disable_echo(void)
@@ -130,6 +120,7 @@ int	main(int argc, char *argv[], char *envp[])
 		if (result != S_OK)
 			print_fd(STDERR_FILENO, "Error code %i while parsing\n", result);
 	}
+	write(STDERR_FILENO, "exit\n", 5);
 	state_drop(&state);
 	return (0);
 }
