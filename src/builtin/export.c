@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 10:33:06 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/06/07 17:50:37 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/23 00:35:05 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ static int	print_exports(t_var *var, int out_fd)
 	{
 		if (var->flags & VAR_EXPORT)
 		{
-			if (*(var->value) != '\0' || *(var->value) != '=')
+			if (*var->value != '\0'
+				|| var->flags & var->flags & VAR_EXPLICIT_EMPTY)
 			{
 				print_fd(out_fd, "declare -x %s=\"", var->name);
 				print_value_with_backslash(out_fd, var->value);
@@ -53,20 +54,16 @@ static int	print_exports(t_var *var, int out_fd)
 	return (0);
 }
 
-// TODO: Edge-cases with empty values, etc, etc
 static int	set_export(t_state *state, const char *argument)
 {
 	t_var	*var;
 	t_slice	name;
 	t_slice	value;
 	t_slice	remainder;
-	int		varwitheuqalbutwovalue;
+	int		has_equal_sign;
 
-	varwitheuqalbutwovalue = 0;
 	split_once(slice0(argument), begin_delimiter, &name, &value);
-	if (*(value.data) == '=' && *(value.data + 1) == '\0')
-		varwitheuqalbutwovalue = 1;
-	value = advance(value);
+	has_equal_sign = consume(&value, "=");
 	split_once(name, begin_not_identifier, &name, &remainder);
 	if (name.size == 0 || remainder.size > 0)
 	{
@@ -74,11 +71,13 @@ static int	set_export(t_state *state, const char *argument)
 			"minishell: export: `%s': not a valid identifier\n", argument);
 		return (0);
 	}
-	var = vars_set(&state->root_var, name, value);
+	var = vars_get(&state->root_var, name);
+	if (var == NULL || has_equal_sign)
+		var = vars_set(&state->root_var, name, value);
 	if (var == NULL)
-		return (0);
+		return (1);
 	var->flags |= VAR_EXPORT;
-	if (*(var->value) != '\0' || varwitheuqalbutwovalue == 1)
+	if (value.size == 0 && has_equal_sign)
 		var->flags |= VAR_EXPLICIT_EMPTY;
 	return (1);
 }

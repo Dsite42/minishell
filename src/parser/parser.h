@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 18:55:33 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/20 11:46:09 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/30 15:43:14 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,7 @@
 # define WORD_OP_APPEND 14
 # define WORD_OP_HEREDOC 18
 # define WORD_OP_MASK 30
-
-// TODO: (Maybe) Add third "next_command" link
+# define WORD_QUOTE 32
 
 typedef struct s_word
 {
@@ -47,27 +46,29 @@ typedef struct s_word
 	struct s_word	*next_chain;
 	unsigned int	flags;
 	t_slice			slice;
-	void			*cache;
 }	t_word;
 
 // NOTE: t_word.next_group is only valid for the first node of a chain
-// NOTE: The validity of t_word.cache is up to functions writing to it
 
 typedef struct s_redir
 {
 	struct s_redir	*next;
-	int				type;
+	unsigned int	type;
 	int				pipefd_heredoc[2];
 	int				last_heredoc;
-	char			name[100];
+	char			name[];
 }	t_redir;
 
 typedef struct s_cmd
 {
 	struct s_cmd	*next;
 	t_redir			*root_redir;
-	char			*argv[100];
+	char			**argv;
 }	t_cmd;
+
+// cmds_from_words.c
+t_result	cmds_from_words(t_word *root_word, t_cmd **p_root_cmd,
+				t_state *state);
 
 // grammar.c
 size_t		begin_space(t_slice slice);
@@ -76,17 +77,11 @@ size_t		begin_word_split(t_slice slice);
 size_t		begin_single_quote_split(t_slice slice);
 size_t		begin_double_quote_split(t_slice slice);
 
-// iter_cmd_args.c
-t_result	words_iter_cmd_args(void *context_ptr, t_word **p_head_group,
-				t_result (*callback)(void *context_ptr,
-					int is_group, t_word *word));
+// parser_core.c
+void		word_clear(t_word **p_root_word);
+void		cmd_clear(t_cmd **p_root_cmd);
 
-// words.c
-int			word_new(t_word **p_new_word, unsigned int flags, t_slice slice);
-char		**argv_from_word_group(t_word *root_word, t_var **p_root_var);
-void		words_clr(t_word **p_root_word);
-
-// parser.c
-t_result	word_chain_from_string(t_word **p_root_word, t_slice remainder);
+// words_from_slice.c
+t_result	words_from_slice(t_word **p_root_word, t_slice slice);
 
 #endif // !PARSER_H

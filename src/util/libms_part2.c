@@ -3,34 +3,55 @@
 /*                                                        :::      ::::::::   */
 /*   libms_part2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/15 13:01:33 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/06/15 14:35:29 by cgodecke         ###   ########.fr       */
+/*   Created: 2023/06/12 16:39:25 by jsprenge          #+#    #+#             */
+/*   Updated: 2023/06/30 15:41:28 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "util.h"
+#include "../parser/parser.h"
+
 #include <stdlib.h>
+#include <stdarg.h>
 
-char	*ms_two_strjoin(char *str1, char *str2, char *sep)
+static char	*join_slices_populate(va_list *list, char *buffer, size_t count)
 {
-	char	*joined;
-	char	*joined_start;
-	int		len_join;
+	t_slice	slice;
+	char	*current;
 
-	len_join = ms_str_length(str1) + ms_str_length(str2)
-		+ ms_str_length(sep) + 1;
-	joined = (char *) malloc(len_join * sizeof(char));
-	joined_start = joined;
-	if (joined == NULL)
+	if (buffer == NULL)
 		return (NULL);
-	ms_copy((void *)joined, (void *)str1, ms_str_length(str1));
-	joined = joined + ms_str_length(str1);
-	ms_copy(joined, sep, ms_str_length(sep));
-	joined = joined + ms_str_length(sep);
-	ms_copy(joined, str2, ms_str_length(str2));
-	joined = joined + ms_str_length(str2);
-	*(joined) = '\0';
-	return (joined_start);
+	current = buffer;
+	while (count--)
+	{
+		slice = va_arg(*list, t_slice);
+		ms_copy(current, slice.data, slice.size);
+		current += slice.size;
+	}
+	*current = '\0';
+	return (buffer);
+}
+
+char	*ms_join_slices(size_t count, ...)
+{
+	va_list	list;
+	size_t	index;
+	size_t	length;
+	char	*buffer;
+
+	va_start(list, count);
+	index = 0;
+	length = 0;
+	while (index < count)
+	{
+		length += va_arg(list, t_slice).size;
+		index++;
+	}
+	va_end(list);
+	va_start(list, count);
+	buffer = join_slices_populate(&list, malloc(length + 1), count);
+	va_end(list);
+	return (buffer);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:59:24 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/15 14:35:57 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/30 15:41:48 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	ms_zero(void *destination, size_t size);
 void	*ms_zero_alloc(size_t size, size_t count);
 
 // libms_part2.c
-char	*ms_two_strjoin(char *str1, char *str2, char *sep);
+char	*ms_join_slices(size_t count, ...);
 
 // print_core.c
 int		print_fd(int fd, const char *format, ...);

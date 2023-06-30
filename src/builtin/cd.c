@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 16:47:53 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/06/21 17:17:58 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/30 15:42:19 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,21 +19,11 @@
 #include <sys/param.h>
 #include <stdlib.h>
 
-int	builtin_cd(int argc, char *argv[], int out_fd, t_state *state)
+static int	update_cwd_var(t_state *state)
 {
-	char	*errormessage;
-	char	buffer[MAXPATHLEN + 1];
 	t_var	*var;
+	char	buffer[MAXPATHLEN + 1];
 
-
-	(void) buffer;
-	(void) argc;
-	if (chdir(argv[1]) != 0)
-	{
-		errormessage = strerror(errno);
-		print_fd(out_fd, "minishell: cd: %s: %s\n", argv[1], errormessage);
-		return (1);
-	}
 	if (getcwd(buffer, sizeof(buffer)) == NULL)
 	{
 		perror("getcwd() error");
@@ -43,4 +33,26 @@ int	builtin_cd(int argc, char *argv[], int out_fd, t_state *state)
 	if (var == NULL)
 		return (1);
 	return (0);
+}
+
+int	builtin_cd(int argc, char *argv[], int out_fd, t_state *state)
+{
+	(void) out_fd;
+	if (argc < 2)
+	{
+		print_fd(STDERR_FILENO, "minishell: cd: too few arguments\n");
+		return (1);
+	}
+	if (argc > 2)
+	{
+		print_fd(STDERR_FILENO, "minishell: cd: too many arguments\n");
+		return (1);
+	}
+	if (chdir(argv[1]) != 0)
+	{
+		print_fd(STDERR_FILENO,
+			"minishell: cd: %s: %s\n", argv[1], strerror(errno));
+		return (1);
+	}
+	return (update_cwd_var(state));
 }
