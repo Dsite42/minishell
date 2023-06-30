@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 15:56:09 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/06/30 14:51:44 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/30 15:45:49 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,63 +65,13 @@ static void	init_piping_data(t_piping *piping_data, t_cmd *first_cmd)
 	piping_data->i = 0;
 }
 
-void	run_cmds(char **argv, char **envp, t_state *state)
+void	run_cmds(t_cmd *root_cmd, char **envp, t_state *state)
 {
-	t_redir	fivth_redir = {
-		.next = NULL,
-		.type = WORD_OP_WRITE,
-		.name = "output.txt"
-	};
-
-	t_redir	sixth_redir = {
-		.next = NULL,
-		.type = WORD_OP_READ,
-		.name = "input.txt"
-	};
-	t_redir	fourth_redir = {
-		.next = NULL,
-		.type = WORD_OP_APPEND,
-		.name = "output.txt"
-	};
-	t_redir	third_redir = {
-		.next = NULL,
-		.type = WORD_OP_WRITE,
-		.name = "output3.txt"
-	};
-	t_redir	second_redir = {
-		.next = NULL,
-		.type = WORD_OP_WRITE,
-		.name = "output2.txt"
-	};
-	t_redir	first_redir = {
-		.next = NULL,
-		.type = WORD_OP_HEREDOC,
-		.name = "eof"
-	};
-
-	t_cmd third = {
-		.next = NULL,
-		.root_redir = NULL,
-		.argv = {"pwd", NULL}
-	};
-
-	t_cmd second = {
-			.next = &third,
-			.root_redir = NULL,
-			.argv = {"cd", "src", NULL}
-		};
-	t_cmd	first = {
-		.next = NULL,
-		.root_redir = NULL,
-		.argv = {"pwd", NULL}
-	};
-
-
 	t_piping	piping_data;
 	pid_t		pid;
 	int			status;
 
-	init_piping_data(&piping_data, &first);
+	init_piping_data(&piping_data, root_cmd);
 	check_heredoc(piping_data);
 	while (piping_data.i < piping_data.num_cmds)
 	{
