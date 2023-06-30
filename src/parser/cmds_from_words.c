@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 21:39:05 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/30 14:13:37 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/30 15:31:51 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,28 @@ t_result	cmds_from_words(
 {
 	t_result	result;
 	t_cmd		*head_cmd;
+	t_word		*head_word;
 
-	// FIXME: Only taking the first command
 	result = insert_vars(root_word, state);
 	if (result != S_OK)
 		return (result);
 	*p_root_cmd = NULL;
-	result = build_cmd(root_word, p_root_cmd, &head_cmd);
-	if (result != S_OK)
-		return (result);
+	head_word = root_word;
+	while (head_word != NULL)
+	{
+		if ((head_word->flags & WORD_OP_MASK) == WORD_OP_PIPE)
+		{
+			head_word = head_word->next_group;
+			if (head_word == NULL)
+				break ;
+		}
+		result = build_cmd(head_word, p_root_cmd, &head_cmd);
+		if (result != S_OK)
+			return (result);
+		while (head_word != NULL && (head_word->flags & WORD_OP_MASK) != WORD_OP_PIPE)
+		{
+			head_word = head_word->next_group;
+		}
+	}
 	return (S_OK);
 }
