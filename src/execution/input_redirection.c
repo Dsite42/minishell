@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 11:56:58 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/06/29 17:28:45 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/30 14:47:25 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	dup_read(t_piping *piping_data, int *fd_dup)
 		pipex_error(1, "input:", 1, errno);
 	fd_dup[0] = dup2(fd_infile, STDIN_FILENO);
 	if (fd_dup[0] == -1)
-		pipex_error(1, "dup_input_1 error", 1, errno);
+		pipex_error(1, "dup_infile_input_1 error", 1, errno);
 	close(fd_infile);
 }
 
@@ -71,11 +71,14 @@ void	input_redirection(t_piping *piping_data, int *fd_dup)
 	if (is_read_or_heredoc(piping_data->cmd->root_redir))
 		dup_read_heredoc(piping_data, fd_dup);
 	else if (piping_data->prev_read != STDIN_FILENO)
-	{	
+	{
 		fd_dup[0] = dup2(piping_data->prev_read, STDIN_FILENO);
 		close(piping_data->prev_read);
 		if (fd_dup[0] == -1)
+		{
+			print_fd(2, "i:%i\n", piping_data->i);
 			pipex_error(1, "dup_input_1 error", 1, errno);
+		}
 	}
 	piping_data->cmd->root_redir = root_dir_start;
 }

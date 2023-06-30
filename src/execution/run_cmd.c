@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 15:56:09 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/06/29 16:03:53 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/30 14:51:44 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ void	run_cmds(char **argv, char **envp, t_state *state)
 			.argv = {"cd", "src", NULL}
 		};
 	t_cmd	first = {
-		.next = &second,
+		.next = NULL,
 		.root_redir = NULL,
 		.argv = {"pwd", NULL}
 	};
@@ -130,7 +130,9 @@ void	run_cmds(char **argv, char **envp, t_state *state)
 		if (pid == -1)
 			pipex_error(1, "fork error", 1, errno);
 		else if (pid == 0)
+		{
 			child(piping_data.cmd->argv, envp, &piping_data, state);
+		}
 		else
 			parent(&piping_data, state);
 		piping_data.i++;

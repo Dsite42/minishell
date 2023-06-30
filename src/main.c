@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 14:36:07 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/06/21 15:49:45 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/30 14:40:18 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ int	main(int argc, char *argv[], char *envp[])
 
 	(void) argc;
 	(void) argv;
+	state.saved_STDOUT_FILENO = dup(1);
 	if (!vars_from_envp(envp, &state.root_var))
 		return (1);
 	while (1)

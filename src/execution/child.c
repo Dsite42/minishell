@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 10:59:08 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/06/29 17:23:46 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/30 14:49:14 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,14 +63,18 @@ void	child(char **argv, char **envp, t_piping *piping_data, t_state *state)
 	int		fd_dup[2];
 	char	*path_cmd;
 
+	if (is_builtin(piping_data->cmd->argv) == 1 && piping_data->num_cmds == 1)
+	{
+		exit(10);
+	}
 	input_redirection(piping_data, fd_dup);
 	output_redirection(piping_data, fd_dup);
-	if (is_builtin(piping_data->cmd->argv) == 1 && piping_data->num_cmds > 1)
+	if (is_builtin(argv) == 1 && piping_data->num_cmds > 1)
 	{
-		if (run_builtin(argv, state) == 127)
-			exit(10);
+		run_builtin(argv, state);
+		exit(10);
 	}
-	else if (is_builtin(piping_data->cmd->argv) == 0)
+	else if (is_builtin(argv) == 0)
 	{
 		path_cmd = get_path_cmd(piping_data->cmd->argv, state);
 		if (execve((const char *) path_cmd,
