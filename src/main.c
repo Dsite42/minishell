@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 19:40:37 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/06/30 18:19:40 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/30 18:22:05 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ static int	run_builtin(char **argv, t_state *state)
 	int	count;
 
 	count = (int) ms_ptrs_count(argv);
+	if (count == 0)
+		return (0);
 	if (ms_str_compare(argv[0], "cd", 0) == 0)
 		return (builtin_cd(count, argv, STDOUT_FILENO, state));
 	if (ms_str_compare(argv[0], "echo", 0) == 0)

@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 10:33:06 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/06/04 22:05:00 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/23 00:35:05 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,21 @@
 
 #include <unistd.h>
 
+static void	print_value_with_backslash(int out_fd, char *var_value)
+{
+	while (*var_value != '\0')
+	{
+		if (*var_value == '"' || *var_value == '$')
+		{
+			print_fd(out_fd, "\\%c", *var_value);
+		}
+		else
+			print_fd(out_fd, "%c", *var_value);
+		var_value++;
+	}
+	print_fd(out_fd, "\"\n");
+}
+
 static int	print_exports(t_var *var, int out_fd)
 {
 	if (var == NULL)
@@ -24,22 +39,31 @@ static int	print_exports(t_var *var, int out_fd)
 	while (var != NULL)
 	{
 		if (var->flags & VAR_EXPORT)
-			print_fd(out_fd, "declare -x %s=\"%s\"\n", var->name, var->value);
+		{
+			if (*var->value != '\0'
+				|| var->flags & var->flags & VAR_EXPLICIT_EMPTY)
+			{
+				print_fd(out_fd, "declare -x %s=\"", var->name);
+				print_value_with_backslash(out_fd, var->value);
+			}
+			else
+				print_fd(out_fd, "declare -x %s\n", var->name);
+		}
 		var = var->next;
 	}
 	return (0);
 }
 
-// TODO: Edge-cases with empty values, etc, etc
 static int	set_export(t_state *state, const char *argument)
 {
 	t_var	*var;
 	t_slice	name;
 	t_slice	value;
 	t_slice	remainder;
+	int		has_equal_sign;
 
 	split_once(slice0(argument), begin_delimiter, &name, &value);
-	value = advance(value);
+	has_equal_sign = consume(&value, "=");
 	split_once(name, begin_not_identifier, &name, &remainder);
 	if (name.size == 0 || remainder.size > 0)
 	{
@@ -47,10 +71,14 @@ static int	set_export(t_state *state, const char *argument)
 			"minishell: export: `%s': not a valid identifier\n", argument);
 		return (0);
 	}
-	var = vars_set(&state->root_var, name, value);
+	var = vars_get(&state->root_var, name);
+	if (var == NULL || has_equal_sign)
+		var = vars_set(&state->root_var, name, value);
 	if (var == NULL)
-		return (0);
+		return (1);
 	var->flags |= VAR_EXPORT;
+	if (value.size == 0 && has_equal_sign)
+		var->flags |= VAR_EXPLICIT_EMPTY;
 	return (1);
 }
 
