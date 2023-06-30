@@ -3,7 +3,10 @@ OBJS=
 HDRS=
 
 CFLAGS=-Wall -Wextra -Werror
-LIBS=-l readline
+
+RL_PREFIX ?= $(HOME)/.local/pkg/readline
+CFLAGS += -I $(RL_PREFIX)/include
+LIBS += -L $(RL_PREFIX)/lib -l readline -l history -l curses
 
 include src/Makefile
 
