@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 15:56:09 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/06/30 14:51:44 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/30 17:01:31 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <string.h>
+#include <sys/wait.h>
 
 void	pipex_error(int shall_exit, char *message,
 			int isstrerror, int exit_code)
@@ -86,12 +87,12 @@ void	run_cmds(char **argv, char **envp, t_state *state)
 	t_redir	third_redir = {
 		.next = NULL,
 		.type = WORD_OP_WRITE,
-		.name = "output3.txt"
+		.name = "output2.txt"
 	};
 	t_redir	second_redir = {
-		.next = NULL,
+		.next = &third_redir,
 		.type = WORD_OP_WRITE,
-		.name = "output2.txt"
+		.name = "output.txt"
 	};
 	t_redir	first_redir = {
 		.next = NULL,
@@ -106,14 +107,14 @@ void	run_cmds(char **argv, char **envp, t_state *state)
 	};
 
 	t_cmd second = {
-			.next = &third,
+			.next = NULL,
 			.root_redir = NULL,
-			.argv = {"cd", "src", NULL}
+			.argv = {"cat", NULL}
 		};
 	t_cmd	first = {
 		.next = NULL,
 		.root_redir = NULL,
-		.argv = {"pwd", NULL}
+		.argv = {"src/a.out", NULL}
 	};
 
 
