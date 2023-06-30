@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 19:40:37 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/06/30 18:30:56 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/06/30 18:54:30 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ static void	signal_handler(int sig)
 		if (sig == SIGINT)
 		{
 			write(STDOUT_FILENO, "\n", 1);
+			rl_replace_line("", 1);
 			rl_on_new_line();
 		}
 		rl_redisplay();
