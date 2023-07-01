@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 20:47:32 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/30 15:10:52 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/01 17:46:14 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,27 +19,27 @@
 static t_result	iter_only_args(t_cmd_builder *self, t_word *head_group,
 	t_result (*callback) (t_cmd_builder *self, int is_group, t_word *word))
 {
+	int			skips;
 	t_result	result;
 	t_word		*head_chain;
 
+	skips = 0;
 	result = S_OK;
 	while (head_group != NULL && result == S_OK
 		&& (head_group->flags & WORD_OP_MASK) != WORD_OP_PIPE)
 	{
 		if (head_group->flags & WORD_IS_OP)
+			skips = 2;
+		if (skips > 0)
+			skips--;
+		else
 		{
-			head_group = head_group->next_group;
-			if (head_group == NULL)
-				break ;
-			head_group = head_group->next_group;
-			if (head_group == NULL)
-				break ;
-		}
-		head_chain = head_group;
-		while (head_chain != NULL && result == S_OK)
-		{
-			result = callback(self, head_group == head_chain, head_chain);
-			head_chain = head_chain->next_chain;
+			head_chain = head_group;
+			while (head_chain != NULL && result == S_OK)
+			{
+				result = callback(self, head_group == head_chain, head_chain);
+				head_chain = head_chain->next_chain;
+			}
 		}
 		head_group = head_group->next_group;
 	}
