@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 15:56:09 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/07/01 15:07:30 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/07/01 18:36:31 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	run_cmds(char **argv, char **envp, t_state *state)
 		.name = "output.txt"
 	};
 	t_redir	third_redir = {
-		.next = NULL,
+		.next = &fivth_redir,
 		.type = WORD_OP_WRITE,
 		.name = "output2.txt"
 	};
@@ -119,9 +119,9 @@ void	run_cmds(char **argv, char **envp, t_state *state)
 			.argv = {"cat", NULL}
 		};
 	t_cmd	first = {
-		.next = NULL,
+		.next = &second,
 		.root_redir = NULL,
-		.argv = {"src/a.outt", NULL}
+		.argv = {"echo", "Hallo",NULL}
 	};
 
 

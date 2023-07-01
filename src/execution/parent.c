@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 11:22:16 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/07/01 14:40:08 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/07/01 18:19:37 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	parent(t_piping *piping_data, t_state *state)
 {
 	int	fd_dup[2];
 
-	if (is_builtin(piping_data->cmd->argv) == 1 && piping_data->num_cmds == 1)
+	if (*piping_data->cmd->argv != NULL && is_builtin(piping_data->cmd->argv) == 1 && piping_data->num_cmds == 1)
 	{
 		input_redirection(piping_data, fd_dup);
 		output_redirection(piping_data, fd_dup);
