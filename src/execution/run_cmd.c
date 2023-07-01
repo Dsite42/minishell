@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 15:56:09 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/07/01 18:36:31 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/07/01 19:40:24 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ void	run_cmds(char **argv, char **envp, t_state *state)
 	t_cmd second = {
 			.next = NULL,
 			.root_redir = NULL,
-			.argv = {"cat", NULL}
+			.argv = {"export", NULL}
 		};
 	t_cmd	first = {
 		.next = &second,
@@ -142,14 +142,24 @@ void	run_cmds(char **argv, char **envp, t_state *state)
 			child(piping_data.cmd->argv, envp, &piping_data, state);
 		}
 		else
+		{
+			pid = wait(&status);
+			if (WIFEXITED(status))
+			{
+				vars_set(&(state->root_var), slice0("$?"), slice0("666666"));
+				print_fd(2, "var_name:%s\n", vars_get(&(state->root_var), slice0("TEST"))->name);
+				print_fd(2, "parent get exit code: %d of child %d\n", WEXITSTATUS(status), (long)pid);
+			}
 			parent(&piping_data, state);
+		}
 		piping_data.i++;
 		if (piping_data.cmd->next != NULL)
 			piping_data.cmd = piping_data.cmd->next;
 	}
-	while (piping_data.num_cmds > 0)
-	{
-		wait(&status);
+	//while (piping_data.num_cmds > 0)
+	//{
+	//	wait(&status);
+	//	print_fd(2, "Error code:%i\n", status);
 		piping_data.num_cmds--;
-	}
+	//}
 }
