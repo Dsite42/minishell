@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:10:00 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/30 14:12:37 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/01 18:26:49 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 #include <readline/history.h>
 #include <readline/readline.h>
 
-#define FLAGS "VO---Q"
+#define FLAGS "VO---QSI"
 
 static void	dump_flags(char flag_prefix[sizeof(FLAGS)], unsigned int flags)
 {
@@ -55,7 +55,12 @@ static void	dump_word(t_word *head_group, t_word *head_chain)
 	dump_flags(flag_prefix, head_chain->flags);
 	if (head_chain == head_group && head_group->next_chain == NULL)
 	{
-		print_fd(STDOUT_FILENO, "  [%s] '%a'\n", flag_prefix, head_chain->slice);
+		if (head_chain->flags & WORD_SOURCE)
+			print_fd(STDOUT_FILENO, "  [%s] '%a' (%a)\n", flag_prefix,
+				head_chain->slice, head_chain->source);
+		else
+			print_fd(STDOUT_FILENO, "  [%s] '%a'\n", flag_prefix,
+				head_chain->slice);
 		return ;
 	}
 	if (head_chain == head_group)
@@ -64,8 +69,12 @@ static void	dump_word(t_word *head_group, t_word *head_chain)
 		join_prefix = "╰ ";
 	else
 		join_prefix = "│ ";
-	print_fd(STDOUT_FILENO, "%s[%s] '%a'\n",
-		join_prefix, flag_prefix, head_chain->slice);
+	if (head_chain->flags & WORD_SOURCE)
+		print_fd(STDOUT_FILENO, "%s[%s] '%a' (%a)\n",
+			join_prefix, flag_prefix, head_chain->slice, head_chain->source);
+	else
+		print_fd(STDOUT_FILENO, "%s[%s] '%a'\n",
+			join_prefix, flag_prefix, head_chain->slice);
 }
 
 static void	dump_words(t_word *head_group)

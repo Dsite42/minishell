@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 18:55:33 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/30 14:26:24 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/01 18:20:07 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@
 # define WORD_OP_HEREDOC 18
 # define WORD_OP_MASK 30
 # define WORD_QUOTE 32
+# define WORD_SOURCE 64
+# define WORD_INSERT 128
 
 typedef struct s_word
 {
@@ -46,6 +48,7 @@ typedef struct s_word
 	struct s_word	*next_chain;
 	unsigned int	flags;
 	t_slice			slice;
+	t_slice			source;
 }	t_word;
 
 // NOTE: t_word.next_group is only valid for the first node of a chain
