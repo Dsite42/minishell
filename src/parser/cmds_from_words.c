@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 21:39:05 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/30 15:31:51 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/01 20:14:10 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,9 @@ t_result	cmds_from_words(
 	t_word		*head_word;
 
 	result = insert_vars(root_word, state);
+	if (result != S_OK)
+		return (result);
+	result = check_syntax(root_word);
 	if (result != S_OK)
 		return (result);
 	*p_root_cmd = NULL;

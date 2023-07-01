@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:59:24 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/29 23:56:28 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/01 20:31:32 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,17 @@
 // If a function wants to use the codes below, it MUST return t_result instead
 
 # define S_OK 0
-# define E_BUG -1
-# define E_NOMEM -2
-# define E_SQTERM -3
-# define E_DQTERM -4
+# define E_BUG -1 // minishell: parser has invalid state
+# define E_NOMEM -2 // minishell: out of memory
+# define E_SQTERM -3 // minishell: unexpected EOF while looking for matching `''
+# define E_DQTERM -4 // minishell: unexpected EOF while looking for matching `"'
+# define E_SYNPIPE -5 // minishell: syntax error near unexpected token `|'
+# define E_SYNLF -6 // minishell: syntax error near unexpected token `newline'
+# define E_SYNAMB -7 // minishell: <VAR>: ambiguous redirect
+# define E_SYNREAD -8 // minishell: syntax error near unexpected token `<'
+# define E_SYNWRITE -9 // minishell: syntax error near unexpected token `>'
+# define E_SYNAPPEND -10 // minishell: syntax error near unexpected token `>>'
+# define E_SYNHEREDOC -11 // minishell: syntax error near unexpected token `<<'
 
 typedef struct s_slice
 {
