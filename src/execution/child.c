@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 10:59:08 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/06/30 17:03:09 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/07/01 14:13:29 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ void	child(char **argv, char **envp, t_piping *piping_data, t_state *state)
 	else if (is_builtin(argv) == 0)
 	{
 		path_cmd = get_path_cmd(piping_data->cmd->argv, state);
+		if (path_cmd == NULL)
+			error_cmd_not_found(*argv);
 		if (execve((const char *) path_cmd,
 				piping_data->cmd->argv, envp) == -1)
 			pipex_error(0, "execve child error.", 1, errno);
