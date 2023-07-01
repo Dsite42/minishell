@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 15:56:09 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/07/01 20:44:20 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/07/01 20:54:19 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void	run_cmds(t_cmd *root_cmd, char **envp, t_state *state)
 			pid = wait(&status);
 			if (WIFEXITED(status))
 			{
-				vars_set(&(state->root_var), slice0("$?"), slice0(ms_int_to_str(WEXITSTATUS(status))));
+				vars_set(&(state->root_var), slice0("?"), slice0(ms_int_to_str(WEXITSTATUS(status))));
 				//print_fd(2, "var_name:%s\n", vars_get(&(state->root_var), slice0("TEST"))->value);
 				//print_fd(2, "parent get exit code: %d of child %d\n", WEXITSTATUS(status), (long)pid);
 			}

@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:10:00 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/07/01 20:47:15 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/07/01 20:55:20 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ static void	dump_word(t_word *head_group, t_word *head_chain)
 			join_prefix, flag_prefix, head_chain->slice);
 }
 
-static void	dump_words(t_word *head_group)
+void	dump_words(t_word *head_group)
 {
 	t_word	*head_chain;
 
@@ -99,7 +99,7 @@ static void	dump_words(t_word *head_group)
 	}
 }
 
-static void	dump_cmds(t_cmd *head_cmd)
+void	dump_cmds(t_cmd *head_cmd)
 {
 	size_t	count;
 	size_t	index;
@@ -143,13 +143,15 @@ static t_result	handle_line(char *line, t_state *state, char **envp)
 	result = words_from_slice(&root_word, slice0(line));
 	if (result == S_OK)
 	{
+		//print_fd(STDOUT_FILENO, "Word tree before cmds_from_words():\n");
+		//dump_words(root_word);
 		result = cmds_from_words(root_word, &root_cmd, state);
 		if (result == S_OK)
 		{
-			print_fd(STDOUT_FILENO, "Word tree after cmds_from_words():\n");
-			dump_words(root_word);
-			print_fd(STDOUT_FILENO, "Result of cmds_from_words():\n");
-			dump_cmds(root_cmd);
+			//print_fd(STDOUT_FILENO, "Word tree after cmds_from_words():\n");
+			//dump_words(root_word);
+			//print_fd(STDOUT_FILENO, "Result of cmds_from_words():\n");
+			//dump_cmds(root_cmd);
 			run_cmds(root_cmd, envp, state);
 			cmd_clear(&root_cmd);
 		}
