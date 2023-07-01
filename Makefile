@@ -13,7 +13,9 @@ include src/Makefile
 .PHONY: all clean fclean re
 
 all: $(NAME)
-re: fclean all
+re:
+	make fclean
+	make all
 
 $(NAME): $(OBJS)
 	$(CC) $(OBJS) -o $(NAME) $(LIBS)
