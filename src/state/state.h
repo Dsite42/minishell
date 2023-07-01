@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:17:03 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/30 14:39:19 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/07/01 19:45:25 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,8 @@ int		vars_from_envp(char *envp[], t_var **p_root_var);
 char	**envp_from_vars(t_var **p_root_var);
 int		is_delimiter(char input);
 size_t	begin_delimiter(t_slice slice);
+int		iter_export_vars(void *context_ptr, t_var **p_root_var,
+			int (*callback)(void *context_ptr, t_var *var),
+			size_t *p_count);
 
 #endif // !STATE_H

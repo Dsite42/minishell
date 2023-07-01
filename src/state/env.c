@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 18:30:36 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/15 13:28:59 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/06/23 00:05:54 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,45 +41,74 @@ int	vars_from_envp(char *envp[], t_var **p_root_var)
 	return (1);
 }
 
-// TODO: Implement this
-static int	count_envps(t_var *p_root_var)
+static int	populate_envp(void *context_ptr, t_var *var)
 {
-	int		envs_counter;
+	char	***p_iter;
+	size_t	new_length;
+	size_t	name_length;
+	size_t	value_length;
+	char	*new_string;
 
-	envs_counter = 0;
-	while (p_root_var != NULL)
-	{
-		if (p_root_var->flags & VAR_EXPORT
-			&& p_root_var->flags & VAR_EXPLICIT_EMPTY)
-			envs_counter++;
-		p_root_var = p_root_var->next;
-	}
-	return (envs_counter);
+	p_iter = context_ptr;
+	name_length = ms_str_length(var->name);
+	value_length = ms_str_length(var->value);
+	new_length = name_length + 1 + value_length;
+	new_string = malloc(new_length + 1);
+	if (new_string == NULL)
+		return (0);
+	ms_copy(&new_string[0], var->name, name_length);
+	new_string[name_length] = '=';
+	ms_copy(&new_string[name_length + 1], var->value, value_length);
+	new_string[new_length] = '\0';
+	*((*p_iter)++) = new_string;
+	return (1);
 }
 
 char	**envp_from_vars(t_var **p_root_var)
 {
-	t_var	*head_var;
-	char	**envp;
-	char	**envp_start;
-	int		envs_counter;
+	size_t	count;
+	char	**iter;
+	char	**new_envp;
 
-	head_var = *p_root_var;
-	envs_counter = count_envps(head_var);
-	envp = (char **)malloc((envs_counter + 1) * sizeof (char *));
-	if (envp == NULL)
+	iter_export_vars(&count, p_root_var, NULL, &count);
+	new_envp = ms_zero_alloc(sizeof(char *), count);
+	if (new_envp == NULL)
 		return (NULL);
-	envp_start = envp;
+	iter = new_envp;
+	if (!iter_export_vars(&iter, p_root_var, populate_envp, NULL))
+	{
+		ms_ptrs_free(new_envp);
+		return (NULL);
+	}
+	return (new_envp);
+}
+
+int	iter_export_vars(void *context_ptr, t_var **p_root_var,
+			int (*callback)(void *context_ptr, t_var *var),
+			size_t *p_count)
+{
+	size_t	count;
+	int		result;
+	t_var	*head_var;
+
+	count = 0;
 	head_var = *p_root_var;
 	while (head_var != NULL)
 	{
-		if (head_var->flags & VAR_EXPORT)
+		if (head_var->flags & VAR_EXPORT && (*head_var->value != '\0'
+				|| head_var->flags & VAR_EXPLICIT_EMPTY))
 		{
-			*envp = ms_two_strjoin(head_var->name, head_var->value, "=");
-			envp++;
+			if (callback != NULL)
+			{
+				result = callback(context_ptr, head_var);
+				if (!result)
+					return (result);
+			}
+			count++;
 		}
 		head_var = head_var->next;
 	}
-	*envp = NULL;
-	return (envp_start);
+	if (p_count != NULL)
+		*p_count = count;
+	return (1);
 }
