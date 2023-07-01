@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:10:00 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/07/01 20:17:19 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/01 20:20:44 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 #include "state/state.h"
 #include "parser/parser.h"
 #include "builtin/builtin.h"
+#include <signal.h>
+#include <termios.h>
+#include <sys/ioctl.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -154,16 +157,45 @@ static t_result	handle_line(char *line, t_state *state)
 	return (result);
 }
 
+static void	signal_handler(int sig)
+{
+	if (sig == SIGINT || sig == SIGQUIT)
+	{
+		if (sig == SIGINT)
+		{
+			write(STDOUT_FILENO, "\n", 1);
+			rl_on_new_line();
+		}
+		rl_redisplay();
+	}
+}
+
+static void	setup_signals(void)
+{
+	struct sigaction	sa;
+	struct termios		term;
+
+	tcgetattr(STDIN_FILENO, &term);
+	term.c_lflag &= ~ECHOCTL;
+	tcsetattr(STDIN_FILENO, TCSANOW, &term);
+	ms_zero(&sa, sizeof(sa));
+	sa.sa_handler = signal_handler;
+	sa.sa_flags = SA_RESTART;
+	sigaction(SIGINT, &sa, NULL);
+	sigaction(SIGQUIT, &sa, NULL);
+}
+
 int	main(int argc, char *argv[], char *envp[])
 {
-	t_state		state;
-	t_result	result;
-	char		*line;
+	t_state				state;
+	t_result			result;
+	char				*line;
 
 	(void) argc;
 	(void) argv;
 	if (!vars_from_envp(envp, &state.root_var))
 		return (1);
+	setup_signals();
 	while (1)
 	{
 		line = readline("minishell> ");
@@ -174,6 +206,7 @@ int	main(int argc, char *argv[], char *envp[])
 		if (result != S_OK)
 			print_fd(STDERR_FILENO, "Error code %i while parsing\n", result);
 	}
+	write(STDERR_FILENO, "exit\n", 5);
 	state_drop(&state);
 	return (0);
 }
