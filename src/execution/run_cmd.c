@@ -18,6 +18,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <string.h>
+#include <sys/wait.h>
 
 void	pipex_error(int shall_exit, char *message,
 			int isstrerror, int exit_code)
