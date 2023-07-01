@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libms_part2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 13:01:33 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/06/19 15:20:27 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/01 19:35:35 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,15 @@ char	*ms_join_slices(size_t count, ...)
 	buffer = join_slices_populate(&list, malloc(length + 1), count);
 	va_end(list);
 	return (buffer);
+}
+
+char	*ms_mem_clone(const void *data, size_t size)
+{
+	void	*new_data;
+
+	new_data = malloc(size);
+	if (new_data == NULL)
+		return (NULL);
+	ms_copy(new_data, data, size);
+	return (new_data);
 }
