@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 15:56:09 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/06/30 15:45:49 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/01 15:15:43 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,17 @@ void	pipex_error(int shall_exit, char *message,
 			int isstrerror, int exit_code)
 {
 	if (isstrerror == 1)
-		print_fd(2, "pipex: %s %s\n", message, strerror(exit_code));
+		print_fd(2, "minishell: %s %s\n", message, strerror(exit_code));
 	else
-		print_fd(2, "pipex: %s\n", message);
+		print_fd(2, "minishell: %s\n", message);
 	if (shall_exit == 1)
 		exit(exit_code);
+}
+
+void	error_cmd_not_found(char *cmd)
+{
+	print_fd(2, "minishell: %s: command not found\n", cmd);
+	exit(127);
 }
 
 static int	count_cmds(t_cmd *cmd_root)
