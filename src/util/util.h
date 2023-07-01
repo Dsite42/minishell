@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:59:24 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/07/01 19:35:38 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/01 19:36:35 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	*ms_zero_alloc(size_t size, size_t count);
 // libms_part2.c
 char	*ms_join_slices(size_t count, ...);
 char	*ms_mem_clone(const void *data, size_t size);
+char	*ms_int_to_str(int value);
 
 // print_core.c
 int		print_fd(int fd, const char *format, ...);
