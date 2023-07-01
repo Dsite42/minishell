@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/15 16:10:00 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/07/01 19:50:37 by cgodecke         ###   ########.fr       */
+/*   Created: 2023/06/15 14:36:07 by cgodecke          #+#    #+#             */
+/*   Updated: 2023/07/01 20:14:19 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,26 +26,6 @@
 
 void	run_cmds(char **argv, char **envp, t_state *state);
 
-	count = (int) ms_ptrs_count(argv);
-	if (count == 0)
-		return (0);
-	if (ms_str_compare(argv[0], "cd", 0) == 0)
-		return (builtin_cd(count, argv, STDOUT_FILENO, state));
-	if (ms_str_compare(argv[0], "echo", 0) == 0)
-		return (builtin_echo(count, argv, STDOUT_FILENO, state));
-	if (ms_str_compare(argv[0], "env", 0) == 0)
-		return (builtin_env(count, argv, STDOUT_FILENO, state));
-	if (ms_str_compare(argv[0], "exit", 0) == 0)
-		return (builtin_exit(count, argv, STDOUT_FILENO, state));
-	if (ms_str_compare(argv[0], "export", 0) == 0)
-		return (builtin_export(count, argv, STDOUT_FILENO, state));
-	if (ms_str_compare(argv[0], "pwd", 0) == 0)
-		return (builtin_pwd(count, argv, STDOUT_FILENO, state));
-	if (ms_str_compare(argv[0], "unset", 0) == 0)
-		return (builtin_unset(count, argv, STDOUT_FILENO, state));
-	print_fd(STDERR_FILENO, "minishell: %s: command not found\n", argv[0]);
-	return (127);
-}
 
 static t_result	handle_line(char *line, t_state *state)
 {
