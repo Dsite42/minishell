@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   insert_vars.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 17:54:20 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/29 20:19:07 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/01 18:31:45 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,11 @@ static t_result	insert_word(t_word **p_head_group, t_word **p_prev_chain,
 {
 	t_word	*new_word;
 
-	if (!word_new(&new_word, 0, slice))
+	if (!word_new(&new_word, WORD_INSERT | WORD_SOURCE, slice))
 		return (E_NOMEM);
 	new_word->next_chain = (*p_head_chain)->next_chain;
 	new_word->next_group = (*p_head_group)->next_group;
+	new_word->source = (*p_head_chain)->source;
 	(*p_head_chain)->next_chain = NULL;
 	(*p_head_group)->next_group = new_word;
 	*p_head_group = new_word;
@@ -108,7 +109,8 @@ static t_result	insert_var(t_word **p_head_group, t_word **p_prev_chain,
 		slice.size = 0;
 	else
 		slice = slice0(var->value);
-	(*p_head_chain)->flags &= ~WORD_VAR;
+	(*p_head_chain)->flags = ((*p_head_chain)->flags & ~WORD_VAR) | WORD_SOURCE;
+	(*p_head_chain)->source = (*p_head_chain)->slice;
 	if ((*p_head_chain)->flags & WORD_QUOTE)
 	{
 		(*p_head_chain)->slice = slice;
