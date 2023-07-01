@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 15:56:09 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/06/30 15:45:49 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/01 14:51:36 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,23 @@
 #include <unistd.h>
 #include <errno.h>
 #include <string.h>
+#include <sys/wait.h>
 
 void	pipex_error(int shall_exit, char *message,
 			int isstrerror, int exit_code)
 {
 	if (isstrerror == 1)
-		print_fd(2, "pipex: %s %s\n", message, strerror(exit_code));
+		print_fd(2, "minishell: %s %s\n", message, strerror(exit_code));
 	else
-		print_fd(2, "pipex: %s\n", message);
+		print_fd(2, "minishell: %s\n", message);
 	if (shall_exit == 1)
 		exit(exit_code);
+}
+
+void	error_cmd_not_found(char *cmd)
+{
+	print_fd(2, "minishell: %s: command not found\n", cmd);
+	exit(127);
 }
 
 static int	count_cmds(t_cmd *cmd_root)
@@ -67,6 +74,56 @@ static void	init_piping_data(t_piping *piping_data, t_cmd *first_cmd)
 
 void	run_cmds(t_cmd *root_cmd, char **envp, t_state *state)
 {
+	t_redir	fivth_redir = {
+		.next = NULL,
+		.type = WORD_OP_WRITE,
+		.name = "output.txt"
+	};
+
+	t_redir	sixth_redir = {
+		.next = NULL,
+		.type = WORD_OP_READ,
+		.name = "input.txt"
+	};
+	t_redir	fourth_redir = {
+		.next = NULL,
+		.type = WORD_OP_APPEND,
+		.name = "output.txt"
+	};
+	t_redir	third_redir = {
+		.next = NULL,
+		.type = WORD_OP_WRITE,
+		.name = "output2.txt"
+	};
+	t_redir	second_redir = {
+		.next = &third_redir,
+		.type = WORD_OP_WRITE,
+		.name = "output.txt"
+	};
+	t_redir	first_redir = {
+		.next = NULL,
+		.type = WORD_OP_HEREDOC,
+		.name = "eof"
+	};
+
+	t_cmd third = {
+		.next = NULL,
+		.root_redir = NULL,
+		.argv = {"pwd", NULL}
+	};
+
+	t_cmd second = {
+			.next = NULL,
+			.root_redir = NULL,
+			.argv = {"cat", NULL}
+		};
+	t_cmd	first = {
+		.next = NULL,
+		.root_redir = NULL,
+		.argv = {"src/a.outt", NULL}
+	};
+
+
 	t_piping	piping_data;
 	pid_t		pid;
 	int			status;
