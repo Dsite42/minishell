@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 16:06:44 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/06/30 14:51:21 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/07/01 14:40:25 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include <errno.h>
 #include <unistd.h>
 #include <fcntl.h>
-
 
 static int	is_write_or_append(t_redir *root_redir)
 {
