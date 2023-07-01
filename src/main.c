@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:10:00 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/07/01 18:26:49 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/01 20:17:19 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,9 +146,9 @@ static t_result	handle_line(char *line, t_state *state)
 			dump_words(root_word);
 			print_fd(STDOUT_FILENO, "Result of cmds_from_words():\n");
 			dump_cmds(root_cmd);
+			cmd_clear(&root_cmd);
 		}
 		word_clear(&root_word);
-		cmd_clear(&root_cmd);
 	}
 	free(line);
 	return (result);
