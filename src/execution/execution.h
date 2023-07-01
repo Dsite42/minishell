@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 12:58:30 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/07/01 14:47:30 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/07/01 15:15:14 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*get_path_cmd(char **argv, t_state *state);
 void	child(char **argv, char **envp, t_piping *piping_data, t_state *state);
 void	pipex_error(int shall_exit, char *message, int isstrerror,
 			int exit_code);
-void    error_cmd_not_found(char *cmd);
+void	error_cmd_not_found(char *cmd);
 void	check_heredoc(t_piping piping_data);
 void	create_pipe(int i, int num_cmds, int (*pipefd)[2]);
 void	parent(t_piping *piping_data, t_state *state);
