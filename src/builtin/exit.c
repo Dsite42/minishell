@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 16:02:56 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/06/04 21:29:29 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/03 12:37:38 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,25 @@
 
 static void	handle_exit_code_argument(const char *argument, int *p_exit_code)
 {
+	int		i;
 	t_slice	slice;
 
-	slice = trim_left(slice0(argument), begin_space, NULL);
-	if (!parse_int(p_exit_code, &slice))
+	i = 0;
+	if (argument[i] == '+' || argument[i] == '-')
+		i++;
+	while (argument[i] != '\0')
 	{
-		print_fd(STDERR_FILENO,
-			"minishell: exit: %s: numeric argument required\n", argument);
-		*p_exit_code = 255;
+		if (ms_is_digit((int)argument[i]) == 0)
+		{
+			print_fd(STDERR_FILENO,
+				"minishell: exit: %s: numeric argument required\n", argument);
+			*p_exit_code = 255;
+			return ;
+		}
+		i++;
 	}
+	slice = trim_left(slice0(argument), begin_space, NULL);
+	parse_int(p_exit_code, &slice);
 }
 
 int	builtin_exit(int argc, char *argv[], int out_fd, t_state *state)
