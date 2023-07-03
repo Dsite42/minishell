@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 12:23:59 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/07/01 15:07:54 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/07/03 19:10:34 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ char	*get_path_cmd(char **argv, t_state *state)
 	if (path_cmd != NULL)
 		return (path_cmd);
 	path_var = vars_get(&(state->root_var), slice0("PATH"));
+	if (path_var == NULL)
+		return (NULL);
 	rest_path.data = slice0(path_var->value).data;
 	rest_path.size = slice0(path_var->value).size;
 	while (rest_path.size != 0)
