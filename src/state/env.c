@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 18:30:36 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/23 00:05:54 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/03 15:52:56 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ char	**envp_from_vars(t_var **p_root_var)
 	char	**new_envp;
 
 	iter_export_vars(&count, p_root_var, NULL, &count);
-	new_envp = ms_zero_alloc(sizeof(char *), count);
+	new_envp = ms_zero_alloc(sizeof(char *), count + 1);
 	if (new_envp == NULL)
 		return (NULL);
 	iter = new_envp;
