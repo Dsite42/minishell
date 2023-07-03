@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_redirection.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 11:56:58 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/06/30 14:47:25 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/07/03 17:09:51 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@ int	is_read_or_heredoc(t_redir *root_redir)
 	return (0);
 }
 
-static void	dup_read(t_piping *piping_data, int *fd_dup)
+static void	dup_read(int *fd_dup, t_redir *head_redir)
 {
 	int	fd_infile;
 
-	fd_infile = open(piping_data->cmd->root_redir->name, O_RDONLY);
+	fd_infile = open(head_redir->name, O_RDONLY);
 	if (fd_infile == -1)
 		pipex_error(1, "input:", 1, errno);
 	fd_dup[0] = dup2(fd_infile, STDIN_FILENO);
@@ -42,16 +42,18 @@ static void	dup_read(t_piping *piping_data, int *fd_dup)
 
 void	dup_read_heredoc(t_piping *piping_data, int *fd_dup)
 {
-	int	fd_infile;
+	int		fd_infile;
+	t_redir	*head_redir;
 
-	while (piping_data->cmd->root_redir != NULL)
+	head_redir = piping_data->cmd->root_redir;
+	while (head_redir != NULL)
 	{
-		if (piping_data->cmd->root_redir->type == WORD_OP_READ)
-			dup_read(piping_data, fd_dup);
-		else if (piping_data->cmd->root_redir->type == WORD_OP_HEREDOC
-			&& piping_data->cmd->root_redir->last_heredoc == 1)
+		if (head_redir->type == WORD_OP_READ)
+			dup_read(fd_dup, head_redir);
+		else if (head_redir->type == WORD_OP_HEREDOC
+			&& head_redir->last_heredoc == 1)
 		{
-			fd_infile = piping_data->cmd->root_redir->pipefd_heredoc[0];
+			fd_infile = head_redir->pipefd_heredoc[0];
 			if (fd_infile == -1)
 				pipex_error(1, "input:", 1, errno);
 			fd_dup[0] = dup2(fd_infile, STDIN_FILENO);
@@ -59,15 +61,12 @@ void	dup_read_heredoc(t_piping *piping_data, int *fd_dup)
 				pipex_error(1, "dup_input_2 error", 1, errno);
 			close(fd_infile);
 		}
-		piping_data->cmd->root_redir = piping_data->cmd->root_redir->next;
+		head_redir = head_redir->next;
 	}
 }
 
 void	input_redirection(t_piping *piping_data, int *fd_dup)
 {
-	t_redir	*root_dir_start;
-
-	root_dir_start = piping_data->cmd->root_redir;
 	if (is_read_or_heredoc(piping_data->cmd->root_redir))
 		dup_read_heredoc(piping_data, fd_dup);
 	else if (piping_data->prev_read != STDIN_FILENO)
@@ -80,5 +79,4 @@ void	input_redirection(t_piping *piping_data, int *fd_dup)
 			pipex_error(1, "dup_input_1 error", 1, errno);
 		}
 	}
-	piping_data->cmd->root_redir = root_dir_start;
 }
