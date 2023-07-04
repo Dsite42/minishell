@@ -6,13 +6,14 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 11:22:16 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/07/04 14:08:13 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/07/04 14:14:21 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 #include <unistd.h>
 #include "../builtin/builtin.h"
+#include <errno.h>
 
 static int	run_builtin(char **argv, t_state *state)
 {
@@ -66,7 +67,8 @@ void	parent(t_piping *piping_data, t_state *state)
 		input_redirection(piping_data, fd_dup);
 		output_redirection(piping_data, fd_dup);
 		run_builtin(piping_data->cmd->argv, state);
-		dup2(state->saved_STDOUT_FILENO, STDOUT_FILENO);
+		if (dup2(state->saved_STDOUT_FILENO, STDOUT_FILENO) == -1)
+			pipex_error(1, "dup2_parent_output_error", 1, errno);
 	}
 	if (piping_data->i > 0)
 		close(piping_data->prev_read);
