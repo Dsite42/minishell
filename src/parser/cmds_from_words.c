@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 21:39:05 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/07/04 15:47:18 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/04 15:52:51 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,9 +92,9 @@ t_result	cmds_from_words(
 			return (result);
 		while (head_word != NULL
 			&& (head_word->flags & WORD_OP_MASK) != WORD_OP_PIPE)
-		{
 			head_word = head_word->next_group;
-		}
+		if (head_word != NULL)
+			head_word = head_word->next_group;
 	}
 	return (S_OK);
 }
