@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_builder_redirs.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 14:05:51 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/07/04 21:22:25 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/05 00:45:07 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,88 +14,54 @@
 
 #include <stdlib.h>
 
-// Creates a non-heredoc redirection
-static t_result	create_regular_redir(t_word *head_chain,
-		t_redir **p_new_redir, unsigned int flags, size_t length)
+// Populates a t_redir structure from the given data
+static void	populate_redir(
+		t_word *head_chain, t_redir *new_redir, unsigned int flags)
 {
 	char	*iter;
-	t_redir	*new_redir;
 
-	new_redir = malloc(sizeof(t_redir) + length + 1);
-	if (new_redir == NULL)
-		return (E_NOMEM);
 	new_redir->type = flags & WORD_OP_MASK;
 	new_redir->next = NULL;
 	iter = new_redir->name;
 	while (head_chain != NULL)
 	{
+		if (head_chain->flags & WORD_LITERAL_VAR)
+			*(iter++) = '$';
 		ms_copy(iter, head_chain->slice.data, head_chain->slice.size);
 		iter += head_chain->slice.size;
 		head_chain = head_chain->next_chain;
 	}
 	*iter = '\0';
-	*p_new_redir = new_redir;
-	return (S_OK);
 }
 
-// Creates a redirection for the heredoc operator
-static t_result	create_heredoc_redir(t_word *head_chain, t_redir **p_new_redir)
+// Creates a new t_redir structure and appends it to the given list
+static t_result	append_redir(t_word *root_chain,
+		t_redir **p_root_redir, t_redir **p_head_redir, unsigned int flags)
 {
+	size_t	length;
 	t_redir	*new_redir;
+	t_word	*head_chain;
 
-	new_redir = malloc(sizeof(t_redir) + 1 + head_chain->source.size + 1);
+	length = 0;
+	head_chain = root_chain;
+	while (head_chain != NULL)
+	{
+		length += head_chain->slice.size
+			+ ((head_chain->flags & WORD_LITERAL_VAR) != 0);
+		head_chain = head_chain->next_chain;
+	}
+	new_redir = malloc(sizeof(t_redir) + length + 1);
 	if (new_redir == NULL)
 		return (E_NOMEM);
-	new_redir->type = WORD_OP_HEREDOC;
-	new_redir->next = NULL;
-	new_redir->name[0] = '$';
-	ms_copy(&new_redir->name[1], head_chain->source.data,
-		head_chain->source.size);
-	new_redir->name[1 + head_chain->source.size] = '\0';
-	*p_new_redir = new_redir;
-	return (S_OK);
-}
-
-// Appends a redirection to the given list of redirections
-static void	append_redir(
-		t_redir *new_redir, t_redir **p_root_redir, t_redir **p_head_redir)
-{
+	populate_redir(root_chain, new_redir, flags);
 	if (*p_root_redir == NULL)
 	{
 		*p_root_redir = new_redir;
 		*p_head_redir = new_redir;
-		return ;
+		return (S_OK);
 	}
 	(*p_head_redir)->next = new_redir;
 	*p_head_redir = new_redir;
-}
-
-// Creates a new t_redir structure and appends it to the given list
-static t_result	push_redir(t_word *root_chain,
-		t_redir **p_root_redir, t_redir **p_head_redir, unsigned int flags)
-{
-	t_result	result;
-	size_t		length;
-	t_redir		*new_redir;
-	t_word		*head_chain;
-
-	if ((flags & WORD_OP_MASK) == WORD_OP_HEREDOC
-		&& root_chain->flags & WORD_SOURCE)
-		result = create_heredoc_redir(root_chain, &new_redir);
-	else
-	{
-		length = 0;
-		head_chain = root_chain;
-		while (head_chain != NULL)
-		{
-			length += head_chain->slice.size;
-			head_chain = head_chain->next_chain;
-		}
-		result = create_regular_redir(root_chain, &new_redir, flags, length);
-		if (result != S_OK)
-			return (result);
-	}
-	append_redir(new_redir, p_root_redir, p_head_redir);
 	return (S_OK);
 }
 
@@ -112,7 +78,7 @@ t_result	cmd_builder_build_redirs(t_cmd_builder *self, t_word *root_word)
 	{
 		if (head_group->flags & WORD_IS_OP)
 		{
-			result = push_redir(head_group->next_group,
+			result = append_redir(head_group->next_group,
 					&self->root_redir, &head_redir, head_group->flags);
 			if (result != S_OK)
 				return (result);
