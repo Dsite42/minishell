@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:10:00 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/07/04 18:00:29 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/07/04 18:42:43 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,12 +163,9 @@ int	main(int argc, char *argv[], char *envp[])
 
 	(void) argc;
 	(void) argv;
-	state.saved_STDOUT_FILENO = dup(1);
-	if (!vars_from_envp(envp, &state.root_var))
+	if (!state_init(&state, envp))
 		return (1);
 	tty_setup();
-	vars_set(&(state.root_var), slice0("?"), slice0("0"));
-	state.exit_code = 0;
 	while (1)
 	{
 		line = readline("minishell> ");

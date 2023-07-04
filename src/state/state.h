@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:17:03 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/07/04 18:45:18 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/04 18:45:48 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	vars_clr(t_var **p_root_var);
 t_var	*var_new(t_slice name, t_slice value);
 
 // state.c
+int		state_init(t_state *state, char *envp[]);
 void	state_drop(t_state *state);
 
 // vars_set.c
