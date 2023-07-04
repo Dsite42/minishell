@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   words_from_slice.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 01:18:23 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/29 23:08:30 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/04 14:37:53 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ static t_result	try_parse_operator(t_slice *p_remainder,
 		return (S_OK);
 	}
 	split_at(*p_remainder, count, &first_part, p_remainder);
-	word_builder_group(builder);
+	builder->is_new_group = 1;
 	result = word_builder_append(builder, flags, first_part, 0);
-	word_builder_group(builder);
+	builder->is_new_group = 1;
 	*p_is_op = 1;
 	return (result);
 }
@@ -71,6 +71,7 @@ static t_result	parse_double_quote(
 	t_slice		first_part;
 	t_result	result;
 
+	word_builder_ensure_one(builder, 0, WORD_QUOTE);
 	while (p_remainder->size > 0)
 	{
 		split_once(*p_remainder,
@@ -81,7 +82,7 @@ static t_result	parse_double_quote(
 		if (result != S_OK)
 			return (result);
 		if (consume(p_remainder, "\""))
-			return (S_OK);
+			return (word_builder_ensure_one(builder, 1, WORD_QUOTE));
 		else if (consume(p_remainder, "$"))
 		{
 			result = parse_variable(p_remainder, builder, WORD_QUOTE);
@@ -147,7 +148,7 @@ t_result	words_from_slice(t_word **p_root_word, t_slice slice)
 			return (word_builder_clean_return(&builder, result));
 		slice = trim_left(slice, begin_space, &count);
 		if (count > 0)
-			word_builder_group(&builder);
+			builder.is_new_group = 1;
 	}
 	*p_root_word = builder.root_word;
 	return (S_OK);

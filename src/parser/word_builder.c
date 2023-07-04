@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   word_builder.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 02:43:48 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/29 22:48:24 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/04 14:38:03 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,18 @@ static t_result	word_builder_append_chain(
 	return (S_OK);
 }
 
-void	word_builder_group(t_word_builder *self)
+t_result	word_builder_ensure_one(
+	t_word_builder *self, int is_end, unsigned int flags)
 {
-	self->is_new_group = 1;
+	if (is_end)
+	{
+		if (self->ensure_head_word != self->chain_head_word)
+			return (S_OK);
+		return (word_builder_append_chain(self, flags, slice0("")));
+	}
+	else
+		self->ensure_head_word = self->chain_head_word;
+	return (S_OK);
 }
 
 t_result	word_builder_append(t_word_builder *builder,
