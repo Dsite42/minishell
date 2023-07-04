@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tty.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 16:21:30 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/07/04 19:32:53 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/05 01:25:39 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	g_flags = 0;
 
 static void	signal_handler(int number)
 {
-	if (tty_get_flag(TTY_HEREDOC))
+	if (number == SIGINT && tty_get_flag(TTY_HEREDOC))
 	{
 		tty_set_flag(TTY_HEREDOC, 0);
 		write(STDERR_FILENO, "\n", 1);
@@ -33,7 +33,10 @@ static void	signal_handler(int number)
 	}
 	if (tty_get_flag(TTY_IS_CHILD))
 	{
-		write(STDERR_FILENO, "\n", 1);
+		if (number == SIGQUIT)
+			write(STDERR_FILENO, "Quit\n", 5);
+		else
+			write(STDERR_FILENO, "\n", 1);
 		return ;
 	}
 	if (number == SIGINT || number == SIGQUIT)
