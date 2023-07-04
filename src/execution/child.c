@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 10:59:08 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/07/04 15:33:48 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/07/04 15:48:37 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,14 +65,14 @@ void	child(char **argv, char **envp, t_piping *piping_data, t_state *state)
 
 	if (*piping_data->cmd->argv != NULL && is_builtin(piping_data->cmd->argv) \
 			== 1 && piping_data->num_cmds == 1)
-		exit(10);
+		exit(0);
 	input_redirection(piping_data, fd_dup);
 	output_redirection(piping_data, fd_dup);
 	if (*piping_data->cmd->argv != NULL && is_builtin(argv) == 1 
 		&& piping_data->num_cmds > 1)
 	{
 		run_builtin(argv, state);
-		exit(10);
+		exit(0);
 	}
 	else if (*piping_data->cmd->argv != NULL && is_builtin(argv) == 0)
 	{
