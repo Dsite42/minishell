@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 02:43:48 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/07/04 14:38:03 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/04 14:45:20 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ t_result	word_builder_ensure_one(
 	{
 		if (self->ensure_head_word != self->chain_head_word)
 			return (S_OK);
-		return (word_builder_append_chain(self, flags, slice0("")));
+		return (word_builder_append(self, flags, slice0(""), 0));
 	}
 	else
 		self->ensure_head_word = self->chain_head_word;
