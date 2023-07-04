@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 17:54:20 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/07/01 18:31:45 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/04 20:19:10 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ static t_result	insert_var_noquote(t_word **p_head_group, t_word **p_prev_chain,
 	(*p_head_chain)->slice = first;
 	while (slice.size > 0)
 	{
+		(*p_head_group)->flags |= WORD_INSERT;
 		slice = trim_left(slice, begin_space, &count);
 		if (slice.size == 0)
 		{
