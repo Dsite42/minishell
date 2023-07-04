@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/04 19:59:22 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/07/04 18:43:14 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/04 20:22:36 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 
 int	state_init(t_state *state, char *envp[])
 {
-	state->exit_code = 0;
 	state->root_var = NULL;
 	state->saved_stdin = -1;
 	state->saved_stdout = -1;
