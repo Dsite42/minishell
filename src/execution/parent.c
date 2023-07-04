@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parent.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 11:22:16 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/07/04 15:34:24 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/07/04 18:36:35 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	parent(t_piping *piping_data, t_state *state)
 		input_redirection(piping_data, fd_dup);
 		output_redirection(piping_data, fd_dup);
 		run_builtin(piping_data->cmd->argv, state);
-		if (dup2(state->saved_STDOUT_FILENO, STDOUT_FILENO) == -1)
+		if (dup2(state->saved_stdout, STDOUT_FILENO) == -1)
 			execution_error(1, "dup2_parent_output_error", 1, errno);
 	}
 	if (piping_data->i > 0)
