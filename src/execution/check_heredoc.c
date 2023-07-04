@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 11:09:06 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/06/30 18:30:24 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/04 17:01:08 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ static void	run_heredoc(t_piping *piping_data)
 	while (1)
 	{
 		line = readline("heredoc> ");
-		if (ms_str_compare(line, piping_data->cmd->root_redir->name,
-				ms_str_length(piping_data->cmd->root_redir->name)) == 0)
+		if (line == NULL || ms_str_compare(
+				line, piping_data->cmd->root_redir->name, 0) == 0)
 		{
 			free(line);
 			close(piping_data->cmd->root_redir->pipefd_heredoc[1]);
