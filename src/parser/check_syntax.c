@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/01 17:49:16 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/07/04 15:50:43 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/04 18:28:38 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static t_result	check_ambiguous_redirect(t_word *prev_group, t_word *head_chain)
 {
 	size_t	size;
 
-	if (prev_group == NULL)
+	if (prev_group == NULL || (prev_group->flags & WORD_IS_OP) == 0)
 		return (S_OK);
 	size = 0;
 	while (head_chain != NULL)
