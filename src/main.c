@@ -6,12 +6,13 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:10:00 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/07/04 16:29:34 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/04 16:31:04 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "state/state.h"
 #include "parser/parser.h"
+#include "execution/execution.h"
 
 #include <stdlib.h>
 #include <unistd.h>
@@ -19,8 +20,6 @@
 #include <stdio.h>
 #include <readline/readline.h>
 #include <readline/history.h>
-
-void	run_cmds(t_cmd *root_cmd, char **envp, t_state *state);
 
 #define FLAGS "VO---QSI"
 
