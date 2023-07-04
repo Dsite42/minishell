@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:10:00 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/07/01 20:55:20 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/07/04 14:22:39 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,6 +202,7 @@ int	main(int argc, char *argv[], char *envp[])
 	if (!vars_from_envp(envp, &state.root_var))
 		return (1);
 	setup_signals();
+	vars_set(&(state.root_var), slice0("?"), slice0("0"));
 	while (1)
 	{
 		line = readline("minishell> ");

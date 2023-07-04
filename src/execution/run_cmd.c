@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 15:56:09 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/07/04 11:56:56 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/07/04 14:05:02 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,24 @@ static void	init_piping_data(t_piping *piping_data, t_cmd *first_cmd)
 	piping_data->i = 0;
 }
 
+void	waiting (t_piping piping_data, t_state *state)
+{
+	int	status;
+
+	while (piping_data.num_cmds > 0)
+	{
+		wait(&status);
+		if (WIFEXITED(status))
+			vars_set(&(state->root_var), slice0("?"),
+				slice0(ms_int_to_str(WEXITSTATUS(status))));
+		piping_data.num_cmds--;
+	}
+}
+
 void	run_cmds(t_cmd *root_cmd, char **envp, t_state *state)
 {
 	t_piping	piping_data;
 	pid_t		pid;
-	int			status;
 
 	init_piping_data(&piping_data, root_cmd);
 	check_heredoc(piping_data);
@@ -94,12 +107,5 @@ void	run_cmds(t_cmd *root_cmd, char **envp, t_state *state)
 		if (piping_data.cmd->next != NULL)
 			piping_data.cmd = piping_data.cmd->next;
 	}
-	while (piping_data.num_cmds > 0)
-	{
-		wait(&status);
-		if (WIFEXITED(status))
-			vars_set(&(state->root_var), slice0("?"),
-				slice0(ms_int_to_str(WEXITSTATUS(status))));
-		piping_data.num_cmds--;
-	}
+	waiting(piping_data, state);
 }
