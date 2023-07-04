@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 12:23:59 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/07/04 11:00:59 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/07/04 12:15:47 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ char	*get_absolut_or_relative_path(char *argv)
 	char	*path_cmd;
 
 	argv_slice = slice0(argv);
-	if (consume(&argv_slice, "./") == 0 && consume(&argv_slice, "../") == 0
-		&& ms_str_find(argv, '/') != NULL)
+	if (consume(&argv_slice, "./") == 1 || consume(&argv_slice, "../") == 1
+		|| ms_str_find(argv, '/') != NULL)
 	{
 		path_cmd = argv;
 		if (access(path_cmd, F_OK) == 0)
