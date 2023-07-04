@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 21:28:41 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/29 23:35:56 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/05 00:16:30 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ int	word_new(t_word **p_new_word, unsigned int flags, t_slice slice)
 	new_word->slice = slice;
 	new_word->next_group = NULL;
 	new_word->next_chain = NULL;
+	new_word->source.data = NULL;
+	new_word->source.size = 0;
 	*p_new_word = new_word;
 	return (1);
 }
