@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_path_cmd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 12:23:59 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/07/04 15:33:56 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/07/04 18:25:12 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ char	*get_path_cmd(char **argv, t_state *state)
 		path_cmd = join_path_cmd(splitted_path, *argv);
 		if (access(path_cmd, F_OK) == 0)
 			return (path_cmd);
+		free(path_cmd);
 	}
 	return (NULL);
 }
