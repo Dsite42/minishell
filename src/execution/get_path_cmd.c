@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 12:23:59 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/07/04 12:15:47 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/07/04 15:33:56 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char	*get_absolut_or_relative_path(char *argv)
 		if (access(path_cmd, F_OK) == 0)
 			return (path_cmd);
 		else
-			pipex_error(1, argv, 1, errno);
+			execution_error(1, argv, 1, errno);
 	}
 	return (NULL);
 }

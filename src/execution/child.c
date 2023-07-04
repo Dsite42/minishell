@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 10:59:08 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/07/01 18:29:42 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/07/04 15:33:48 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	child(char **argv, char **envp, t_piping *piping_data, t_state *state)
 			error_cmd_not_found(*argv);
 		if (execve((const char *) path_cmd,
 				piping_data->cmd->argv, envp) == -1)
-			pipex_error(1, *argv, 1, errno);
+			execution_error(1, *argv, 1, errno);
 	}
 	else
 		exit(10);

@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 11:22:16 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/07/04 14:14:21 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/07/04 15:34:24 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	parent(t_piping *piping_data, t_state *state)
 		output_redirection(piping_data, fd_dup);
 		run_builtin(piping_data->cmd->argv, state);
 		if (dup2(state->saved_STDOUT_FILENO, STDOUT_FILENO) == -1)
-			pipex_error(1, "dup2_parent_output_error", 1, errno);
+			execution_error(1, "dup2_parent_output_error", 1, errno);
 	}
 	if (piping_data->i > 0)
 		close(piping_data->prev_read);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_redirection.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 11:56:58 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/07/03 17:09:51 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/04 15:34:13 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@ static void	dup_read(int *fd_dup, t_redir *head_redir)
 
 	fd_infile = open(head_redir->name, O_RDONLY);
 	if (fd_infile == -1)
-		pipex_error(1, "input:", 1, errno);
+		execution_error(1, "input:", 1, errno);
 	fd_dup[0] = dup2(fd_infile, STDIN_FILENO);
 	if (fd_dup[0] == -1)
-		pipex_error(1, "dup_infile_input_1 error", 1, errno);
+		execution_error(1, "dup_infile_input_1 error", 1, errno);
 	close(fd_infile);
 }
 
@@ -55,10 +55,10 @@ void	dup_read_heredoc(t_piping *piping_data, int *fd_dup)
 		{
 			fd_infile = head_redir->pipefd_heredoc[0];
 			if (fd_infile == -1)
-				pipex_error(1, "input:", 1, errno);
+				execution_error(1, "input:", 1, errno);
 			fd_dup[0] = dup2(fd_infile, STDIN_FILENO);
 			if (fd_dup[0] == -1)
-				pipex_error(1, "dup_input_2 error", 1, errno);
+				execution_error(1, "dup_input_2 error", 1, errno);
 			close(fd_infile);
 		}
 		head_redir = head_redir->next;
@@ -76,7 +76,7 @@ void	input_redirection(t_piping *piping_data, int *fd_dup)
 		if (fd_dup[0] == -1)
 		{
 			print_fd(2, "i:%i\n", piping_data->i);
-			pipex_error(1, "dup_input_1 error", 1, errno);
+			execution_error(1, "dup_input_1 error", 1, errno);
 		}
 	}
 }

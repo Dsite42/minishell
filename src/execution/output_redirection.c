@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 16:06:44 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/07/01 14:40:25 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/07/04 15:34:20 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,10 @@ static void	dup_write_append(t_piping *piping_data, int *fd_dup)
 				fd_outfile = open(piping_data->cmd->root_redir->name,
 						O_CREAT | O_APPEND | O_WRONLY, 0644);
 			if (fd_outfile == -1)
-				pipex_error(1, "fd_write_append_outfile error:", 1, errno);
+				execution_error(1, "fd_write_append_outfile error:", 1, errno);
 			fd_dup[1] = dup2(fd_outfile, STDOUT_FILENO);
 			if (fd_dup[1] == -1)
-				pipex_error(1, "dup_write_append_output_1 error", 1, errno);
+				execution_error(1, "dup_write_append_output_1 error", 1, errno);
 			close(piping_data->pipefd[0]);
 			close(fd_outfile);
 		}
@@ -64,7 +64,7 @@ void	output_redirection(t_piping *piping_data, int *fd_dup)
 	{
 		fd_dup[1] = dup2(piping_data->pipefd[1], STDOUT_FILENO);
 		if (fd_dup[1] == -1)
-			pipex_error(1, "dup_output_2 error", 1, errno);
+			execution_error(1, "dup_output_2 error", 1, errno);
 		close(piping_data->pipefd[0]);
 		close(piping_data->pipefd[1]);
 	}
