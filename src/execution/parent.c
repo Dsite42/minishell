@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parent.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 11:22:16 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/07/04 18:36:35 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/05 01:10:45 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <unistd.h>
 #include "../builtin/builtin.h"
 #include <errno.h>
+#include <stdlib.h>
 
 static int	run_builtin(char **argv, t_state *state)
 {
@@ -56,9 +57,10 @@ static int	is_builtin(char **argv)
 	return (0);
 }
 
-void	parent(t_piping *piping_data, t_state *state)
+int	parent(t_piping *piping_data, t_state *state)
 {
-	int	fd_dup[2];
+	int		fd_dup[2];
+	char	*return_value;
 
 	if (*piping_data->cmd->argv != NULL
 		&& is_builtin(piping_data->cmd->argv) == 1
@@ -66,9 +68,13 @@ void	parent(t_piping *piping_data, t_state *state)
 	{
 		input_redirection(piping_data, fd_dup);
 		output_redirection(piping_data, fd_dup);
-		run_builtin(piping_data->cmd->argv, state);
+		return_value = ms_int_to_str(
+				run_builtin(piping_data->cmd->argv, state));
+		vars_set(&state->root_var, slice0("?"), slice0(return_value));
+		free(return_value);
 		if (dup2(state->saved_stdout, STDOUT_FILENO) == -1)
 			execution_error(1, "dup2_parent_output_error", 1, errno);
+		return (1);
 	}
 	if (piping_data->i > 0)
 		close(piping_data->prev_read);
@@ -77,4 +83,5 @@ void	parent(t_piping *piping_data, t_state *state)
 		close(piping_data->pipefd[1]);
 		piping_data->prev_read = piping_data->pipefd[0];
 	}
+	return (0);
 }

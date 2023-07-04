@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 12:58:30 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/07/04 19:26:23 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/05 01:10:38 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	execution_error(int shall_exit, char *message, int isstrerror,
 void	error_cmd_not_found(char *cmd);
 int		check_heredoc(t_piping piping_data);
 void	create_pipe(int i, int num_cmds, int (*pipefd)[2]);
-void	parent(t_piping *piping_data, t_state *state);
+int		parent(t_piping *piping_data, t_state *state);
 void	input_redirection(t_piping *piping_data, int *fd_dup);
 void	output_redirection(t_piping *piping_data, int *fd_dup);
 

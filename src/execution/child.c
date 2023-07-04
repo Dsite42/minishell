@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 10:59:08 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/07/04 23:32:08 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/05 01:06:20 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,7 @@ void	child(char **argv, char **envp, t_piping *piping_data, t_state *state)
 	output_redirection(piping_data, fd_dup);
 	if (*piping_data->cmd->argv != NULL && is_builtin(argv) == 1
 		&& piping_data->num_cmds > 1)
-	{
-		run_builtin(argv, state);
-		exit(0);
-	}
+		exit(run_builtin(argv, state));
 	else if (*piping_data->cmd->argv != NULL && is_builtin(argv) == 0)
 	{
 		path_cmd = get_path_cmd(piping_data->cmd->argv, state);

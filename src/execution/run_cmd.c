@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 15:56:09 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/07/04 19:32:34 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/05 01:11:58 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static void	init_piping_data(t_piping *piping_data, t_cmd *first_cmd)
 	piping_data->i = 0;
 }
 
-void	waiting(t_piping piping_data, t_state *state)
+void	waiting(t_piping piping_data, t_state *state, int was_parent_builtin)
 {
 	int		status;
 	char	*exit_code;
@@ -65,9 +65,12 @@ void	waiting(t_piping piping_data, t_state *state)
 		wait(&status);
 		if (WIFEXITED(status))
 		{
-			exit_code = ms_int_to_str(WEXITSTATUS(status));
-			vars_set(&(state->root_var), slice0("?"), slice0(exit_code));
-			free(exit_code);
+			if (!was_parent_builtin)
+			{
+				exit_code = ms_int_to_str(WEXITSTATUS(status));
+				vars_set(&(state->root_var), slice0("?"), slice0(exit_code));
+				free(exit_code);
+			}
 		}
 		piping_data.num_cmds--;
 	}
@@ -75,6 +78,7 @@ void	waiting(t_piping piping_data, t_state *state)
 
 void	run_cmds(t_cmd *root_cmd, char **envp, t_state *state)
 {
+	int			was_parent_builtin;
 	t_piping	piping_data;
 	pid_t		pid;
 
@@ -82,6 +86,7 @@ void	run_cmds(t_cmd *root_cmd, char **envp, t_state *state)
 	if (!check_heredoc(piping_data))
 		return ((void) dup2(state->saved_stdin, STDIN_FILENO));
 	tty_enter(1);
+	was_parent_builtin = 0;
 	while (piping_data.i < piping_data.num_cmds)
 	{
 		create_pipe(piping_data.i, piping_data.num_cmds, &piping_data.pipefd);
@@ -91,11 +96,11 @@ void	run_cmds(t_cmd *root_cmd, char **envp, t_state *state)
 		else if (pid == 0)
 			child(piping_data.cmd->argv, envp, &piping_data, state);
 		else
-			parent(&piping_data, state);
+			was_parent_builtin = parent(&piping_data, state);
 		piping_data.i++;
 		if (piping_data.cmd->next != NULL)
 			piping_data.cmd = piping_data.cmd->next;
 	}
-	waiting(piping_data, state);
+	waiting(piping_data, state, was_parent_builtin);
 	tty_enter(0);
 }
