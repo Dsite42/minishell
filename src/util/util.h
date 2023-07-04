@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:59:24 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/07/04 16:23:43 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/04 16:48:36 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ size_t	slice_str_begin(t_slice slice, const char *string);
 
 // tty.c
 void	tty_setup(void);
-void	tty_set_echo(int enable);
+void	tty_enter_parent(void);
+void	tty_enter_child(void);
 
 #endif // !UTIL_H

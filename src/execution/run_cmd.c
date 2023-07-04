@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 15:56:09 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/07/04 15:34:28 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/07/04 16:51:20 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void	run_cmds(t_cmd *root_cmd, char **envp, t_state *state)
 
 	init_piping_data(&piping_data, root_cmd);
 	check_heredoc(piping_data);
+	tty_enter_child();
 	while (piping_data.i < piping_data.num_cmds)
 	{
 		create_pipe(piping_data.i, piping_data.num_cmds, &piping_data.pipefd);
@@ -91,4 +92,5 @@ void	run_cmds(t_cmd *root_cmd, char **envp, t_state *state)
 			piping_data.cmd = piping_data.cmd->next;
 	}
 	waiting(piping_data, state);
+	tty_enter_parent();
 }
