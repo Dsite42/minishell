@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:59:24 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/07/04 16:48:36 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/04 19:31:01 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,11 @@
 # define E_SYNWRITE -9 // minishell: syntax error near unexpected token `>'
 # define E_SYNAPPEND -10 // minishell: syntax error near unexpected token `>>'
 # define E_SYNHEREDOC -11 // minishell: syntax error near unexpected token `<<'
+
+// Flags for terminal and signal behavior
+
+# define TTY_IS_CHILD 0
+# define TTY_HEREDOC 1
 
 typedef struct s_slice
 {
@@ -83,7 +88,8 @@ size_t	slice_str_begin(t_slice slice, const char *string);
 
 // tty.c
 void	tty_setup(void);
-void	tty_enter_parent(void);
-void	tty_enter_child(void);
+void	tty_enter(int is_child);
+int		tty_get_flag(unsigned int index);
+void	tty_set_flag(unsigned int index, int enable);
 
 #endif // !UTIL_H

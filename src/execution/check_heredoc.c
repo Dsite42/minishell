@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 11:09:06 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/07/04 17:06:12 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/04 19:26:16 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static t_redir	*search_last_heredoc(t_redir **root_redir)
 	return (last_heredoc);
 }
 
-static void	run_heredoc(t_piping *piping_data)
+static int	run_heredoc(t_piping *piping_data)
 {
 	char	*line;
 
@@ -46,6 +46,8 @@ static void	run_heredoc(t_piping *piping_data)
 	while (1)
 	{
 		line = readline("> ");
+		if (!tty_get_flag(TTY_HEREDOC))
+			return (0);
 		if (line == NULL || ms_str_compare(
 				line, piping_data->cmd->root_redir->name, 0) == 0)
 		{
@@ -58,13 +60,15 @@ static void	run_heredoc(t_piping *piping_data)
 				"%s\n", line);
 		free(line);
 	}
+	return (1);
 }
 
-void	check_heredoc(t_piping piping_data)
+int	check_heredoc(t_piping piping_data)
 {
 	t_redir	*root_dir_start;
 	t_cmd	*cmd_start;
 
+	tty_set_flag(TTY_HEREDOC, 1);
 	cmd_start = piping_data.cmd;
 	while (piping_data.cmd != NULL)
 	{
@@ -74,7 +78,8 @@ void	check_heredoc(t_piping piping_data)
 		{
 			if (piping_data.cmd->root_redir->type == WORD_OP_HEREDOC)
 			{
-				run_heredoc(&piping_data);
+				if (!run_heredoc(&piping_data))
+					return (0);
 			}
 			piping_data.cmd->root_redir = piping_data.cmd->root_redir->next;
 		}
@@ -82,4 +87,6 @@ void	check_heredoc(t_piping piping_data)
 		piping_data.cmd = piping_data.cmd->next;
 	}
 	piping_data.cmd = cmd_start;
+	tty_set_flag(TTY_HEREDOC, 0);
+	return (1);
 }
