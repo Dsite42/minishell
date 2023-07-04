@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libms_part2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/12 16:39:25 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/29 23:56:44 by jsprenge         ###   ########.fr       */
+/*   Created: 2023/06/15 13:01:33 by cgodecke          #+#    #+#             */
+/*   Updated: 2023/07/04 14:14:08 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,44 @@ char	*ms_join_slices(size_t count, ...)
 	buffer = join_slices_populate(&list, malloc(length + 1), count);
 	va_end(list);
 	return (buffer);
+}
+
+char	*ms_mem_clone(const void *data, size_t size)
+{
+	void	*new_data;
+
+	new_data = malloc(size);
+	if (new_data == NULL)
+		return (NULL);
+	ms_copy(new_data, data, size);
+	return (new_data);
+}
+
+char	*ms_int_to_str(int value)
+{
+	char			*iter;
+	char			buffer[16];
+	int				is_negative;
+	int				is_first_time;
+	unsigned int	unsigned_part;
+
+	is_negative = 0;
+	unsigned_part = (unsigned int) value;
+	if (value < 0)
+	{
+		unsigned_part = ~unsigned_part + 1;
+		is_negative = 1;
+	}
+	iter = &buffer[sizeof(buffer)];
+	is_first_time = 1;
+	*(--iter) = '\0';
+	while (unsigned_part != 0 || is_first_time)
+	{
+		*(--iter) = '0' + unsigned_part % 10;
+		unsigned_part /= 10;
+		is_first_time = 0;
+	}
+	if (is_negative)
+		*(--iter) = '-';
+	return (ms_mem_clone(iter, &buffer[sizeof(buffer)] - iter));
 }
