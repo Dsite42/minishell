@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmds_from_words.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 21:39:05 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/07/04 15:52:51 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/05 00:39:28 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ t_result	cmds_from_words(
 	t_cmd		*head_cmd;
 	t_word		*head_word;
 
+	insert_vars_pre(root_word);
 	result = insert_vars(root_word, state);
 	if (result != S_OK)
 		return (result);

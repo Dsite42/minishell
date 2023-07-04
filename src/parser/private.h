@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   private.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 02:11:15 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/07/04 14:37:58 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/05 00:38:17 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,9 @@ t_result	cmd_builder_build_argv(t_cmd_builder *self, t_word *root_word);
 
 // cmd_builder_redirs.c
 t_result	cmd_builder_build_redirs(t_cmd_builder *self, t_word *root_word);
+
+// insert_vars_pre.c
+void		insert_vars_pre(t_word *head_group);
 
 // insert_vars.c
 t_result	insert_vars(t_word *head_group, t_state *state);

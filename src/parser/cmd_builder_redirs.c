@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_builder_redirs.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 14:05:51 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/30 15:20:38 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/05 00:45:07 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ static void	populate_redir(
 	iter = new_redir->name;
 	while (head_chain != NULL)
 	{
+		if (head_chain->flags & WORD_LITERAL_VAR)
+			*(iter++) = '$';
 		ms_copy(iter, head_chain->slice.data, head_chain->slice.size);
 		iter += head_chain->slice.size;
 		head_chain = head_chain->next_chain;
@@ -44,7 +46,8 @@ static t_result	append_redir(t_word *root_chain,
 	head_chain = root_chain;
 	while (head_chain != NULL)
 	{
-		length += head_chain->slice.size;
+		length += head_chain->slice.size
+			+ ((head_chain->flags & WORD_LITERAL_VAR) != 0);
 		head_chain = head_chain->next_chain;
 	}
 	new_redir = malloc(sizeof(t_redir) + length + 1);
