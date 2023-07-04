@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:59:24 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/07/04 14:40:06 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/04 16:23:43 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,5 +80,9 @@ t_slice	slice0(const char *string);
 char	*slice_to_str(t_slice slice);
 int		slice_str_equal(t_slice slice, const char *string);
 size_t	slice_str_begin(t_slice slice, const char *string);
+
+// tty.c
+void	tty_setup(void);
+void	tty_set_echo(int enable);
 
 #endif // !UTIL_H

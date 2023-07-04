@@ -3,23 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:10:00 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/07/04 14:22:39 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/07/04 16:29:34 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "state/state.h"
 #include "parser/parser.h"
-#include "builtin/builtin.h"
 
-#include <errno.h>
-#include <signal.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <termios.h>
-#include <sys/ioctl.h>
 
 #include <stdio.h>
 #include <readline/readline.h>
@@ -161,35 +156,6 @@ static t_result	handle_line(char *line, t_state *state, char **envp)
 	return (result);
 }
 
-static void	signal_handler(int sig)
-{
-	if (sig == SIGINT || sig == SIGQUIT)
-	{
-		if (sig == SIGINT)
-		{
-			write(STDOUT_FILENO, "\n", 1);
-			rl_replace_line("", 1);
-			rl_on_new_line();
-		}
-		rl_redisplay();
-	}
-}
-
-static void	setup_signals(void)
-{
-	struct sigaction	sa;
-	struct termios		term;
-
-	tcgetattr(STDIN_FILENO, &term);
-	term.c_lflag &= ~ECHOCTL;
-	tcsetattr(STDIN_FILENO, TCSANOW, &term);
-	ms_zero(&sa, sizeof(sa));
-	sa.sa_handler = signal_handler;
-	sa.sa_flags = SA_RESTART;
-	sigaction(SIGINT, &sa, NULL);
-	sigaction(SIGQUIT, &sa, NULL);
-}
-
 int	main(int argc, char *argv[], char *envp[])
 {
 	t_state				state;
@@ -201,7 +167,7 @@ int	main(int argc, char *argv[], char *envp[])
 	state.saved_STDOUT_FILENO = dup(1);
 	if (!vars_from_envp(envp, &state.root_var))
 		return (1);
-	setup_signals();
+	tty_setup();
 	vars_set(&(state.root_var), slice0("?"), slice0("0"));
 	while (1)
 	{
