@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/01 17:49:16 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/07/04 15:19:50 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/04 15:50:43 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,9 @@ t_result	check_syntax(t_word *head_group)
 	t_result	result;
 	t_word		*prev_group;
 
+	if (head_group != NULL
+		&& (head_group->flags & WORD_OP_MASK) == WORD_OP_PIPE)
+		return (E_SYNPIPE);
 	prev_group = NULL;
 	while (head_group != NULL)
 	{
