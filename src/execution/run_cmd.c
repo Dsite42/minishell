@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 15:56:09 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/07/04 16:51:20 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/04 18:22:28 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,18 @@ static void	init_piping_data(t_piping *piping_data, t_cmd *first_cmd)
 
 void	waiting(t_piping piping_data, t_state *state)
 {
-	int	status;
+	int		status;
+	char	*exit_code;
 
 	while (piping_data.num_cmds > 0)
 	{
 		wait(&status);
 		if (WIFEXITED(status))
-			vars_set(&(state->root_var), slice0("?"),
-				slice0(ms_int_to_str(WEXITSTATUS(status))));
+		{
+			exit_code = ms_int_to_str(WEXITSTATUS(status));
+			vars_set(&(state->root_var), slice0("?"), slice0(exit_code));
+			free(exit_code);
+		}
 		piping_data.num_cmds--;
 	}
 }
