@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:17:03 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/07/04 20:22:24 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/04 20:26:18 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct s_state
 	t_var	*root_var;
 	int		saved_stdin;
 	int		saved_stdout;
+	char	*error_info;
 }	t_state;
 
 // vars.c

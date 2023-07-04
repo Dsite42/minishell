@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 02:11:15 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/07/04 14:37:58 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/04 20:28:56 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define PRIVATE_H
 
 # include "parser.h"
+# include "../state/state.h"
 
 typedef struct s_word_builder
 {
@@ -34,7 +35,7 @@ typedef struct s_cmd_builder
 }	t_cmd_builder;
 
 // check_syntax.c
-t_result	check_syntax(t_word *head_group);
+t_result	check_syntax(t_word *head_group, t_state *state);
 
 // cmd_builder_argv.c
 t_result	cmd_builder_build_argv(t_cmd_builder *self, t_word *root_word);
