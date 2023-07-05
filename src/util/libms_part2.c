@@ -5,12 +5,13 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/15 13:01:33 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/07/01 19:36:44 by jsprenge         ###   ########.fr       */
+/*   Created: 2023/06/12 16:39:25 by jsprenge          #+#    #+#             */
+/*   Updated: 2023/07/04 20:46:03 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "util.h"
+#include "../parser/parser.h"
 
 #include <stdlib.h>
 #include <stdarg.h>
@@ -93,4 +94,31 @@ char	*ms_int_to_str(int value)
 	if (is_negative)
 		*(--iter) = '-';
 	return (ms_mem_clone(iter, &buffer[sizeof(buffer)] - iter));
+}
+
+const char	*ms_result_to_string(t_result result)
+{
+	if (result == E_BUG)
+		return ("parser has invalid state");
+	if (result == E_NOMEM)
+		return ("out of memory");
+	if (result == E_SQTERM)
+		return ("unexpected EOF while looking for matching `''");
+	if (result == E_DQTERM)
+		return ("unexpected EOF while looking for matching `\"'");
+	if (result == E_SYNPIPE)
+		return ("syntax error near unexpected token `|'");
+	if (result == E_SYNLF)
+		return ("syntax error near unexpected token `newline'");
+	if (result == E_SYNAMB)
+		return ("ambiguous redirect");
+	if (result == E_SYNREAD)
+		return ("syntax error near unexpected token `<'");
+	if (result == E_SYNWRITE)
+		return ("syntax error near unexpected token `>'");
+	if (result == E_SYNAPPEND)
+		return ("syntax error near unexpected token `>>'");
+	if (result == E_SYNHEREDOC)
+		return ("syntax error near unexpected token `<<'");
+	return ("unknown error");
 }

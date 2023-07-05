@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 16:02:56 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/07/03 12:37:38 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/07/05 15:25:57 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	builtin_exit(int argc, char *argv[], int out_fd, t_state *state)
 	(void) out_fd;
 	print_fd(STDERR_FILENO, "exit\n");
 	if (argc == 1)
-		exit_code = state->exit_code;
+		exit_code = 0;
 	else if (argc == 2)
 		handle_exit_code_argument(argv[1], &exit_code);
 	else
@@ -54,6 +54,7 @@ int	builtin_exit(int argc, char *argv[], int out_fd, t_state *state)
 		exit_code = 1;
 		print_fd(STDERR_FILENO, "minishell: exit: too many arguments\n");
 	}
+	cmd_clear(&state->root_cmd);
 	state_drop(state);
 	exit(exit_code);
 	return (0);

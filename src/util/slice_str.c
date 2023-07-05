@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:20:44 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/06/04 20:53:20 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/05 01:08:01 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@ t_slice	slice0(const char *string)
 	t_slice	slice;
 
 	slice.data = string;
-	slice.size = ms_str_length(string);
+	if (string == NULL)
+		slice.size = 0;
+	else
+		slice.size = ms_str_length(string);
 	return (slice);
 }
 
