@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 11:09:06 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/07/04 19:26:16 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/05 11:36:26 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,8 @@ int	check_heredoc(t_piping piping_data)
 		while (piping_data.cmd->root_redir != NULL)
 		{
 			if (piping_data.cmd->root_redir->type == WORD_OP_HEREDOC)
-			{
 				if (!run_heredoc(&piping_data))
-					return (0);
-			}
+					break ;
 			piping_data.cmd->root_redir = piping_data.cmd->root_redir->next;
 		}
 		piping_data.cmd->root_redir = root_dir_start;
