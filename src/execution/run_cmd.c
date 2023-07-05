@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 15:56:09 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/07/05 01:11:58 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/05 13:12:58 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,8 @@ void	waiting(t_piping piping_data, t_state *state, int was_parent_builtin)
 			if (!was_parent_builtin)
 			{
 				exit_code = ms_int_to_str(WEXITSTATUS(status));
-				vars_set(&(state->root_var), slice0("?"), slice0(exit_code));
+				if (state_set_exit_code(state, WEXITSTATUS(status)) == 0)
+					print_fd(2, "minishell: no free memory\n");
 				free(exit_code);
 			}
 		}
