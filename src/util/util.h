@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:59:24 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/07/04 20:47:15 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/05 13:03:27 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,13 @@ typedef struct s_slice
 	const char	*data;
 	size_t		size;
 }	t_slice;
+
+typedef struct s_strbuf
+{
+	char	*data;
+	size_t	length;
+	size_t	capacity;
+}	t_strbuf;
 
 typedef int	t_result;
 
@@ -87,6 +94,11 @@ t_slice		slice0(const char *string);
 char		*slice_to_str(t_slice slice);
 int			slice_str_equal(t_slice slice, const char *string);
 size_t		slice_str_begin(t_slice slice, const char *string);
+
+// strbuf.c
+int			strbuf_init(t_strbuf *self);
+int			strbuf_push(t_strbuf *self, t_slice slice);
+void		strbuf_drop(t_strbuf *self);
 
 // tty.c
 void		tty_setup(void);
