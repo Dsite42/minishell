@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 16:06:44 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/07/05 10:12:17 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/07/05 13:50:09 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,12 @@ static int	is_write_or_append(t_redir *root_redir)
 	return (0);
 }
 
+static int	open_error(t_piping *piping_data)
+{
+	execution_error(0, piping_data->cmd->root_redir->name, 1, errno);
+	return (-1);
+}
+
 static int	dup_write_append(t_piping *piping_data, int *fd_dup)
 {
 	int	fd_outfile;
@@ -43,10 +49,7 @@ static int	dup_write_append(t_piping *piping_data, int *fd_dup)
 				fd_outfile = open(piping_data->cmd->root_redir->name,
 						O_CREAT | O_APPEND | O_WRONLY, 0644);
 			if (fd_outfile == -1)
-			{
-				execution_error(0, piping_data->cmd->root_redir->name, 1, errno);
-				return (-1);
-			}
+				return (open_error(piping_data));
 			fd_dup[1] = dup2(fd_outfile, STDOUT_FILENO);
 			if (fd_dup[1] == -1)
 				execution_error(1, "dup_write_append_output_1 error", 1, errno);

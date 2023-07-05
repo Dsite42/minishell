@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 11:22:16 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/07/05 13:33:23 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/07/05 13:45:07 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ static int	builtin_in_parent(t_piping *piping_data, t_state *state)
 
 int	parent(t_piping *piping_data, t_state *state)
 {
-
 	if (*piping_data->cmd->argv != NULL
 		&& is_builtin(piping_data->cmd->argv) == 1
 		&& piping_data->num_cmds == 1)
