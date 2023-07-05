@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:59:24 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/07/05 13:38:51 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/05 14:53:57 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@
 
 # define TTY_IS_CHILD 0
 # define TTY_HEREDOC 1
+# define TTY_OMIT_LF 2
 
 typedef struct s_slice
 {

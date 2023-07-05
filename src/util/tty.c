@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tty.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 16:21:30 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/07/05 01:25:39 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/05 14:58:25 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@ static void	signal_handler(int number)
 	{
 		if (number == SIGINT)
 		{
-			write(STDOUT_FILENO, "\n", 1);
-			rl_replace_line("", 1);
-			rl_on_new_line();
+			if (!tty_get_flag(TTY_OMIT_LF))
+				write(STDOUT_FILENO, "\n", 1);
+			(rl_replace_line("", 1), rl_on_new_line());
 		}
 		rl_redisplay();
 	}
