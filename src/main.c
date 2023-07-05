@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:10:00 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/07/05 15:11:46 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/05 15:25:38 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+void	dump_words(t_word *head_group);
+
 static t_result	handle_line(char *line, t_state *state, char **envp)
 {
 	t_result	result;
@@ -32,6 +34,7 @@ static t_result	handle_line(char *line, t_state *state, char **envp)
 	if (result == S_OK)
 	{
 		result = cmds_from_words(root_word, &root_cmd, state);
+		state->root_cmd = root_cmd;
 		word_clear(&root_word);
 		free(line);
 		if (result == S_OK)

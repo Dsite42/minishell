@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 16:02:56 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/07/04 20:22:51 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/05 15:25:57 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int	builtin_exit(int argc, char *argv[], int out_fd, t_state *state)
 		exit_code = 1;
 		print_fd(STDERR_FILENO, "minishell: exit: too many arguments\n");
 	}
+	cmd_clear(&state->root_cmd);
 	state_drop(state);
 	exit(exit_code);
 	return (0);

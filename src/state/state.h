@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:17:03 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/07/05 12:54:14 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/05 15:26:56 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,11 @@ typedef struct s_var
 
 typedef struct s_state
 {
-	t_var	*root_var;
-	int		saved_stdin;
-	int		saved_stdout;
-	char	*error_info;
+	t_var			*root_var;
+	int				saved_stdin;
+	int				saved_stdout;
+	char			*error_info;
+	struct s_cmd	*root_cmd;
 }	t_state;
 
 // vars.c
