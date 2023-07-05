@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parent.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 11:22:16 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/07/05 01:10:45 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/05 10:17:00 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,11 @@ int	parent(t_piping *piping_data, t_state *state)
 		&& piping_data->num_cmds == 1)
 	{
 		input_redirection(piping_data, fd_dup);
-		output_redirection(piping_data, fd_dup);
+		if (output_redirection(piping_data, fd_dup) == -1)
+		{
+			vars_set(&state->root_var, slice0("?"), slice0("1"));
+			return (-1);
+		}
 		return_value = ms_int_to_str(
 				run_builtin(piping_data->cmd->argv, state));
 		vars_set(&state->root_var, slice0("?"), slice0(return_value));

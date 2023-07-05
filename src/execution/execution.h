@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 12:58:30 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/07/05 01:10:38 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/05 10:12:53 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,6 @@ int		check_heredoc(t_piping piping_data);
 void	create_pipe(int i, int num_cmds, int (*pipefd)[2]);
 int		parent(t_piping *piping_data, t_state *state);
 void	input_redirection(t_piping *piping_data, int *fd_dup);
-void	output_redirection(t_piping *piping_data, int *fd_dup);
+int		output_redirection(t_piping *piping_data, int *fd_dup);
 
 #endif // !EXECUTION_H

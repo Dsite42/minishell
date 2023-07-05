@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsprenge <jsprenge@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 10:59:08 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/07/05 01:06:20 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/05 10:26:51 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,8 @@ void	child(char **argv, char **envp, t_piping *piping_data, t_state *state)
 			== 1 && piping_data->num_cmds == 1)
 		exit(0);
 	input_redirection(piping_data, fd_dup);
-	output_redirection(piping_data, fd_dup);
+	if (output_redirection(piping_data, fd_dup) == -1)
+		exit(1);
 	if (*piping_data->cmd->argv != NULL && is_builtin(argv) == 1
 		&& piping_data->num_cmds > 1)
 		exit(run_builtin(argv, state));

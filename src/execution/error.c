@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 15:31:16 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/07/04 15:39:28 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/07/05 09:55:24 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	execution_error(int shall_exit, char *message,
 			int isstrerror, int exit_code)
 {
 	if (isstrerror == 1)
-		print_fd(2, "minishell: %s %s\n", message, strerror(exit_code));
+		print_fd(2, "minishell: %s: %s\n", message, strerror(exit_code));
 	else
 		print_fd(2, "minishell: %s\n", message);
 	if (shall_exit == 1)

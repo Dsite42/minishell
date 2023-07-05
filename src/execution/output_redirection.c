@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 16:06:44 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/07/04 15:34:20 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/07/05 10:12:17 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	is_write_or_append(t_redir *root_redir)
 	return (0);
 }
 
-static void	dup_write_append(t_piping *piping_data, int *fd_dup)
+static int	dup_write_append(t_piping *piping_data, int *fd_dup)
 {
 	int	fd_outfile;
 
@@ -43,7 +43,10 @@ static void	dup_write_append(t_piping *piping_data, int *fd_dup)
 				fd_outfile = open(piping_data->cmd->root_redir->name,
 						O_CREAT | O_APPEND | O_WRONLY, 0644);
 			if (fd_outfile == -1)
-				execution_error(1, "fd_write_append_outfile error:", 1, errno);
+			{
+				execution_error(0, piping_data->cmd->root_redir->name, 1, errno);
+				return (-1);
+			}
 			fd_dup[1] = dup2(fd_outfile, STDOUT_FILENO);
 			if (fd_dup[1] == -1)
 				execution_error(1, "dup_write_append_output_1 error", 1, errno);
@@ -52,13 +55,15 @@ static void	dup_write_append(t_piping *piping_data, int *fd_dup)
 		}
 		piping_data->cmd->root_redir = piping_data->cmd->root_redir->next;
 	}
+	return (0);
 }
 
-void	output_redirection(t_piping *piping_data, int *fd_dup)
+int	output_redirection(t_piping *piping_data, int *fd_dup)
 {
 	if (is_write_or_append(piping_data->cmd->root_redir))
 	{
-		dup_write_append(piping_data, fd_dup);
+		if (dup_write_append(piping_data, fd_dup) == -1)
+			return (-1);
 	}
 	else if (piping_data->i < piping_data->num_cmds - 1)
 	{
@@ -68,4 +73,5 @@ void	output_redirection(t_piping *piping_data, int *fd_dup)
 		close(piping_data->pipefd[0]);
 		close(piping_data->pipefd[1]);
 	}
+	return (0);
 }
