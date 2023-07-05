@@ -6,13 +6,13 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 13:02:08 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/07/05 13:39:39 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/05 15:29:16 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "private.h"
 
-#include <limits.h>
+#include <stdint.h>
 
 #define CAPACITY_STEP 1024
 
