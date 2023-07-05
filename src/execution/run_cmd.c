@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 15:56:09 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/07/05 15:13:00 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/05 15:36:44 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,7 @@ void	run_cmds(t_cmd *root_cmd, char **envp, t_state *state)
 
 	init_piping_data(&piping_data, root_cmd);
 	if (!check_heredoc(piping_data))
-		return (dup2(state->saved_stdin, STDIN_FILENO),
-			tty_set_flag(TTY_OMIT_LF, 1));
+		return ((void) dup2(state->saved_stdin, STDIN_FILENO));
 	tty_enter(1);
 	was_parent_builtin = 0;
 	while (piping_data.i < piping_data.num_cmds)
@@ -103,5 +102,6 @@ void	run_cmds(t_cmd *root_cmd, char **envp, t_state *state)
 		if (piping_data.cmd->next != NULL)
 			piping_data.cmd = piping_data.cmd->next;
 	}
-	(waiting(piping_data, state, was_parent_builtin), tty_enter(0));
+	waiting(piping_data, state, was_parent_builtin);
+	tty_enter(0);
 }

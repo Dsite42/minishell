@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 11:09:06 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/07/05 14:50:20 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/05 15:36:23 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,26 +41,30 @@ static t_redir	*search_last_heredoc(t_redir **root_redir)
 static int	run_heredoc(t_piping *piping_data)
 {
 	char	*line;
+	int		result;
 
+	result = 1;
 	create_pipe(0, 2, &piping_data->cmd->root_redir->pipefd_heredoc);
 	while (1)
 	{
 		line = readline("> ");
 		if (!tty_get_flag(TTY_HEREDOC))
-			return (0);
-		if (line == NULL || ms_str_compare(
-				line, piping_data->cmd->root_redir->name, 0) == 0)
 		{
-			free(line);
-			close(piping_data->cmd->root_redir->pipefd_heredoc[1]);
+			result = 0;
 			break ;
 		}
+		if (line == NULL || ms_str_compare(
+				line, piping_data->cmd->root_redir->name, 0) == 0)
+			break ;
 		else
 			print_fd(piping_data->cmd->root_redir->pipefd_heredoc[1],
 				"%s\n", line);
 		free(line);
 	}
-	return (1);
+	tty_set_flag(TTY_OMIT_LF, line == NULL);
+	close(piping_data->cmd->root_redir->pipefd_heredoc[1]);
+	free(line);
+	return (result);
 }
 
 int	check_heredoc(t_piping piping_data)
