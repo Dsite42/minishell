@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 15:56:09 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/07/05 14:57:28 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/05 15:13:00 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void	run_cmds(t_cmd *root_cmd, char **envp, t_state *state)
 		if (pid == -1)
 			execution_error(1, "fork error", 1, errno);
 		else if (pid == 0)
-			child(piping_data.cmd->argv, envp, &piping_data, state);
+			child(root_cmd, envp, &piping_data, state);
 		else
 			was_parent_builtin = parent(&piping_data, state);
 		piping_data.i++;

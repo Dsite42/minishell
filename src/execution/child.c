@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 10:59:08 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/07/05 14:48:15 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/05 15:13:57 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,13 @@ static int	child_inner(
 	return (10);
 }
 
-void	child(char **argv, char **envp, t_piping *piping_data, t_state *state)
+void	child(
+		t_cmd *root_cmd, char **envp, t_piping *piping_data, t_state *state)
 {
 	int	exit_code;
 
-	exit_code = child_inner(argv, envp, piping_data, state);
+	exit_code = child_inner(piping_data->cmd->argv, envp, piping_data, state);
+	cmd_clear(&root_cmd);
 	state_drop(state);
 	exit(exit_code);
 }

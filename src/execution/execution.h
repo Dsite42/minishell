@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 12:58:30 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/07/05 10:44:36 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/07/05 15:13:24 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ void	create_pipe(int i, int num_cmds, int (*pipefd)[2]);
 char	*get_path_cmd(char **argv, t_state *state);
 
 // child.c
-void	child(char **argv, char **envp, t_piping *piping_data, t_state *state);
+void	child(t_cmd *root_cmd, char **envp, t_piping *piping_data,
+			t_state *state);
 
 // error.c
 void	execution_error(int shall_exit, char *message, int isstrerror,
