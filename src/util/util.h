@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:59:24 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/07/05 13:03:27 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/05 13:38:51 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ size_t		slice_str_begin(t_slice slice, const char *string);
 int			strbuf_init(t_strbuf *self);
 int			strbuf_push(t_strbuf *self, t_slice slice);
 void		strbuf_drop(t_strbuf *self);
+void		strbuf_take(t_strbuf *self, char **p_string);
 
 // tty.c
 void		tty_setup(void);

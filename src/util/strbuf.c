@@ -6,7 +6,7 @@
 /*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 13:02:08 by jsprenge          #+#    #+#             */
-/*   Updated: 2023/07/05 13:31:09 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/05 13:39:39 by jsprenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,9 @@ static int	grow_buffer(t_strbuf *self, t_slice slice)
 
 int	strbuf_push(t_strbuf *self, t_slice slice)
 {
+	if (self->data == NULL || self->capacity == 0)
+		if (!strbuf_init(self))
+			return (0);
 	if (self->capacity - self->length < slice.size)
 		if (!grow_buffer(self, slice))
 			return (0);
@@ -71,4 +74,12 @@ void	strbuf_drop(t_strbuf *self)
 	self->data = NULL;
 	self->length = 0;
 	self->capacity = 0;
+}
+
+void	strbuf_take(t_strbuf *self, char **p_string)
+{
+	*p_string = self->data;
+	self->data = NULL;
+	self->capacity = 0;
+	self->length = 0;
 }
