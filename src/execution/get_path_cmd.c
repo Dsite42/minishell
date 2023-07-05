@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_path_cmd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsprenge <jsprenge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 12:23:59 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/07/04 18:25:12 by jsprenge         ###   ########.fr       */
+/*   Updated: 2023/07/05 10:40:33 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static char	*join_path_cmd(t_slice splitted_path, char *argv)
 	return (path_cmd_start);
 }
 
-char	*get_absolut_or_relative_path(char *argv)
+static char	*get_absolut_or_relative_path(char *argv)
 {
 	t_slice	argv_slice;
 	char	*path_cmd;

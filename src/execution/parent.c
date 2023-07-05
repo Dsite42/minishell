@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 11:22:16 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/07/05 10:17:00 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/07/05 10:37:07 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <errno.h>
 #include <stdlib.h>
 
-static int	run_builtin(char **argv, t_state *state)
+int	run_builtin(char **argv, t_state *state)
 {
 	int	count;
 
@@ -38,7 +38,7 @@ static int	run_builtin(char **argv, t_state *state)
 	return (127);
 }
 
-static int	is_builtin(char **argv)
+int	is_builtin(char **argv)
 {
 	if (ms_str_compare(argv[0], "cd", 0) == 0)
 		return (1);

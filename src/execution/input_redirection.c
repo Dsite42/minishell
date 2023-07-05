@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 11:56:58 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/07/04 15:34:13 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/07/05 10:41:41 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-int	is_read_or_heredoc(t_redir *root_redir)
+static int	is_read_or_heredoc(t_redir *root_redir)
 {
 	while (root_redir != NULL)
 	{
@@ -40,7 +40,7 @@ static void	dup_read(int *fd_dup, t_redir *head_redir)
 	close(fd_infile);
 }
 
-void	dup_read_heredoc(t_piping *piping_data, int *fd_dup)
+static void	dup_read_heredoc(t_piping *piping_data, int *fd_dup)
 {
 	int		fd_infile;
 	t_redir	*head_redir;
